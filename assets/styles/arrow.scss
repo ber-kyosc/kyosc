@@ -1,0 +1,39 @@
+@import "breakpoint";
+
+.arrow {
+    clip-path: polygon(95% 0, 100% 50%, 95% 100%, 0% 100%, 5% 50%, 0% 0%);
+    min-height: 4rem;
+    margin: 0 1rem;
+    padding: 1rem 2rem;
+}
+
+.arrow-container {
+    margin: 0 auto;
+    max-width: 800px;
+
+    .arrow-info {
+        @extend .arrow;
+        padding-left: 3.5rem;
+    }
+}
+
+.arrow-header {
+    background-color: black;
+
+    h1{
+        color: $light;
+    }
+
+    @extend .arrow;
+    text-align: center;
+
+    @include sm {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    @include lg {
+        max-width: 1000px;
+    }
+}
+

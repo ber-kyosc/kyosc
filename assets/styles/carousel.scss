@@ -1,0 +1,219 @@
+
+$heightcarousel: 600px;
+
+.my-carousel {
+    background: black;
+    width: 100%;
+    height: $heightcarousel;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    overflow: hidden;
+}
+
+.slide-carousel {
+    display: flex;
+}
+
+.slide-carousel > * {
+}
+
+.left-arrow-carousel, .right-arrow-carousel {
+    z-index: 10;
+    position: absolute;
+    top: 44%;
+    width: 40px;
+    height: 40px;
+}
+
+.left-arrow-carousel {
+    left: 0px;
+}
+
+.right-arrow-carousel {
+    right: 0px;
+}
+
+@keyframes messageCarouselAnim {
+    0% {
+        transform: translate(0px, 0px);
+    }
+
+    16% {
+        transform: translate(0px, 20px);
+    }
+
+    32% {
+        transform: translate(0px, -40px);
+    }
+
+    50% {
+        transform: translate(0px, 0px);
+    }
+
+    68% {
+        transform: translate(10px, 0px);
+    }
+
+    84% {
+        transform: translate(-10px, 0px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+    
+}
+
+.message-carousel-no-images {
+    margin: auto;
+    width: max-content;
+    text-align: center;
+    font-size: 3em;
+    color: white;
+    animation-name: messageCarouselAnim;
+    animation-duration: 20000ms;
+    animation-iteration-count: infinite;
+}
+
+
+/*********************************************************
+                   HOME MAIN CAROUSEL
+*********************************************************/
+
+div[id="home-main-carousel"] {
+    margin: auto;
+    height: 80vh;
+
+    img[id="left-arrow-home-carousel"], img[id="right-arrow-home-carousel"] {
+        position: absolute;
+        width: 12px;
+        height: 48px;
+        transition: all ease-in-out 300ms;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.4);
+        }
+    }
+
+    img[id="left-arrow-home-carousel"] {
+        left: 12px;
+    }
+
+    img[id="right-arrow-home-carousel"] {
+        right: 12px;
+    }
+
+    .cadre-image-home-carousel {
+        overflow: hidden;
+
+        .image-home-carousel {
+            display: block;
+            min-height: 100%;
+            min-width: 100%;
+        }
+    }
+}
+
+.bloc-label-sport {
+    background: #FBFBFB;
+    display: flex;
+    justify-content: flex-end;
+
+    div[id="label-sport-carousel"] {
+        height: 100px;
+        width: 80%;
+        background: #FBFBFB;
+
+        .up-arrow-label-sport {
+            position: absolute;
+            bottom: 14px;
+            height: 14px;
+            width: 60px;
+        }
+
+        .universe-sport-name {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.6em;
+            padding-bottom: 16px;
+        }
+    }
+}
+
+
+/*********************************************************
+                       RESPONSIVE
+*********************************************************/
+
+
+@media all and (min-width: 0px) {
+    .bloc-label-sport {
+        display: flex;
+        justify-content: flex-start;
+
+        div[id="label-sport-carousel"] {
+            width: 94%;
+
+            .up-arrow-label-sport {
+                left: 68.5%;
+            }            
+        }
+    }
+}
+
+@media all and (min-width: 576px) {
+    .bloc-label-sport {
+        display: flex;
+        justify-content: flex-end;
+
+        div[id="label-sport-carousel"] {
+            width: 94%;
+
+            .up-arrow-label-sport {
+                left: 45%;
+            }            
+        }
+    }
+}
+
+@media all and (min-width: 768px) {
+    .bloc-label-sport {
+        div[id="label-sport-carousel"] {
+            width: 90%;
+
+            .up-arrow-label-sport {
+                left: 46.5%;
+            }            
+        }
+    }
+}
+
+@media all and (min-width: 992px) {
+    .bloc-label-sport {
+        div[id="label-sport-carousel"] {
+            width: 83%;
+
+            .up-arrow-label-sport {
+                left: 59.6%;
+            }
+        }
+    }
+}
+
+@media all and (min-width: 1200px) {
+    .bloc-label-sport {
+        div[id="label-sport-carousel"] {
+            width: 80%;
+
+            .up-arrow-label-sport {
+                left: 60%;
+            }
+        }
+    }
+}

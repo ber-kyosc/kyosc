@@ -1,0 +1,6 @@
+<form method="post" class="form-kyosc" action="{{ path('challenge_invite', {id: challenge.id}) }}">
+    <label for="email-invite"></label>
+    <input type="hidden" name="token" value="{{ csrf_token('challenge-invite') }}"/>
+    <input id="email-invite" type="text" name="email" placeholder="Mail" required>
+    <button class="btn btn-profil" style="background-color: {{color}};">Inviter</button>
+</form>

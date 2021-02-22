@@ -1,0 +1,86 @@
+.challenge-photo {
+    max-width: -webkit-fill-available;
+    max-width: -moz-available;
+}
+
+.challenge-quotation {
+    text-align: center;
+}
+
+.challenge-description {
+    text-align: justify;
+}
+
+.key-info {
+    font-family: 'Bebas Neue', cursive;
+    font-size: larger;
+}
+
+.key-info-row {
+    color: white;
+}
+
+.btn-challenge-participation {
+    font-family: 'Bebas Neue', cursive;
+    font-size: x-large;
+    color: white;
+    border: solid white;
+
+    &:hover {
+        background-color: white!important;
+        color: #951e81;
+        border: solid #951e81;
+  }
+}
+
+.journey-link {
+    cursor: pointer;
+    color: white;
+
+    &:hover {
+        color: white;
+        font-size: large;
+  }
+}
+
+.title-info-event {
+    h3 {
+        text-align: center;
+    }
+
+    p {
+        text-align: justify;
+    }
+}
+
+.key-info-arrow {
+    font-size: large;
+}
+
+.challenge-organisator {
+    h2 {
+        font-size: xx-large;
+    }
+
+    h4 {
+        text-align: center;
+    }
+
+    h3 {
+        text-align: center;
+        font-family: $title;
+    }
+
+    .profil-photo-challenge {
+        align-self: center;
+        border-radius: 20%;
+        max-width: 200px;
+        max-height: 200px;
+    }
+}
+
+.participants {
+    h2 {
+        font-size: xx-large;
+    }
+}

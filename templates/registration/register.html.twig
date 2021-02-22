@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    <div class="container">
+        {{ form_start(registrationForm, {'attr': {'class': 'form-kyosc'} }) }}
+        <header class="arrow-header my-3 text-uppercase">
+            <h1 class="mt-2">Inscription</h1>
+        </header>
+        <div class="row mt-4">
+            <div class="form-group col-lg-4 col-md-6 col-sm-6 col-6">
+                {{ form_widget(registrationForm.firstName) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-sm-6 col-6">
+                {{ form_widget(registrationForm.lastName) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
+            <div class="form-group col-lg-4 col-md-8 col-sm-12">
+                {{ form_widget(registrationForm.email) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="container">
+                <span> Votre mot de passe doit contenir au minimum 8 caractères, à savoir : au moins une lettre minuscule, une lettre majuscule et un chiffre. </span>
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-sm-6">
+                {{ form_widget(registrationForm.password.first) }}
+                {{ form_errors(registrationForm.password.first) }}
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-sm-6">
+                {{ form_widget(registrationForm.password.second) }}
+                {{ form_errors(registrationForm.password.second) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-12 col-12">
+                {{ form_widget(registrationForm.address) }}
+                {{ form_errors(registrationForm.address) }}
+            </div>
+            <div class="form-group col-md-3 col-sm-6 col-6">
+                {{ form_widget(registrationForm.city) }}
+                {{ form_errors(registrationForm.city) }}
+            </div>
+            <div class="form-group col-md-3 col-sm-6 col-6">
+                {{ form_widget(registrationForm.postalCode) }}
+                {{ form_errors(registrationForm.postalCode) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_errors(registrationForm.agreeTerms) }}
+        </div>
+        <div class="button-registration-login d-flex justify-content-end">
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('app_login') }}" class="btn mr-2 align-self-center btn-register" type="submit">
+                    J'ai déjà un compte
+                </a>
+                <button class="btn ml-2 align-self-center btn-login" type="submit">
+                    S'inscrire
+                </button>
+            </div>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

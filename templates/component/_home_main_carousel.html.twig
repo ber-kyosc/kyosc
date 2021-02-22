@@ -1,0 +1,28 @@
+<div id="home-main-carousel" class="my-carousel special-carousel">
+    <img src="{{ asset('build/images/fleche/fgblanc.png') }}" class="left-arrow-carousel" id="left-arrow-home-carousel" />
+    <div class="slide-carousel">
+        {% if imagesCarousel is defined %}
+            {% for image in imagesCarousel %}
+                <div class="cadre-image-home-carousel">
+                    <img class="image-home-carousel" src="{{ ('uploads/carousel/'~image.carousel) | imagine_filter('carrousel_thumb')}}" alt="{{ image.name }}" />
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <img src="{{ asset('build/images/fleche/fdnoir.png') }}" class="right-arrow-carousel" id="right-arrow-home-carousel" />
+</div>
+
+<div class="bloc-label-sport">
+    <div id="label-sport-carousel" class="my-carousel special-carousel nbimg:2 nbimg:sm3 nbimg:md3 nbimg:lg4 shift:-1 shift:sm:-1 shift:lg:-2">
+        <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-label-sport">
+        <div class="slide-carousel">
+            {% if imagesCarousel is defined %}
+                {% for image in imagesCarousel %}
+                    <div>
+                        <a href="{{ path('challenge_by_category', {name: image.name|lower}) }}" class="universe-sport-name text-dark">{{ image.name|capitalize }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

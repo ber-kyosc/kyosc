@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="title-errors py-3">Erreur 500... :(</h1>
+
+    <div class="text-center row errors-content">
+        <img class="errors-img" src="{{ asset('uploads/logo/universKyosc.png') }}">
+        <div class="errors-text">
+            <p class="p-3">
+                Désolé, un problème est survenu de notre côté... Nous faisons notre possible pour le résoudre ! <br><br><br>
+                En attendant, <a href="{{ path('home') }}">retour sur la page d'accueil</a>.
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

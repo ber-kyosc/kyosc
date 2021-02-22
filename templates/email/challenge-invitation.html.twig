@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Invitation à un challenge</title>
+</head>
+    <body>
+        <h1>Invitation à s'inscrire à un challenge KYOSC</h1>
+        <p>Hello, vous avez été conviés à rejoindre le challenge {{ challenge.title }} par {{ user.email }}.</p>
+        <p>Voici le lien pour voir les détails de celui-ci:</p>
+        <p>
+            <a href="{{url('challenge_show', {id: challenge.id}) }}">{{url('challenge_show', {id: challenge.id}) }}</a>
+        </p>
+    </body>
+</html>

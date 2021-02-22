@@ -1,0 +1,9 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+        multiSportColor: '#009eb5'
+        multiSportLogo: 'build/images/logo/k-multi-activite.png'
+        multiSportPicto: 'build/images/picto/multi-activite.png'
+        defaultLogo: 'build/images/logo/kyoscblanc.png'
+

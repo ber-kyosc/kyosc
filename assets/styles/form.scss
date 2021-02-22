@@ -1,0 +1,211 @@
+//forms
+.form-kyosc {
+    font-family: $font-text;
+    font-weight: $weight-text;
+    color: theme-color-level('dark');
+
+    h1 {
+        font-family: $title;
+    }
+
+    span {
+        font-weight: $weight-light-text;
+    }
+
+    label {
+        color: theme-color-level('kblue-typo');
+    }
+
+    a {
+        color: theme-color-level('dark');
+    }
+
+    p {
+        font-family: $font-text;
+        font-weight: $weight-text;
+        color: theme-color-level('kblue-typo');
+    }
+
+    small {
+        font-family: $font-text;
+        font-weight: $weight-light-text;
+    }
+
+    .btn-login {
+        background-color: theme-color-level('kgreen');
+        font-family: $title;
+        font-size: $font-size-btn;
+        height: fit-content;
+
+        &:hover {
+            color: white;
+      }
+    }
+
+    .btn-participation {
+        font-family: $title;
+        font-size: $font-size-btn;
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    .btn-register {
+        background-color: theme-color-level('korange');
+        font-family: $title;
+        font-size: $font-size-btn;
+
+        &:hover {
+            color: white;
+      }
+    }
+
+    .btn-delete {
+        background-color: theme-color-level('kdelete');
+        font-family: $title;
+        font-size: $font-size-btn;
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    .btn-profil {
+        background-color: theme-color-level('kblue-typo');
+        font-family: $title;
+        font-size: $font-size-btn;
+        color: white!important;
+
+        &:hover {
+            color: theme-color-level('dark')!important;
+      }
+     }
+
+    input, textarea {
+        font-family: $font-text;
+        font-weight: $weight-text;
+        color: theme-color-level('dark');
+
+        &::placeholder, label {
+            color: theme-color-level('kblue-typo');
+            font-weight: $weight-secondary-title;
+      }
+    }
+
+    .mandatory {
+        color: theme-color-level('kred');
+    }
+
+    .form-check {
+        padding-left: 0;
+    }
+}
+
+.img-goutte {
+    width: 30px;
+    height: auto;
+}
+
+.custom-file {
+    label {
+        color: theme-color-level('kblue-typo');
+        font-weight: $weight-secondary-title;
+  }
+}
+
+.img-display {
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.width-margin {
+    width: inherit;
+}
+
+.profil-picture-border {
+    border: 4px dashed #e0e0e0;
+    display: flex;
+    outline: none;
+    padding: 10px;
+    min-height: 100px;
+    transition: border-color 0.1s linear;
+    align-items: center;
+    justify-content: center;
+}
+
+.profil-photo {
+    max-width: 200px;
+    max-height: 200px;
+    @include lg {
+        max-height: 300px;
+        max-width: 300px;
+  }
+}
+
+.fileUpload :hover {
+    cursor: pointer;
+}
+
+.btn-challenge-creation {
+    background-color: theme-color-level('kblue-typo');
+    border-color: theme-color-level('kblue-typo');
+    color: white;
+    justify-content: center;
+    margin-top: 2em;
+    align-self: center;
+    font-size: 1em;
+}
+
+.form-control {
+    border-color: theme-color-level('kblue-typo');
+    color: theme-color-level('kblue-typo');
+    font-size: inherit;
+
+    &::placeholder {
+        color: theme-color-level('kblue-typo');
+  }
+}
+
+.custom-file-label::after {
+    content: "PARCOURIR";
+}
+
+//select2 profil-show
+.select2-selection, .select2-selection__choice {
+    color: theme-color-level('kblue-typo');
+    background-color: white!important;
+    border: 1px solid theme-color-level('kblue-typo')!important;
+}
+
+.select2-selection__choice__remove {
+    border-right: 1px solid theme-color-level('kblue-typo')!important;
+    color: theme-color-level('dark')!important;
+}
+
+.select2 {
+    width:100%!important;
+}
+
+//checkbox CGU register
+input[type="checkbox"].demo2 {
+    display: none;
+}
+
+input[type="checkbox"].demo2 + label::before {
+    cursor: pointer;
+    content:'';
+    border: 1px solid theme-color-level('kblue-typo');
+    padding: 0 0.6rem;
+    margin-right: 0.3rem;
+}
+
+input[type="checkbox"].demo2:checked + label::before {
+    cursor: pointer;
+    background-color: theme-color-level('kblue-typo');
+}

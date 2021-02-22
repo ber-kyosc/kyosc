@@ -1,0 +1,110 @@
+{% extends 'homeBase.html.twig' %}
+
+{% block title %}KYOSC{% endblock %}
+
+{% block body %}
+    <div class="home-menu">
+        <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
+        <h1 class="text-uppercase">À vous de créer <br><span class="second-color-title">votre propre aventure sportive</span></h1>
+        <p>Selon vos envies, vos coups de coeur ou vos affects</p>
+        {% if app.user %}
+            <a class="home-button dark-button" href="{{ path("profil_show") }}">Mon Espace</a>
+            <a class="home-button dark-button" href="{{ path("app_logout") }}">Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
+        {% endif %}
+        <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Lancer mon challenge</a>
+    </div>
+    <div class="desktop-options">
+        <a href="#">FAQ</a>
+        <a href="mailto:contact@kyosc.com">Nous contacter</a>
+        <a href="#"><img src="{{ asset('build/images/flag/flagFR.png') }}" alt="Drapeau français" class="country-flag"></a>
+    </div>
+    <div class="main-carousel-home-page">
+        {{ include('component/_home_main_carousel.html.twig') }}
+    </div>
+    <section class="home-section home-challenges align-items-center">
+        {% if topChallenge %}
+        <div class="homeTopSelection home-cartouche">
+            <figure>
+                <a class="card text-decoration-none text-dark h-100 no-bg-border"
+                   href="{{ path("challenge_show", {id: topChallenge.id}) }}">
+                    <p class="title-date-card text-center bg-dark text-white m-0">{{ topChallenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+                    <div class="position-relative">
+                        {% if topChallenge.challengePhoto is not null %}
+                            <img src="{{ vich_uploader_asset(topChallenge, 'challengePhotoFile') | imagine_filter('challenge_thumb') }}" alt="photo du challenge" class="w-100">
+                        {% else %}
+                            <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}" alt="photo par défaut du challenge" class="w-100">
+                        {% endif %}
+                    </div>
+                    <div class="card-body home-challenge p-2">
+                        <h5 class="card-title text-center text-uppercase">{{ topChallenge.title }}</h5>
+                        <p class="card-text text-center">"{{ topChallenge.quotation }}"</p>
+                    </div>
+                </a>
+                <figcaption class="home-figcaption text-one">À LA UNE</figcaption>
+            </figure>
+        </div>
+        {% endif %}
+        {% if featuredChallenges %}
+        <div class="homeSelection home-cartouche">
+            <figure>
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                    {% for challenge in featuredChallenges %}
+                        <div class="col-12 col-sm-6 p-3 position-relative">
+                            <a class="card text-decoration-none text-dark h-100 no-bg-border"
+                               href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <div class="position-relative">
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb') }}" alt="photo du challenge" class="w-100">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}" alt="photo par défaut du challenge" class="w-100">
+                                    {% endif %}
+                                </div>
+                                <div class="card-body p-1">
+                                    <h5 class="card-title text-center">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }} :<br> {{ challenge.title }}</h5>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+                <figcaption class="home-figcaption text-selection">NOTRE SELECTION</figcaption>
+            </figure>
+        </div>
+        {% endif %}
+        <div class="all-projects home-cartouche">
+            <span id="all-projects">TOUS LES CHALLENGES</span>
+            <a href="{{ path("challenge_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/universKyosc.png') }}"></a>
+            <a href="{{ path("challenge_index") }}" class="button-discover btn-lg">Je découvre</a>
+        </div>
+    </section>
+    <section class="home-section testimonials">
+        <h6 class="text-uppercase"><img class="w-25" src="{{ asset('build/images/picto/klaurier.png') }}"> Témoignages <img class="w-25" src="{{ asset('build/images/picto/klaurier.png') }}"></h6>
+        <div class="d-flex flex-column align-items-center">
+            {% for user in usersTestimonials %}
+                {% if user.profilPhoto is not null%}
+                    <img src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ user.profilPhoto }}" class="profil-photo w-25 avatar-testimony">
+                {% else %}
+                    <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="w-25 avatar-testimony">
+                {% endif %}
+                <p class="testimonial">
+                    <strong>
+                        {% if user.pseudo is not null %}
+                            {{ user.pseudo }}
+                        {% else %}
+                            {{ user.firstName }}
+                        {% endif %}
+                    </strong>: {{ user.testimony }}
+                </p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('Carousel') }}
+    {{ encore_entry_script_tags('instantiate_carousels') }}
+    {{ encore_entry_script_tags('home_main_carousel') }}
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
+        <title>{% block title %}Bienvenue!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        {{ encore_entry_link_tags('app') }}
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body class="background-profile" style="background: url('{{ asset('build/images/background/bgimg1.jpeg') }}') no-repeat fixed center; background-size: cover;">
+    {% if app.user and not app.user.isVerified %}
+        {{ include('component/_email-verified.html.twig') }}
+    {% endif %}
+    <div class="arrow-background w-100"></div>
+        {{ include('component/_header.html.twig') }}
+        {% for category, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% block body %}{% endblock %}
+        {{ encore_entry_script_tags('app') }}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

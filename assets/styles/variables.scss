@@ -1,0 +1,32 @@
+$theme-colors: (
+    'kdelete': #d9534f,
+    'kblue': #009eb5,
+    'kred': #e71374,
+    'korange': #f29100,
+    'kgreen': #94c022,
+    'kpurple': #951e81,
+    'dark': #000000,
+    'grey': #eae9e9,
+    'kblue-typo': #108ace,
+    'ksky-blue': #d3f5f8,
+    'homeSecondColor': #c0dd10,
+    'arrowBackground': #eae9e9
+);
+
+$drawer-menu: #111;
+$black: #111;
+$light: #fff;
+
+$pagination-active-bg: $black;
+$pagination-color: $black;
+
+$title: 'Bebas Neue', cursive;
+$font-text: 'Roboto', sans-serif;
+//regular text
+$weight-text: 400;
+//secondary-title
+$weight-secondary-title: 500;
+//light text
+$weight-light-text: 300;
+
+$font-size-btn: larger;

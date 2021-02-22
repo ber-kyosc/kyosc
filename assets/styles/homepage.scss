@@ -1,0 +1,231 @@
+@import 'variables';
+@import '~bootstrap/scss/bootstrap';
+@import 'breakpoint';
+
+.home-body {
+    color: theme-color-level('kblue-typo');
+    font-family: 'Roboto', sans-serif;
+}
+
+.home-menu {
+    align-items: center;
+    background-color: $drawer-menu;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 30% 100%, 0 95%);
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    min-height: 600px;
+    padding: 20px 10px;
+    top: 0;
+    width: 75%;
+
+    position: absolute;
+    left: 0;
+    z-index: 10;
+
+    @include sm {
+        width: 55%;
+    };
+
+    @include md {
+        width: 35%;
+    }
+
+    @include lg {
+        width: 25%;
+    }
+
+    @include xl {
+        font-size: larger;
+    }
+
+    h1 {
+        color: $light;
+        font-size: 1.7em;
+        font-weight: bold;
+        line-height: 150%;
+        margin: 20px;
+
+        @include lg {
+            margin: 20px;
+        }
+    }
+
+    p {
+        color: $light;
+        margin-bottom: 10px;
+        width: 80%;
+
+        @include lg {
+            margin-bottom: 50px;
+        }
+    }
+}
+
+.second-color-title {
+    color: theme-color-level('homeSecondColor');
+}
+
+.home-logo {
+    height: auto;
+    max-width: 170px;
+    width: 80%;
+}
+
+.home-button {
+    border-radius: 2px;
+    font-size: .8em;
+    font-weight: bold;
+    margin: 5px;
+    padding: 10px 20px;
+    transition: .3s;
+    text-align: center;
+    width: 80%;
+
+    &:hover {
+        background-color: theme-color-level('homeSecondColor');
+        color: $black;
+        text-decoration: none;
+    }
+}
+
+.dark-button {
+    background-color: $black;
+    color: $light;
+    border: 2px solid $light;
+}
+
+.light-button {
+    background-color: $light;
+    color: $black;
+    border: 2px solid $light;
+}
+
+.desktop-options {
+    background-color: $drawer-menu;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%);
+    display: none;
+    min-width: 25%;
+    padding: 5px 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    position: absolute;
+    z-index: 10;
+
+    @include md {
+        align-items: center;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    a {
+        align-items: center;
+        color: $light;
+        display: flex;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-left: 70px;
+        margin-right: 20px;
+        transition: .3s;
+
+        &:hover {
+            color: theme-color-level('homeSecondColor');
+            text-decoration: none;
+        }
+    }
+}
+
+.country-flag {
+    border-radius: 50%;
+    width: 30px;
+}
+
+.home-section {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+.text-one {
+    background: theme-color-level('ksky-blue');
+}
+
+.text-selection {
+    background: theme-color-level('kblue-typo');
+    color: theme-color-level('ksky-blue');
+}
+
+.home-figcaption {
+    font-size: .8em;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+.home-cartouche {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    justify-content: center;
+
+    @include md {
+        margin: 5px 20px;
+        width: 30%;
+    }
+}
+
+.home-multi-universes {
+    max-width: 350px;
+}
+
+.testimonials {
+    padding-top: 15px;
+
+    h6 {
+        font-size: larger;
+    }
+}
+
+.phrase-think {
+    font-size: 12px;
+    text-align: center;
+}
+
+.button-discover {
+    border: 1px solid theme-color-level('kblue-typo');
+    color: theme-color-level('kblue-typo');
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    margin: 10px 2px;
+    padding: 5px 50px;
+    text-align: center;
+}
+
+.home-challenges {
+    @include md {
+        flex-direction: row;
+    }
+}
+
+.homeSelection {
+    @include md {
+        order: 3;
+    }
+}
+
+.all-projects {
+    font-size: xx-large;
+    @include md {
+        order: 2;
+    }
+}
+
+.home-challenge {
+    font-size: medium;
+}

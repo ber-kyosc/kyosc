@@ -1,0 +1,200 @@
+{% extends 'profilBase.html.twig' %}
+{% block title%} Mon profil {% endblock %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'class': 'form-kyosc'} }) }}
+    <div class="container">
+        <header class="arrow-header my-3 text-uppercase">
+            <h1 class="mt-2">Mes informations</h1>
+        </header>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <p class="font-weight-bold">Nombre de points: {{ app.user.points }}</p>
+                <p class="font-weight-bold">{{ app.user.email }}</p>
+            </div>
+            <div class="col-12 col-lg-6 d-flex justify-content-center">
+                <button type="submit" class="btn-login btn btn-lg">Modifier mes informations</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="container d-flex margin-bottom">
+        <div class="row">
+            <div class="container col-lg-6 col-12">
+                <label for="edit_profil_profilPhotoFile_file" class="form-group img-display profil-picture-border">
+                    {% if app.user.profilPhoto is not null%}
+                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo">
+                    {% else %}
+                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo">
+                    {% endif %}
+                </label>
+            </div>
+            <div class="container col-lg-6 col-12">
+                <div class="row">
+                    <div class="form-group col-md-6 col-12 col-lg-6">
+                        <a type="submit" class="btn btn-profil width-margin mt-0" href="{{ path("profil_edit_email") }}">Modifier mon mail</a>
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <a type="submit" href="{{ path("app_forgot_password_request") }}" class="width-margin btn btn-profil">Modifier mon mot de passe</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6">
+                        {{ form_widget(form.firstName) }}
+                        {{ form_errors(form.firstName) }}
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6">
+                        {{ form_widget(form.lastName) }}
+                        {{ form_errors(form.lastName) }}
+                    </div>
+                    <div class="form-group col-lg-4 col-md-5 col-sm-6">
+                        {{ form_widget(form.pseudo) }}
+                        {{ form_errors(form.pseudo) }}
+                    </div>
+                    <div class="form-group col-lg-5 col-md-7 col-sm-6">
+                        {{ form_widget(form.age) }}
+                        {{ form_errors(form.age) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 col-sm-12">
+                        {{ form_widget(form.address) }}
+                        {{ form_errors(form.address) }}
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        {{ form_widget(form.city) }}
+                        {{ form_errors(form.city) }}
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6">
+                        {{ form_widget(form.postalCode) }}
+                        {{ form_errors(form.postalCode) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(form.biography) }}
+                    {{ form_help(form.biography) }}
+                    {{ form_errors(form.biography) }}
+                </div>
+                <div class="form-group">
+                    {{ form_widget(form.testimony) }}
+                    {{ form_errors(form.testimony) }}
+                </div>
+                <div class="fileUpload">
+                    {{ form_widget(form.profilPhotoFile) }}
+                    {{ form_errors(form.profilPhotoFile) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container flex-column mt-5">
+        <h2>{{ form_label(form.favoriteSports) }}</h2>
+        <div class="form-check d-flex align-items-center pl-0 form-check-inline flex-row flex-wrap justify-content-center">
+            {% for sport in form.favoriteSports.children %}
+                <div class="col-6 col-lg-2 col-md-3 col-sm-4">
+                    <div class="d-flex flex-column align-items-center form-group border border-dark rounded cursor-pointer py-2  {{ sport.vars.checked? "bg-warning" : "" }}"
+                         data-checkBoxContainer
+                    >
+                        <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
+                        <p class="m-0">
+                            <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
+                        </p>
+                        <div class="d-none">
+                            {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
+                        </div>
+                        {{ form_errors(sport) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="background-grey">
+        <div class="container d-flex flex-column mt-3">
+            <h2>Mes marques préférées</h2>
+            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                {{ form_help(form.favoriteBrands) }}
+                {{ form_widget(form.favoriteBrands) }}
+                {{ form_errors(form.favoriteBrands) }}
+            </div>
+            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                {{ form_help(form.brandSuggestion) }}
+                {{ form_widget(form.brandSuggestion) }}
+                {{ form_errors(form.brandSuggestion) }}
+            </div>
+        </div>
+
+        <div class="container d-flex flex-column mt-3">
+            <h2>Mes destinations préférées</h2>
+            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                {{ form_help(form.favoriteDestination) }}
+                {{ form_widget(form.favoriteDestination) }}
+                {{ form_errors(form.favoriteDestination) }}
+            </div>
+            <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center">Modifier mes informations</button>
+            {{ form_end(form) }}
+        </div>
+        <div class="container">
+            <div class="container margin">
+                <h2 class="mb-4"> Mes challenges - {{ challenges|length }}</h2>
+            </div>
+            <div class="container form-kyosc mb-4">
+                <div class="row justify-content-center">
+                    {% for challenge in challenges %}
+                        <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                <div class="position-relative" >
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                             alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du challenge" class="w-100">
+                                    {% endif %}
+                                    <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
+                                </div>
+                                <div class="card-body p-2">
+                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                </div></a>
+                            <div class="card-body d-flex justify-content-around">
+                                <a class="btn btn-login" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+                                {{ include('challenge/_delete_form.html.twig') }}
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(function(){
+            $('.select-favoriteBrands').select2();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+    </script>
+    {{ encore_entry_script_tags('checkbox') }}
+    <script>
+        const output = document.getElementById('output');
+        function loadFile() {
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src);
+            };
+        }
+    </script>
+{% endblock %}

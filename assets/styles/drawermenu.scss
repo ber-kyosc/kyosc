@@ -1,0 +1,41 @@
+@import 'variables';
+@import '~bootstrap/scss/bootstrap';
+
+.sidenav {
+    background-color: $drawer-menu;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 30% 100%, 0 95%);
+    height: 80vh;
+    left: 0;
+    overflow-x: hidden;
+    padding: 60px 0;
+    position: fixed;
+    top: 0;
+    transition-duration: .5s;
+    transition-property: width;
+    width: 0;
+    z-index: 100000;
+
+    a {
+        color: theme-color-level('grey');
+        display: block;
+        font-size: 25px;
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+
+        &:hover {
+            color: $light;
+        }
+    }
+}
+
+.nav-menu-overlay {
+    background-color: $black;
+    display: none;
+    height: 100vh;
+    left: 0;
+    min-width: 100vw;
+    opacity: .1;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+}

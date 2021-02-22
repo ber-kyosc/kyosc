@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="title-errors py-3">Erreur 401... :(</h1>
+
+    <div class="text-center row errors-content">
+        <img class="errors-img" src="{{ asset('uploads/logo/universKyosc.png') }}">
+        <div class="errors-text">
+            <p class="p-3">
+                Désolé vous n'avez pas les droits suffisants pour aller plus loin... <br><br><br>
+                <a href="{{ path('home') }}">Retour sur la page d'accueil</a>.
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

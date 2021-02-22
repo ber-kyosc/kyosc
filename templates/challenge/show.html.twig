@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Challenge #{{ challenge.id }}{% endblock %}
+
+{% block body %}
+    {% set color = challenge.sports[0].color %}
+
+    <header class="arrow-header my-3 text-uppercase" style="background-color: {{color}};">
+        <h1>{{ challenge.title }} #{{ challenge.id }}</h1>
+        <p class="m-0 text-white">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+    </header>
+    <section class="container px-5 my-2 my-md-5">
+        <div class="row justify-content-center justify-content-md-around">
+            <div class="col-lg-6">
+                {% if challenge.challengePhoto is not null%}
+                    <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_show_thumb')}}" alt="image du challenge" class="challenge-photo">
+                {% else %}
+                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}" alt="photo par défaut du challenge" class="w-100">
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <h3 class="challenge-quotation mb-4">{{ challenge.quotation }}</h3>
+                <p class="challenge-description">{{ challenge.description }}</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="mt-2 mb-4 container d-flex justify-content-center">
+        <div class="col-10 title-info-event">
+            <h3>Informations sur l'évènement:</h3>
+            <p>{{ challenge.information}}</p>
+        </div>
+    </div>
+
+    <section class="container d-flex flex-row">
+        <div class="container arrow-container col-lg-8 col-sm-12">
+            <h2 class="text-center" style="color: {{color}}">LES INFORMATIONS CLEFS</h2>
+            <div class="arrow-info key-info-arrow" style="background-color: {{color}}">
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="key-info-row">
+                            <span class="key-info">DATE:</span>
+                            <p>{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+                        </div>
+                        <div class="key-info-row">
+                            <span class="key-info">LIEU:</span>
+                            <p>{{ challenge.location | capitalize }}</p>
+                        </div>
+                        <div class="key-info-row">
+                            <span class="key-info">DISTANCE:</span>
+                            <p>{{challenge.distance}} km</p>
+                        </div>
+                        <div class="key-info-row">
+                            <p class="mb-0"><span class="key-info">PARCOURS:</span>
+                                <a class="journey-link" data-toggle="modal" data-target="#modalJourney">Voir le parcours</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+            {% if app.user in challenge.participants %}
+                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
+                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
+                    <button
+                            class="btn btn-register text-uppercase"
+                            style="background-color: {{ color }}"
+                    >JE NE PARTICIPE PLUS</button>
+                </form>
+            {% else %}
+                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
+                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
+                    <button
+                            class="btn btn-participation btn-lg text-uppercase text-white"
+                            style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                    >JE PARTICIPE</button>
+                </form>
+            {% endif %}
+
+            <div class="form-kyosc">
+                <a class="btn btn-participation text-uppercase text-white"
+                   data-toggle="modal" data-target="#modalInvitation"
+                   style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                >J'invite des amis</a>
+            </div>
+        </div>
+    </section>
+
+    {#        modal for journey pop-up#}
+    {% if challenge.journey %}
+    <div class="modal fade" id="modalJourney" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">PARCOURS:</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ challenge.journey}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="modal fade" id="modalJourney" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header align-self-center">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">PARCOURS</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                                {% include 'challenge/_form_challenge-invitation.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{#       end of modal for journey pop-up#}
+
+    {#        modal for challenge invitation pop-up#}
+        <div class="modal fade" id="modalInvitation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">INVITER VOS AMIS A PARTICIPER A CE CHALLENGE</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center">
+                        {% include 'challenge/_form_challenge-invitation.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {#       end of modal for journey pop-up#}
+
+    <div class="container w-75 mx-auto my-5 challenge-organisator">
+        <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise le challenge ?</h2>
+        <div class="row">
+            <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
+        {% if challenge.creator.profilPhoto is not null %}
+            <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+        {% else %}
+            <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
+        {% endif %}
+                <h4>{{ challenge.creator.firstname }}</h4>
+            </div>
+            <div class="col-lg-6 col-12 mt-lg-3">
+                <h3>Biographie</h3>
+                {% if challenge.creator.biography is not null %}
+                <p> {{ challenge.creator.biography }}</p>
+                {% else %}
+                <p>L'organisateur.trice du challenge n'a pas encore mis de biographie.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="w-75 mx-auto my-5 participants">
+        <h2 class="h5 text-uppercase text-center mb-4" style="color: {{color}}">{{ challenge.participants|length}} participant{{ challenge.participants|length>1?'s':''}}</h2>
+        <div class=" container d-flex justify-content-center">
+        {% for participant in challenge.participants %}
+            <div class="d-flex flex-column align-items-center m-4">
+                {% if participant.profilPhoto is not null %}
+                    <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(participant, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                {% else %}
+                    <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
+                {% endif %}
+                <p> {{ participant.firstname }}</p>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

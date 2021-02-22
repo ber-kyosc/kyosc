@@ -1,0 +1,123 @@
+@import 'variables';
+@import 'drawermenu';
+@import 'homepage';
+@import '~bootstrap/scss/bootstrap';
+@import 'breakpoint';
+@import 'arrow';
+@import 'challengeShow';
+@import "errors";
+@import 'form';
+@import 'carousel';
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+h1, h2 {
+    font-family: $title;
+    text-align: center;
+}
+
+body {
+    background: linear-gradient($light, $light 50%, theme-color-level('arrowBackground') 50%, theme-color-level('arrowBackground')) no-repeat;
+    min-height: 200vh;
+}
+
+.logo {
+    height: auto;
+    width: 60px;
+}
+
+.fit-content {
+    width: fit-content;
+}
+
+.arrow-background {
+    background-color: theme-color-level('arrowBackground');
+    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
+    height: 100%;
+    position: absolute;
+    top: 90%;
+    width: 100vw;
+    z-index: -1000;
+}
+
+.img-picto {
+    background-color: $light;
+    border: 3px solid;
+    border-radius: 50%;
+    height: auto;
+    left: 7px;
+    padding: 5px;
+    position: absolute;
+    top: 10px;
+    width: 40px;
+}
+
+.no-bg-border {
+    background-color: transparent;
+    border: unset;
+}
+
+.text-muted {
+    color: theme-color-level('kblue-typo');
+    font-family: $title;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.col-form-label {
+    color: black;
+    text-align: center;
+}
+
+.img-picto {
+    background-color: white;
+    border: 3px solid;
+    border-radius: 50%;
+    height: auto;
+    left: 7px;
+    position: absolute;
+    padding: 5px;
+    top: 10px;
+    width: 40px;
+}
+
+.title-date-card {
+    height: 30px;
+    left: 15%;
+    line-height: 30px;
+    min-width: 70%;
+    position: absolute;
+    top: -5%;
+    z-index: 200;
+}
+
+.no-bg-border {
+    border: unset;
+    background-color: transparent;
+}
+
+.avatar {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}
+
+.background-grey {
+    background-color: theme-color-level('grey');
+}
+
+.avatar-testimony {
+    max-width: 60px;
+    max-height: 100px;
+    border-radius: 50%;
+}
+
+.challenge-photo-container {
+    height: 275px;
+}
+
+.challenge-photo-container-profil {
+    height: 200px;
+}

@@ -1,0 +1,42 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Bienvenue dans le tableau de bord KYOSC' %}
+
+{% block page_content %}
+    <h1 class="text-center">Que se passe t-il chez KYOSC ?</h1>
+    <div class="wrapper" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap">
+        <div class="one bg-light p-3 border border-dark" style="border-radius: 20px; width: 20%; min-width: 200px">
+            <p class="stat-title text-dark font-weight-bold text-center">Nombre de challenges</p>
+            <p class="stat-result text-center text-dark font-weight-bolder" style="font-size: 3.8em">
+                {{ totalChallenges|length }}
+            </p>
+        </div>
+        <div class="one bg-light p-3 border border-dark" style="border-radius: 20px; width: 20%; min-width: 200px">
+            <p class="stat-title text-dark font-weight-bold text-center">Nombre de users inscrits</p>
+            <p class="stat-result text-center text-dark font-weight-bolder" style="font-size: 3.8em">
+                {{ totalUsers|length }}
+            </p>
+        </div>
+        <div class="one bg-light p-3 border border-dark" style="border-radius: 20px; width: 20%; min-width: 200px">
+            <p class="stat-title text-dark font-weight-bold text-center">Nombre de sports</p>
+            <p class="stat-result text-center text-dark font-weight-bolder" style="font-size: 3.8em">
+                {{ totalSports|length }}
+            </p>
+        </div>
+        <div class="one bg-light p-3 border border-dark" style="border-radius: 20px; width: 20%; min-width: 200px">
+            <p class="stat-title text-dark font-weight-bold text-center">Nombre de catégories</p>
+            <p class="stat-result text-center text-dark font-weight-bolder" style="font-size: 3.8em">
+                {{ totalCategories|length }}
+            </p>
+        </div>
+
+        {% for sports in challengeBySports %}
+        <div class="one p-3" style="border-radius: 20px; width: 20%; background-color: {{ sports.color }}; min-width: 200px">
+            <p class="stat-title text-light font-weight-bold text-center">Nombre de challenges <br/> {{ sports.name }}</p>
+            <p class="stat-result text-center text-light font-weight-bolder" style="font-size: 3.8em">
+                {{ sports.challengeCount }}
+            </p>
+        </div>
+        {% endfor %}
+{% endblock %}

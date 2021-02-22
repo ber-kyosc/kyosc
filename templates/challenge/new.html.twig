@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créez votre challenge!{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% endblock %}
+
+{% block body %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1 class="mt-2">Créez votre challenge sportif</h1>
+    </header>
+    <div class="container">
+        <div class="form-group">
+            <p> Les champs avec * sont obligatoires.</p>
+        </div>
+        {{ form_start(form, {'attr': {'class': 'form-kyosc'} }) }}
+        {{ form_errors(form.sports) }}
+        <p class="mb-0 mandatory">*</p>
+        <ul class="form-row justify-content-center list-unstyled text-center" id="sports-checkboxes">
+            {% for sport in form.sports.children %}
+                <li class="col-6 col-lg-2 col-md-3 col-sm-4 p-2 ">
+                    <div
+                            class="border border-dark rounded cursor-pointer py-2 {{ sport.vars.checked? "bg-warning" : "" }}"
+                            data-checkBoxContainer
+                    >
+                        <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
+                        <p class="m-0">
+                            <label class="m-0" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
+                        </p>
+                        <div class="d-none">
+                            {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="form-row">
+            <div class="form-group col-md-6 ">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.title) }}
+                {{ form_widget(form.title) }}
+            </div>
+            <div class="form-group col-md-6">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.quotation) }}
+                {{ form_widget(form.quotation) }}
+                {{ form_help(form.quotation) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.dateStart) }}
+                {{ form_widget(form.dateStart, { 'id': 'datepicker', 'attr': {'autocomplete': 'off'}}) }}
+            </div>
+            <div class="fileUpload col-lg-6 align-self-end mt-4">
+                {{ form_errors(form.challengePhotoFile) }}
+                {{ form_widget(form.challengePhotoFile) }}
+                {{ form_help(form.challengePhotoFile) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.description, {'attr': {'size': 8} }) }}
+                {{ form_widget(form.description) }}
+                {{ form_help(form.description) }}
+            </div>
+            <div class="form-group col-lg-6 align-self-end">
+                {{ form_errors(form.journey) }}
+                {{ form_widget(form.journey) }}
+                {{ form_help(form.journey) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 col-lg-4">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.location) }}
+                {{ form_widget(form.location) }}
+                {{ form_help(form.location) }}
+            </div>
+            <div class="form-group col-md-6 col-lg-4 align-self-end">
+                {{ form_errors(form.locationEnd) }}
+                {{ form_widget(form.locationEnd) }}
+                {{ form_help(form.locationEnd) }}
+            </div>
+            <div class="form-group col-md-6 col-lg-4">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.distance) }}
+                {{ form_widget(form.distance) }}
+                {{ form_help(form.distance) }}
+            </div>
+        </div>
+
+        <div class="form-row justify-content-between">
+            <div class="form-group">
+                {{ form_errors(form.isPublic) }}
+                {{ form_widget(form.isPublic) }}
+                {{ form_help(form.isPublic) }}
+            </div>
+
+            <div class="form-group col-md-8">
+                <p class="mb-0 mandatory">*</p>
+                {{ form_errors(form.information) }}
+                {{ form_widget(form.information) }}
+                {{ form_help(form.information) }}
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+        <button type="submit" class="btn-login btn btn-lg">Valider mon challenge</button>
+        {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock body %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd-mm-yy",
+                minDate: 0,
+                altField: "#datepicker",
+                closeText: 'Fermer',
+                prevText: 'Précédent',
+                nextText: 'Suivant',
+                currentText: 'Aujourd\'hui',
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Sem.',
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+    </script>
+    {{ encore_entry_script_tags('checkbox') }}
+{% endblock %}
