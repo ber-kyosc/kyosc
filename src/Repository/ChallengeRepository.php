@@ -161,7 +161,12 @@ class ChallengeRepository extends ServiceEntityRepository
             ->orderBy('maximum', 'DESC')
             ->setMaxResults(1);
 
-        return $query->getQuery()->getSingleScalarResult();
+        $maxParticipants = $query->getQuery()->getOneOrNullResult();
+        if ($maxParticipants) {
+            return $query->getQuery()->getSingleScalarResult();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -178,7 +183,12 @@ class ChallengeRepository extends ServiceEntityRepository
             ->orderBy('minimum', 'ASC')
             ->setMaxResults(1);
 
-        return $query->getQuery()->getSingleScalarResult();
+        $minParticipants = $query->getQuery()->getOneOrNullResult();
+        if ($minParticipants) {
+            return $query->getQuery()->getSingleScalarResult();
+        } else {
+            return 0;
+        }
     }
 
     /**
