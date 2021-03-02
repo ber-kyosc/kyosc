@@ -81,6 +81,8 @@ class ChallengeController extends AbstractController
             $challenge->setUpdatedAt(new DateTime());
             /* @phpstan-ignore-next-line */
             $challenge->setCreator($this->getUser());
+            /* @phpstan-ignore-next-line */
+            $challenge->addParticipant($this->getUser());
             $entityManager->persist($challenge);
             $entityManager->flush();
 
