@@ -79,12 +79,14 @@
                 </form>
             {% endif %}
 
+            {% if app.user and app.user == challenge.creator %}
             <div class="form-kyosc">
                 <a class="btn btn-participation text-uppercase text-white"
                    data-toggle="modal" data-target="#modalInvitation"
                    style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
                 >J'invite des amis</a>
             </div>
+            {% endif %}
         </div>
     </section>
 
