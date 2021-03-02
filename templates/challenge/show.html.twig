@@ -59,24 +59,26 @@
             </div>
         </div>
         <div class="d-flex flex-column justify-content-center">
-            {% if app.user in challenge.participants %}
-                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
-                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
-                    <button
-                            class="btn btn-register text-uppercase"
-                            style="background-color: {{ color }}"
-                    >JE NE PARTICIPE PLUS</button>
-                </form>
-            {% else %}
-                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
-                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
-                    <button
-                            class="btn btn-participation btn-lg text-uppercase text-white"
-                            style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
-                    >JE PARTICIPE</button>
-                </form>
+            {% if challenge.isPublic == true %}
+                {% if app.user in challenge.participants %}
+                    <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
+                        <button
+                                class="btn btn-register text-uppercase"
+                                style="background-color: {{ color }}"
+                        >JE NE PARTICIPE PLUS</button>
+                    </form>
+                {% else %}
+                    <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
+                        <button
+                                class="btn btn-participation btn-lg text-uppercase text-white"
+                                style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                        >JE PARTICIPE</button>
+                    </form>
+                {% endif %}
             {% endif %}
 
             {% if app.user and app.user == challenge.creator %}
