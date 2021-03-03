@@ -62,7 +62,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@kyosc.com', 'Ne pas répondre'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('KYOSC - veuillez confirmer votre mail')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
@@ -118,7 +118,7 @@ class RegistrationController extends AbstractController
             (new TemplatedEmail())
                 ->from(new Address('no-reply@kyosc.com', 'Ne pas répondre'))
                 ->to($email)
-                ->subject('Please Confirm your Email')
+                ->subject('KYOSC - veuillez confirmer votre mail')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
         $this->addFlash('success', 'Un email vient de vous être envoyé sur ' . $email . ' !');

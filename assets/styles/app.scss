@@ -121,3 +121,12 @@ body {
 .challenge-photo-container-profil {
     max-height: 200px;
 }
+
+.email-verif-popup {
+    border-radius: 25px;
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top: 5vh;
+    z-index: 500;
+}
