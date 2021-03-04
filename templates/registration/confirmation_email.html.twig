@@ -1,7 +1,19 @@
-<h1>Merci de confirmer votre mail</h1>
-
-<p>
-    Confirmez votre mail en cliquant sur ce lien :<br><br>
-    <a href="{{ signedUrl|raw }}">confirmation</a>.
-    Ce lien expire dans {{ expiresAt|date('g') }} heure(s).
-</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Confirmation création de compte</title>
+    </head>
+    <body>
+        <h1>Merci de votre inscription sur <a href="https://kyosc.com/">kyosc.com</a> !</h1>
+        <p>Afin de completer votre inscription, merci de bien vouloir confirmer votre adresse en cliquant sur ce lien :</p>
+        <a href="{{ signedUrl }}">confirmation</a>.
+        <p>Ce lien expire dans {{ expiresAt|date('g') }} heure(s).</p>
+        <a href="https://kyosc.com/">
+            <img src="https://kyosc.com/build/images/logo/kyoscblanc.0fb22059.png" style="height: 150px;background-color: black;">
+        </a>
+        <p>A bientôt sur la plateforme !</p>
+        <p>l'équipe Kyosc</p>
+    </body>
+</html>

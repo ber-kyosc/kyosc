@@ -7,10 +7,15 @@
 </head>
     <body>
         <h1>Invitation à s'inscrire à un challenge KYOSC</h1>
-        <p>Hello, vous avez été conviés à rejoindre le challenge {{ challenge.title }} par {{ user.email }}.</p>
+        <p>Hello, vous avez été convié·e·s par {{ user.firstName }} {{ user.lastName }} à rejoindre le challenge "{{ challenge.title }}".</p>
         <p>Voici le lien pour voir les détails de celui-ci:</p>
         <p>
-            <a href="{{url('challenge_show', {id: challenge.id}) }}">{{url('challenge_show', {id: challenge.id}) }}</a>
+            <a href="{{url('challenge_show', {id: challenge.id}) }}">Voir le challenge</a>
         </p>
+        <a href="https://kyosc.com/">
+            <img src="https://kyosc.com/build/images/logo/kyoscblanc.0fb22059.png" style="height: 150px;background-color: black;">
+        </a>
+        <p>A bientôt sur la plateforme !</p>
+        <p>l'équipe Kyosc</p>
     </body>
 </html>
