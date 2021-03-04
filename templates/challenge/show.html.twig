@@ -59,32 +59,36 @@
             </div>
         </div>
         <div class="d-flex flex-column justify-content-center">
-            {% if app.user in challenge.participants %}
-                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
-                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
-                    <button
-                            class="btn btn-register text-uppercase"
-                            style="background-color: {{ color }}"
-                    >JE NE PARTICIPE PLUS</button>
-                </form>
-            {% else %}
-                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
-                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
-                    <button
-                            class="btn btn-participation btn-lg text-uppercase text-white"
-                            style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
-                    >JE PARTICIPE</button>
-                </form>
+            {% if challenge.isPublic == true %}
+                {% if app.user in challenge.participants %}
+                    <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
+                        <button
+                                class="btn btn-register text-uppercase"
+                                style="background-color: {{ color }}"
+                        >JE NE PARTICIPE PLUS</button>
+                    </form>
+                {% else %}
+                    <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
+                        <button
+                                class="btn btn-participation btn-lg text-uppercase text-white"
+                                style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                        >JE PARTICIPE</button>
+                    </form>
+                {% endif %}
             {% endif %}
 
+            {% if app.user and app.user == challenge.creator %}
             <div class="form-kyosc">
                 <a class="btn btn-participation text-uppercase text-white"
                    data-toggle="modal" data-target="#modalInvitation"
                    style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
                 >J'invite des amis</a>
             </div>
+            {% endif %}
         </div>
     </section>
 
@@ -116,13 +120,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                                {% include 'challenge/_form_challenge-invitation.html.twig' %}
+                    {% include 'challenge/_form_challenge-invitation.html.twig' %}
                 </div>
             </div>
         </div>
     </div>
     {% endif %}
-{#       end of modal for journey pop-up#}
+    {#       end of modal for journey pop-up#}
 
     {#        modal for challenge invitation pop-up#}
         <div class="modal fade" id="modalInvitation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
