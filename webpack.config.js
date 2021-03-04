@@ -41,6 +41,7 @@ Encore
     .addEntry('Carousel', './assets/js/Carousel.js')
     .addEntry('instantiate_carousels', './assets/js/instantiate_carousels.js')
     .addEntry('home_main_carousel', './assets/js/home_main_carousel.js')
+    .addEntry('popup', './assets/js/popup.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

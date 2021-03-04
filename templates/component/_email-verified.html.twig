@@ -1,6 +1,5 @@
-<div class="d-flex justify-content-center bg-info align-items-center email-verif-popup">
+<div class="d-flex justify-content-center bg-info align-items-center email-verif-popup" id="verif-popup">
     <span class="text-white font-weight-bold text-center mx-1">Votre mail n'est toujours pas vérifié</span>
-    <button class="btn btn-light border mx-5">
-        <a class="text-body" href="{{path('app_send_verify_email')}}">Envoyer mail</a>
-    </button>
+    <a class="text-body btn btn-light border mx-4" href="{{path('app_send_verify_email')}}">Envoyer mail</a>
+    <img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" id="close-cross" alt="white closing cross">
 </div>
