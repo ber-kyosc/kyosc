@@ -39,4 +39,4 @@ liip_imagine:
             # list of transformations to apply (the "filters")
             filters:
                 scale:
-                    dim: [1200,900]
+                    dim: [1920, 1080]
