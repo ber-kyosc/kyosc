@@ -4,7 +4,9 @@
         {% if imagesCarousel is defined %}
             {% for image in imagesCarousel %}
                 <div class="cadre-image-home-carousel">
-                    <img class="image-home-carousel" src="{{ ('uploads/carousel/'~image.carousel) | imagine_filter('carrousel_thumb')}}" alt="{{ image.name }}" />
+                    <a href="{{ path('challenge_by_category', {name: image.name|lower}) }}">
+                        <img class="image-home-carousel" src="{{ ('uploads/carousel/'~image.carousel) | imagine_filter('carrousel_thumb')}}" alt="{{ image.name }}" />
+                    </a>
                 </div>
             {% endfor %}
         {% endif %}
