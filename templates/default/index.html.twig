@@ -6,7 +6,6 @@
     <div class="home-menu">
         <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
         <h1 class="text-uppercase">À vous de créer <br><span class="second-color-title">votre propre aventure sportive</span></h1>
-        <p>Selon vos envies, vos coups de coeur ou vos affects</p>
         {% if app.user %}
             <a class="home-button dark-button" href="{{ path("profil_show") }}">Mon Espace</a>
             <a class="home-button dark-button" href="{{ path("app_logout") }}">Déconnexion</a>
