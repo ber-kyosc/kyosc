@@ -19,8 +19,8 @@ h1, h2 {
 }
 
 body {
-    background: linear-gradient($light, $light 50%, theme-color-level('arrowBackground') 50%, theme-color-level('arrowBackground')) no-repeat;
-    min-height: 200vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo {
@@ -34,11 +34,11 @@ body {
 
 .arrow-background {
     background-color: theme-color-level('arrowBackground');
-    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
+    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 50% 90%, 0 100%, 0 10%);
     height: 100%;
     position: absolute;
     top: 90%;
-    width: 100vw;
+    width: 100%;
     z-index: -1000;
 }
 
