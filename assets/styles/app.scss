@@ -127,7 +127,7 @@ body {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 10vh;
+    top: 18vh;
     z-index: 500;
 }
 
@@ -136,8 +136,15 @@ body {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 5vh;
+    top: 24vh;
     z-index: 500;
+    animation: hide 1s linear 3s 1 forwards;
+}
+
+@keyframes hide {
+    to {
+        opacity: 0;
+    }
 }
 
 .close-picto {

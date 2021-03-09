@@ -6,18 +6,17 @@
     <div class="home-menu">
         <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
         <h1 class="text-uppercase">À vous de créer <br><span class="second-color-title">votre propre aventure sportive</span></h1>
-        {% if app.user %}
-            <a class="home-button dark-button" href="{{ path("profil_show") }}">Mon Espace</a>
-            <a class="home-button dark-button" href="{{ path("app_logout") }}">Déconnexion</a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
-        {% endif %}
-        <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Lancer mon challenge</a>
-    </div>
-    <div class="desktop-options">
-        <a href="#">FAQ</a>
-        <a href="mailto:contact@kyosc.com">Nous contacter</a>
-        <a href="#"><img src="{{ asset('build/images/flag/flagFR.png') }}" alt="Drapeau français" class="country-flag"></a>
+        <div class="d-flex flex-column align-items-center home-button-wrapper">
+            {% if app.user %}
+                <div class="d-flex home-profil-button">
+                    <a class="home-button dark-button" href="{{ path("profil_show") }}">Mon Espace</a>
+                    <a class="home-button dark-button d-flex align-items-center justify-content-center" href="{{ path("app_logout") }}">Déconnexion</a>
+                </div>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
+            {% endif %}
+            <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Créer mon challenge</a>
+        </div>
     </div>
     <div class="main-carousel-home-page">
         {{ include('component/_home_main_carousel.html.twig') }}
