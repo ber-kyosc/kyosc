@@ -40,7 +40,7 @@
                         <p class="card-text text-center">"{{ topChallenge.quotation }}"</p>
                     </div>
                 </a>
-                <figcaption class="home-figcaption text-one">À LA UNE</figcaption>
+                <figcaption class="home-figcaption text-selection">À LA UNE</figcaption>
             </figure>
         </div>
         {% endif %}
@@ -79,7 +79,11 @@
         </div>
     </section>
     <section class="home-section testimonials">
-        <h6 class="text-uppercase"><img class="w-25" src="{{ asset('build/images/picto/klaurier.png') }}"> Témoignages <img class="w-25" src="{{ asset('build/images/picto/klaurier.png') }}"></h6>
+        <h6 class="text-uppercase d-flex justify-content-center align-items-center">
+            <img class="w-25 mx-4" src="{{ asset('build/images/picto/kampagne.png') }}">
+            Témoignages
+            <img class="w-25 mx-4" src="{{ asset('build/images/picto/kaquatique.png') }}">
+        </h6>
         <div class="d-flex flex-column align-items-center">
             {% for user in usersTestimonials %}
                 {% if user.profilPhoto is not null%}
