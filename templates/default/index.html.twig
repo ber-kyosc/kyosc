@@ -21,7 +21,7 @@
     <div class="main-carousel-home-page">
         {{ include('component/_home_main_carousel.html.twig') }}
     </div>
-    <section class="home-section home-challenges align-items-center">
+    <section class="home-section home-challenges align-items-center hide-before-scroll show-on-scroll">
         {% if topChallenge %}
         <div class="homeTopSelection home-cartouche">
             <figure>
@@ -45,7 +45,7 @@
         </div>
         {% endif %}
         {% if featuredChallenges %}
-        <div class="homeSelection home-cartouche">
+        <div class="homeSelection home-cartouche hide-before-scroll show-on-scroll">
             <figure>
                 <div class="container-fluid">
                     <div class="row justify-content-center">
@@ -72,13 +72,13 @@
             </figure>
         </div>
         {% endif %}
-        <div class="all-projects home-cartouche">
+        <div class="all-projects home-cartouche show-on-scroll hide-before-scroll">
             <span id="all-projects">TOUS LES CHALLENGES</span>
             <a href="{{ path("challenge_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/universKyosc.png') }}"></a>
             <a href="{{ path("challenge_index") }}" class="button-discover btn-lg">Je découvre</a>
         </div>
     </section>
-    <section class="home-section testimonials">
+    <section class="home-section testimonials hide-before-scroll show-on-scroll">
         <h6 class="text-uppercase d-flex justify-content-center align-items-center">
             <img class="w-25 mx-4" src="{{ asset('build/images/picto/kampagne.png') }}">
             Témoignages
