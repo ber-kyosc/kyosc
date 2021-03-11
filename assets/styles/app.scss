@@ -8,6 +8,7 @@
 @import "errors";
 @import 'form';
 @import 'carousel';
+@import 'footer';
 
 .cursor-pointer {
     cursor: pointer;
@@ -19,8 +20,8 @@ h1, h2 {
 }
 
 body {
-    background: linear-gradient($light, $light 50%, theme-color-level('arrowBackground') 50%, theme-color-level('arrowBackground')) no-repeat;
-    min-height: 200vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo {
@@ -34,11 +35,11 @@ body {
 
 .arrow-background {
     background-color: theme-color-level('arrowBackground');
-    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
+    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 50% 90%, 0 100%, 0 10%);
     height: 100%;
     position: absolute;
     top: 90%;
-    width: 100vw;
+    width: 100%;
     z-index: -1000;
 }
 
@@ -127,7 +128,7 @@ body {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 10vh;
+    top: 18vh;
     z-index: 500;
 }
 
@@ -136,8 +137,15 @@ body {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 5vh;
+    top: 24vh;
     z-index: 500;
+    animation: hide 1s linear 3s 1 forwards;
+}
+
+@keyframes hide {
+    to {
+        opacity: 0;
+    }
 }
 
 .close-picto {
@@ -147,4 +155,17 @@ body {
     &:hover {
         transform: scale(1.4);
     }
+}
+
+.hide-before-scroll {
+    opacity: 0;
+    transform: translateY(6em);
+    transition: transform 1s .25s,
+    opacity .3s .25s ease-out;
+    will-change: transform, opacity;
+}
+
+.is-visible {
+    opacity: 1;
+    transform: translateY(0em);
 }
