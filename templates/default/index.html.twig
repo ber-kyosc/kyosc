@@ -21,11 +21,33 @@
     <div class="main-carousel-home-page">
         {{ include('component/_home_main_carousel.html.twig') }}
     </div>
-    <section class="home-banner">
-        <p>En recherche de défis sportifs pour vous ou votre groupe d'amis ?
+    <section class="home-banner" style="background: url('{{ asset('build/images/background/bgimg1.jpeg') }}') no-repeat center; background-size: cover;">
+        <p class="hide-before-scroll show-on-scroll">En recherche de défis sportifs pour vous ou votre groupe d'amis ?
             <br>KYOSC est la plateforme qu'il vous faut pour vous challenger dans une ambiance conviviale !
             <br>Alors n'attendez plus, et lancez vous dans l'aventure !
         </p>
+    </section>
+    <section class="home-choice-container">
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>A propos de KYOSC</h2>
+            <img src="{{ asset('build/images/picto/ketoile.png') }}" class="home-choice-picto">
+            <a>En savoir plus</a>
+        </div>
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Rejoindre KYOSC</h2>
+            <img src="{{ asset('build/images/picto/komplice.png') }}" class="home-choice-picto">
+            <a>En savoir plus</a>
+        </div>
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Créer un challenge</h2>
+            <img src="{{ asset('build/images/picto/kequipe.png') }}" class="home-choice-picto">
+            <a>En savoir plus</a>
+        </div>
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Gagner des badges</h2>
+            <img src="{{ asset('build/images/picto/kblason.png') }}" class="home-choice-picto">
+            <a>En savoir plus</a>
+        </div>
     </section>
     <section class="home-section home-challenges align-items-center hide-before-scroll show-on-scroll">
         {% if topChallenge %}
