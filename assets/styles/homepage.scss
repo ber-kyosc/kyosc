@@ -193,6 +193,13 @@
     margin: 10px 2px;
     padding: 5px 50px;
     text-align: center;
+    transition: .3s;
+
+    &:hover {
+        background-color: theme-color-level('kblue-typo');
+        color: theme-color-level('ksky-blue');
+        text-decoration: none;
+    }
 }
 
 .home-challenges {
