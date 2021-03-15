@@ -20,7 +20,7 @@
         <div class="slide-carousel">
             {% if imagesCarousel is defined %}
                 {% for image in imagesCarousel %}
-                    <div>
+                    <div class="carousel-universe">
                         <a href="{{ path('challenge_by_category', {name: image.name|lower}) }}" class="universe-sport-name" style="color: {{ image.color }};">
                             <img src="/uploads/logo/{{ image.logo }}" class="home-carousel-logo">
                             {{ image.name|capitalize }}

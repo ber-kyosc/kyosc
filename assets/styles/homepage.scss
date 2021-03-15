@@ -118,11 +118,24 @@
     flex-direction: column;
     justify-content: center;
     margin: 20px;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:hover .up-arrow-choice {
+        opacity: 1;
+    }
 }
 
 .home-choice-picto {
     max-height: 60px;
     max-width: 60px;
+}
+
+.up-arrow-choice {
+    max-width: 60px;
+    opacity: 0;
 }
 
 .home-button-wrapper {

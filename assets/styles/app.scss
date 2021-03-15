@@ -20,6 +20,7 @@ h1, h2 {
 }
 
 body {
+    font-family: $font-text;
     display: flex;
     flex-direction: column;
     min-height: 190vh;
