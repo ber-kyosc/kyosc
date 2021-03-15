@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\EditEmailType;
 use App\Form\EditProfilType;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +31,7 @@ class ProfilController extends AbstractController
     }
 
     /**
-     * @Route("/", name="show")
+     * @Route("/", name="my_profil")
      * @param SportRepository $sportRepository
      * @param ChallengeRepository $challengeRepository
      * @param Request $request
@@ -61,6 +63,28 @@ class ProfilController extends AbstractController
         }
         return $this->render('profil/show.html.twig', [
             'form' => $form->createView(),
+            'challenges' => $challenges,
+            'user' => $user,
+            'sports' => $sports
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="show", methods={"GET"}, requirements={"id"="^\d+$"})
+     * @param User $user
+     * @param ChallengeRepository $challengeRepository
+     * @return Response
+     */
+    public function show(
+        User $user,
+        ChallengeRepository $challengeRepository
+    ): Response {
+        $challenges = $challengeRepository->findBy(
+            ['creator' => $user->getId()]
+        );
+        $sports = $user->getFavoriteSports();
+
+        return $this->render('profil/user.html.twig', [
             'challenges' => $challenges,
             'user' => $user,
             'sports' => $sports

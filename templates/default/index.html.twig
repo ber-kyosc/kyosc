@@ -9,7 +9,7 @@
         <div class="d-flex flex-column align-items-center home-button-wrapper">
             {% if app.user %}
                 <div class="d-flex home-profil-button">
-                    <a class="home-button dark-button" href="{{ path("profil_show") }}">Mon Espace</a>
+                    <a class="home-button dark-button" href="{{ path("profil_my_profil") }}">Mon Espace</a>
                     <a class="home-button dark-button d-flex align-items-center justify-content-center" href="{{ path("app_logout") }}">Déconnexion</a>
                 </div>
             {% else %}
