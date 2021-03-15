@@ -114,11 +114,13 @@
         </h6>
         <div class="d-flex flex-column align-items-center">
             {% for user in usersTestimonials %}
+                <a href="{{ path("profil_show", {id: user.id}) }}" class="w-25 text-center">
                 {% if user.profilPhoto is not null%}
-                    <img src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ user.profilPhoto }}" class="profil-photo w-25 avatar-testimony">
+                    <img src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ user.profilPhoto }}" class="avatar-testimony">
                 {% else %}
-                    <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="w-25 avatar-testimony">
+                    <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                 {% endif %}
+                </a>
                 <p class="testimonial">
                     <strong>
                         {% if user.pseudo is not null %}

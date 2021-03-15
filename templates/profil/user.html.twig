@@ -1,0 +1,76 @@
+{% extends 'profilBase.html.twig' %}
+{% block title%} Profil de {{ user.firstName}} {% endblock %}
+
+{% block body %}
+    <div class="my-5 d-flex flex-column justify-content-around align-items-center">
+        {% if user.pseudo %}
+            <h1>"{{ user.pseudo }}"</h1>
+            <h2>{{ user.firstName}} {{ user.lastName}}</h2>
+        {% else %}
+            <h1>{{ user.firstName}} {{ user.lastName}}</h1>
+        {% endif %}
+        {% if app.user.profilPhoto is not null%}
+            <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo mt-4">
+        {% else %}
+            <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="mt-4">
+        {% endif %}
+        <div class="my-5">
+            {% if user.biography %}
+                <p class="biography-text">"{{ user.biography }}"</p>
+            {% else %}
+                <p>L'organisateur.trice du challenge n'a pas encore renseigné de biographie.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container mb-4">
+        <h2 class="mb-4">Les sports préférés de {% if user.pseudo %}
+                {{ user.pseudo }}
+            {% else %}
+                {{ user.firstName}} {{ user.lastName}}
+            {% endif %} - {{ sports|length }}</h2>
+        <div class="d-flex align-items-center flex-wrap justify-content-center">
+            {% for sport in sports %}
+                <div class="d-flex flex-column align-items-center mx-3">
+                    <img class="img-goutte" src="/uploads/goutte/{{ sport.goutte }}" alt="logo {{ sport.name }}">
+                    <p>
+                        {{ sport.name }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="container margin">
+            <h2 class="mb-4"> Les challenges de
+                {% if user.pseudo %}
+                    {{ user.pseudo }}
+                {% else %}
+                    {{ user.firstName}} {{ user.lastName}}
+                {% endif %} - {{ challenges|length }}</h2>
+        </div>
+        <div class="container form-kyosc mb-4">
+            <div class="row justify-content-center">
+                {% for challenge in challenges %}
+                    <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                        <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                            <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                            <div class="position-relative" >
+                                {% if challenge.challengePhoto is not null %}
+                                    <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                         alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                {% else %}
+                                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                         alt="photo par défaut du challenge" class="w-100">
+                                {% endif %}
+                                <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
+                            </div>
+                            <div class="card-body p-2">
+                                <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

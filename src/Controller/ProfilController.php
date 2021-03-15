@@ -7,7 +7,6 @@ use App\Form\EditEmailType;
 use App\Form\EditProfilType;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,7 +58,7 @@ class ProfilController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Votre profil a bien été modifié');
-            return $this->redirectToRoute('profil_show');
+            return $this->redirectToRoute('profil_my_profil');
         }
         return $this->render('profil/show.html.twig', [
             'form' => $form->createView(),
@@ -113,7 +112,7 @@ class ProfilController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Votre email a bien été modifié');
-                return $this->redirectToRoute('profil_show');
+                return $this->redirectToRoute('profil_my_profil');
             } else {
                 $this->addFlash('danger', 'Vous avez entré un mauvais mot de passe. Vous avez été déconnecté
                  par mesure de sécurité. Votre email n\'a pas été modifié.');

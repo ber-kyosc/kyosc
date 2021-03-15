@@ -1,3 +1,5 @@
+@import "variables";
+
 //forms
 .form-kyosc {
     font-family: $font-text;
@@ -140,12 +142,10 @@
 }
 
 .profil-photo {
-    max-width: 200px;
-    max-height: 200px;
-    @include lg {
-        max-height: 300px;
-        max-width: 300px;
-  }
+    max-width: 500px;
+    max-height: 600px;
+    border-radius: 25%;
+    box-shadow: 5px 5px 2px $transparent-black;
 }
 
 .fileUpload :hover {
