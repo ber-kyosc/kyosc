@@ -1,8 +1,12 @@
-{% extends 'profilBase.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title%} Mon profil {% endblock %}
 
 {% block stylesheets %}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
 {% endblock %}
 
 {% block body %}

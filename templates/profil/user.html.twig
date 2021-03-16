@@ -1,5 +1,9 @@
-{% extends 'profilBase.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title%} Profil de {{ user.firstName}} {% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg1.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
 
 {% block body %}
     <div class="my-5 d-flex flex-column justify-content-around align-items-center">

@@ -2,6 +2,10 @@
 
 {% block title %}Connexion{% endblock %}
 
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
 {% block body %}
     <div class="container min-vh-100">
         <form method="post" class="form-kyosc">

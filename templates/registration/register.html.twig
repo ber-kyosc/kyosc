@@ -2,6 +2,10 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
