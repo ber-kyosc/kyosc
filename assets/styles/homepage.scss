@@ -126,6 +126,11 @@
     &:hover .up-arrow-choice {
         opacity: 1;
     }
+
+    a:hover {
+        text-decoration: none;
+        color: inherit;
+    }
 }
 
 .home-choice-picto {
