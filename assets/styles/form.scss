@@ -162,6 +162,15 @@
     font-size: 1em;
 }
 
+.form-background {
+    background-color: theme-color-level('kblue-typo');
+    border-radius: 25px;
+    color: $light;
+    margin: auto;
+    padding: 5px 15px;
+    width: 97%;
+}
+
 .form-control {
     border-color: theme-color-level('kblue-typo');
     color: theme-color-level('kblue-typo');
