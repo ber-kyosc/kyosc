@@ -2,6 +2,10 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
@@ -26,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="container">
+            <div class="form-background">
                 <span> Votre mot de passe doit contenir au minimum 8 caractères, à savoir : au moins une lettre minuscule, une lettre majuscule et un chiffre. </span>
             </div>
             <div class="form-group col-lg-4 col-md-6 col-sm-6">

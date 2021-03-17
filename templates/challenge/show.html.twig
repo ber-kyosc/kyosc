@@ -150,14 +150,16 @@
         <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise le challenge ?</h2>
         <div class="row">
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
-        {% if challenge.creator.profilPhoto is not null %}
-            <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
-        {% else %}
-            <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
-        {% endif %}
-                <h4>{{ challenge.creator.firstname }}</h4>
+                <a href="{{ path("profil_show", {id: challenge.creator.id}) }}" class="text-center">
+                {% if challenge.creator.profilPhoto is not null %}
+                    <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                {% else %}
+                    <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
+                {% endif %}
+                </a>
+                        <h4>{{ challenge.creator.firstname }}</h4>
             </div>
-            <div class="col-lg-6 col-12 mt-lg-3">
+            <div class="col-lg-6 col-12 mt-lg-3 text-center">
                 <h3>Biographie</h3>
                 {% if challenge.creator.biography is not null %}
                 <p> {{ challenge.creator.biography }}</p>
@@ -172,11 +174,13 @@
         <div class=" container d-flex justify-content-center">
         {% for participant in challenge.participants %}
             <div class="d-flex flex-column align-items-center m-4">
+                <a href="{{ path("profil_show", {id: participant.id}) }}">
                 {% if participant.profilPhoto is not null %}
                     <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(participant, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
                 {% else %}
                     <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                 {% endif %}
+                </a>
                 <p> {{ participant.firstname }}</p>
             </div>
         {% endfor %}

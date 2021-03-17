@@ -21,7 +21,7 @@
         <li> <a href="{{ path("home") }}">Accueil</a> </li>
         <li> <a href="{{ path("challenge_index") }}">Les challenges</a> </li>
         {% if app.user %}
-            <li> <a href="{{ path("profil_show") }}">Mon Espace</a> </li>
+            <li> <a href="{{ path("profil_my_profil") }}">Mon Espace</a> </li>
             <li> <a href="{{ path("challenge_new") }}">Nouveau Challenge</a> </li>
             <li> <a href="{{ path("app_logout") }}">Déconnexion</a> </li>
         {% else %}

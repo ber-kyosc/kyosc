@@ -1,8 +1,12 @@
-{% extends 'profilBase.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title%} Mon profil {% endblock %}
 
 {% block stylesheets %}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
 {% endblock %}
 
 {% block body %}
@@ -16,8 +20,8 @@
                 <p class="font-weight-bold">Nombre de points: {{ app.user.points }}</p>
                 <p class="font-weight-bold">{{ app.user.email }}</p>
             </div>
-            <div class="col-12 col-lg-6 d-flex justify-content-center">
-                <button type="submit" class="btn-login btn btn-lg">Modifier mes informations</button>
+            <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
+                <button type="submit" class="btn-login btn btn-lg">Enregistrer mes modifications</button>
             </div>
         </div>
 
@@ -29,7 +33,7 @@
                     {% if app.user.profilPhoto is not null%}
                         <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo">
                     {% else %}
-                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo">
+                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                     {% endif %}
                 </label>
             </div>
@@ -43,19 +47,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-lg-4 col-md-6 col-sm-6">
+                    <div class="form-group col-6">
                         {{ form_widget(form.firstName) }}
                         {{ form_errors(form.firstName) }}
                     </div>
-                    <div class="form-group col-lg-4 col-md-6 col-sm-6">
+                    <div class="form-group col-6">
                         {{ form_widget(form.lastName) }}
                         {{ form_errors(form.lastName) }}
                     </div>
-                    <div class="form-group col-lg-4 col-md-5 col-sm-6">
+                    <div class="form-group col-lg-8">
                         {{ form_widget(form.pseudo) }}
                         {{ form_errors(form.pseudo) }}
                     </div>
-                    <div class="form-group col-lg-5 col-md-7 col-sm-6">
+                    <div class="form-group col-lg-4">
                         {{ form_widget(form.age) }}
                         {{ form_errors(form.age) }}
                     </div>
@@ -134,7 +138,7 @@
                 {{ form_widget(form.favoriteDestination) }}
                 {{ form_errors(form.favoriteDestination) }}
             </div>
-            <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center">Modifier mes informations</button>
+            <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center">Enregistrer mes modifications</button>
             {{ form_end(form) }}
         </div>
         <div class="container">

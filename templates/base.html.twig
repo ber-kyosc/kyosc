@@ -10,7 +10,7 @@
         {{ encore_entry_link_tags('app') }}
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
+    <body {% block background %}{% endblock %}>
         {% if app.user and not app.user.isVerified %}
             {{ include('component/_email-verified.html.twig') }}
         {% endif %}

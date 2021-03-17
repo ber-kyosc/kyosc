@@ -1,3 +1,5 @@
+@import "variables";
+
 //forms
 .form-kyosc {
     font-family: $font-text;
@@ -16,8 +18,9 @@
         color: theme-color-level('kblue-typo');
     }
 
-    a {
-        color: theme-color-level('dark');
+    a:hover {
+        text-decoration: none;
+        color: initial;
     }
 
     p {
@@ -99,7 +102,19 @@
 
     .form-check {
         padding-left: 0;
+
+        label {
+            color: white;
+            text-shadow: 0 1px 0 black;
+        }
     }
+}
+
+.lisible-text {
+    background-color: $transparent-black;
+    border-radius: 20px;
+    color: $light;
+    padding: 10px;
 }
 
 .img-goutte {
@@ -140,12 +155,10 @@
 }
 
 .profil-photo {
-    max-width: 200px;
-    max-height: 200px;
-    @include lg {
-        max-height: 300px;
-        max-width: 300px;
-  }
+    max-width: 500px;
+    max-height: 600px;
+    border-radius: 25%;
+    box-shadow: 5px 5px 2px $transparent-black;
 }
 
 .fileUpload :hover {
@@ -160,6 +173,15 @@
     margin-top: 2em;
     align-self: center;
     font-size: 1em;
+}
+
+.form-background {
+    background-color: theme-color-level('kblue-typo');
+    border-radius: 25px;
+    color: $light;
+    margin: auto;
+    padding: 5px 15px;
+    width: 97%;
 }
 
 .form-control {

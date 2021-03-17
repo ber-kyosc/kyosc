@@ -112,8 +112,8 @@ class User implements UserInterface, Serializable
      * @var File|null
      * @Assert\Image(
      *     uploadErrorMessage="Une erreur est survenue lors du téléchargement.",
-     *     maxSize="2097152",
-     *     maxSizeMessage="Votre image est trop grande. Veuillez selectionner une image de moins de 2Mo.",
+     *     maxSize="15097152",
+     *     maxSizeMessage="Votre image est trop grande. Veuillez selectionner une image de moins de 15Mo.",
      *     detectCorrupted=true,
      *     sizeNotDetectedMessage= true,
      *     mimeTypes = {

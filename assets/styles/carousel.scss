@@ -32,11 +32,15 @@ $heightcarousel: 600px;
 }
 
 .left-arrow-carousel {
-    left: 0px;
+    left: 0;
 }
 
 .right-arrow-carousel {
-    right: 0px;
+    right: 0;
+}
+
+.carousel-universe {
+    font-family: $title;
 }
 
 @keyframes messageCarouselAnim {
