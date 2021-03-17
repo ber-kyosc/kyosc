@@ -31,6 +31,21 @@ body {
     width: 60px;
 }
 
+.logo-challenge {
+    background-color: white;
+    min-width: 200px;
+    padding: 5px;
+    width: 15%;
+}
+
+.challenge-index-title {
+    flex: auto;
+
+    @include md {
+        font-size: 3em;
+    }
+}
+
 .fit-content {
     width: fit-content;
 }
