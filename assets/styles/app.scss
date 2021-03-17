@@ -9,6 +9,7 @@
 @import 'form';
 @import 'carousel';
 @import 'footer';
+@import 'checkbox';
 
 .cursor-pointer {
     cursor: pointer;
@@ -135,6 +136,8 @@ body {
 
 .background-grey {
     background-color: theme-color-level('grey');
+    margin-bottom: -25px;
+    margin-top: 25px;
 }
 
 .avatar-testimony {

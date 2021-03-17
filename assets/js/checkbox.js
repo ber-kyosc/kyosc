@@ -5,10 +5,10 @@ function checkBoxClickHandler(event) {
     if (input.checked) {
         input.checked = false;
         input.removeAttribute('checked');
-        div.classList.remove('bg-warning');
+        div.classList.remove('my-sport-check');
     } else {
         input.checked = true;
-        div.classList.add('bg-warning');
+        div.classList.add('my-sport-check');
     }
 }
 
