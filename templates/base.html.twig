@@ -16,6 +16,7 @@
         {% endif %}
         {% if sport is not defined and (challenge is defined) %}
             {% set sportLogo = challenge.sports|length>1 ? asset(multiSportLogo) : (challenge.sports|length==1 ? "/uploads/logo/"~challenge.sports['0'].logo : null) %}
+            {% set sportColor = 'linear-gradient(to right, white 10%, #f29100, #e71374, #009eb5, #94c022)' %}
         {% elseif sport is defined and sport %}
             {% set sportLogo = "/uploads/logo/"~sport.logo  %}
             {% set sportColor = sport.color  %}
@@ -23,7 +24,8 @@
             {% set sportLogo = "/uploads/logo/"~category.logo  %}
             {% set sportColor = category.color  %}
         {% else %}
-            {% set sportLogo = asset(defaultLogo)  %}
+            {% set sportLogo = asset(multiSportLogo)  %}
+            {% set sportColor = 'linear-gradient(to right, white 10%, #f29100, #e71374, #009eb5, #94c022)' %}
         {% endif %}
         <div class="arrow-background w-100"></div>
         {{ include('component/_header.html.twig') }}

@@ -22,7 +22,7 @@
         <span class="text-white"> Bonjour {{ app.user.pseudo? app.user.pseudo : app.user.firstname ~' '~ app.user.lastname}}</span>
     {% endif %}
     <a class="navbar-brand" href="{{ path("home") }}">
-        <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo">
+        <img src="{{ asset(defaultLogo) }}" alt="Logo KYOSC" class="logo">
     </a>
 </nav>
 <div class="nav-menu-overlay"></div>
