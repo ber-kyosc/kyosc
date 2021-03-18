@@ -43,7 +43,6 @@ Encore
     .addEntry('home_main_carousel', './assets/js/home_main_carousel.js')
     .addEntry('popup', './assets/js/popup.js')
     .addEntry('show-on-scroll', './assets/js/show-on-scroll.js')
-    .addEntry('cookie_consent', './assets/js/cookie_consent.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
