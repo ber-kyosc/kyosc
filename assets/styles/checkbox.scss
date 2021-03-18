@@ -1,0 +1,11 @@
+@import 'variables';
+
+.my-sport-check {
+    border: 3px solid theme-color-level('kblue-typo');
+    border-radius: 20%;
+}
+
+.favorite-sport-container {
+    height: 110px;
+    width: 150px;
+}

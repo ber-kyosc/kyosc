@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\EditEmailType;
 use App\Form\EditProfilType;
+use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
 use App\Security\EmailVerifier;
@@ -32,12 +33,14 @@ class ProfilController extends AbstractController
     /**
      * @Route("/", name="my_profil")
      * @param SportRepository $sportRepository
+     * @param CategoryRepository $categoryRepository
      * @param ChallengeRepository $challengeRepository
      * @param Request $request
      * @return Response
      */
     public function index(
         SportRepository $sportRepository,
+        CategoryRepository $categoryRepository,
         ChallengeRepository $challengeRepository,
         Request $request
     ): Response {
@@ -48,6 +51,7 @@ class ProfilController extends AbstractController
             ['creator' => $user->getId()]
         );
         $sports = $sportRepository->findAll();
+        $categories = $categoryRepository->findAll();
         $form = $this->createForm(EditProfilType::class, $user);
         $form->handleRequest($request);
 
@@ -62,6 +66,7 @@ class ProfilController extends AbstractController
         }
         return $this->render('profil/show.html.twig', [
             'form' => $form->createView(),
+            'categories' => $categories,
             'challenges' => $challenges,
             'user' => $user,
             'sports' => $sports

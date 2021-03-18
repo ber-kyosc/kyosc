@@ -95,29 +95,36 @@
             </div>
         </div>
     </div>
-    <div class="container flex-column mt-5">
-        <h2>{{ form_label(form.favoriteSports) }}</h2>
-        <div class="form-check d-flex align-items-center pl-0 form-check-inline flex-row flex-wrap justify-content-center">
-            {% for sport in form.favoriteSports.children %}
-                <div class="col-6 col-lg-2 col-md-3 col-sm-4">
-                    <div class="d-flex flex-column align-items-center form-group border border-dark rounded cursor-pointer py-2  {{ sport.vars.checked? "bg-warning" : "" }}"
-                         data-checkBoxContainer
-                    >
-                        <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
-                        <p class="m-0">
-                            <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
-                        </p>
-                        <div class="d-none">
-                            {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
-                        </div>
-                        {{ form_errors(sport) }}
+    <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
+        <h2 class="mt-5">{{ form_label(form.favoriteSports) }}</h2>
+        <div class="form-check d-flex align-items-center pl-0 flex-row flex-wrap justify-content-center background-grey w-100">
+            {% for category in categories %}
+                <div class="d-flex flex-column align-items-center w-100 mt-5">
+                    <h3 style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
+                    <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+                        {% for sport in form.favoriteSports.children %}
+                            {% if sport.vars.attr['category'].id == category.id %}
+                                <div class="favorite-sport-container d-flex flex-column align-items-center form-group cursor-pointer py-2 m-1 {{ sport.vars.checked? "my-sport-check" : "" }}"
+                                     data-checkBoxContainer
+                                >
+                                    <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
+                                    <p class="m-0">
+                                        <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
+                                    </p>
+                                    <div class="d-none">
+                                        {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
+                                    </div>
+                                    {{ form_errors(sport) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
     <div class="background-grey">
-        <div class="container d-flex flex-column mt-3">
+        <div class="container d-flex flex-column pt-3">
             <h2>Mes marques préférées</h2>
             <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
                 {{ form_help(form.favoriteBrands) }}
@@ -157,17 +164,18 @@
                                              alt="photo du challenge" class="w-100 challenge-photo-container-profil">
                                     {% else %}
                                         <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                             alt="photo par défaut du challenge" class="w-100">
+                                             alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
                                     {% endif %}
-                                    <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
+                                    <div class="white-circle-img-goutte"></div>
+                                    <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
                                 </div>
                                 <div class="card-body p-2">
                                     <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                                </div></a>
-                            <div class="card-body d-flex justify-content-around">
+                                </div>
+                            </a>
+                            <div class="d-flex justify-content-around">
                                 <a class="btn btn-login" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
                                 {{ include('challenge/_delete_form.html.twig') }}
-
                             </div>
                         </div>
                     {% endfor %}
