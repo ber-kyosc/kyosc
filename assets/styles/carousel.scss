@@ -18,9 +18,7 @@ $heightcarousel: 600px;
 
 .slide-carousel {
     display: flex;
-}
-
-.slide-carousel > * {
+    width: 100%;
 }
 
 .left-arrow-carousel, .right-arrow-carousel {
@@ -120,8 +118,8 @@ div[id="home-main-carousel"] {
         justify-content: center;
         align-items: center;
 
-        @include xxl {
-            display: block !important;
+        a {
+            width: 100%;
         }
 
         .image-home-carousel {
