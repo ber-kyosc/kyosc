@@ -15,7 +15,7 @@ ch_cookie_consent:
         description: ''
     social_media:
         title: 'Souhaitez vous autoriser les Cookies liés aux réseaux sociaux ?'
-        description: ''
+        description: 'Ppour vous permettre de partager du contenu sur Facebook et Twitter, nous déposons des cookies de Réseaux Sociaux qui ne deviennent opérationnels que lorsque vous les activez avec la fonction de partage.'
     no: 'Non'
     yes: 'Oui'
     save: 'Sauvegarder mes préférences'

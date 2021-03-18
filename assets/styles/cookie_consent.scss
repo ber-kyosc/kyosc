@@ -1,19 +1,21 @@
+@import 'variables';
+
 .ch-cookie-consent {
-    background-color: #fff;
-    color: #000;
+    background-color: $light;
+    color: $black;
     width: 100%;
     z-index: 99999;
     padding: 35px 40px;
 }
 
 .ch-cookie-consent__title {
-    color: #000;
+    color: $black;
     margin-top: 0;
 }
 
 .ch-cookie-consent__read-more {
     font-weight: bold;
-    color: #000;
+    color: $black;
     text-decoration: none;
     display: block;
 }
@@ -27,7 +29,7 @@
 }
 
 .ch-cookie-consent__category {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid $black;
     padding: 30px 0;
     display: -ms-flexbox;
     display: flex;
@@ -41,7 +43,7 @@
 }
 
 .ch-cookie-consent__category:first-child {
-    border-top: 1px solid #000;
+    border-top: 1px solid $black;
 }
 
 .ch-cookie-consent__category-toggle {
@@ -66,7 +68,7 @@
 .ch-cookie-consent__category-toggle input+label {
     background-repeat: no-repeat;
     background-position: 45px center;
-    background-color: #fff;
+    background-color: $light;
     color: #223462;
     border: 1px solid #223462;
     transition: all .2s;
@@ -86,16 +88,16 @@
 .ch-cookie-consent__category-toggle input:checked+label,
 .ch-cookie-consent__category-toggle input+label:hover {
     background-color: #223462;
-    color: #fff;
-    border-color: #fff;
+    color: $light;
+    border-color: $light;
 }
 
 .ch-cookie-consent__category-toggle input:checked+label {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='#fff' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='$light' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
 }
 
 .ch-cookie-consent__category-title {
-    color: #000;
+    color: $black;
     margin: 0;
 }
 
@@ -106,8 +108,8 @@
 .ch-cookie-consent__btn {
     margin-top: 25px;
     width: 200px;
-    background: linear-gradient(349.19deg, #CF1E34 0%, #EE365F 100%);
-    color: #fff;
+    background: linear-gradient(349.19deg, theme-color-level('kgreen') 0%, theme-color-level('kblue') 100%);
+    color: $light;
     font-weight: bold;
     padding: 10px 20px;
     display: -ms-flexbox;
@@ -119,42 +121,42 @@
 }
 
 .ch-cookie-consent--dark-theme {
-    background-color: #000;
-    color: #fff;
+    background-color: $black;
+    color: $light;
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__title,
 .ch-cookie-consent--dark-theme .ch-cookie-consent__read-more {
-    color: #fff;
+    color: $light;
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category {
-    border-color: #fff;
+    border-color: $light;
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category:first-child {
-    border-color: #fff;
+    border-color: $light;
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category-toggle input+label {
-    background-color: #000;
-    color: #fff;
-    border-color: #fff;
+    background-color: $black;
+    color: $light;
+    border-color: $light;
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category-toggle input:checked+label,
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category-toggle input+label:hover {
-    background-color: #fff;
-    color: #000;
-    border-color: #000;
+    background-color: $light;
+    color: $black;
+    border-color: $black;
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category-toggle input:checked+label {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='#000' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath fill='$black' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
 }
 
 .ch-cookie-consent--dark-theme .ch-cookie-consent__category-title {
-    color: #fff;
+    color: $light;
 }
 
 .ch-cookie-consent__category-group {
