@@ -36,8 +36,15 @@ body {
 .logo-challenge {
     background-color: white;
     min-width: 200px;
-    padding: 5px;
+    padding: 5px 10px;
     width: 15%;
+
+    @include md {
+        padding: 5px 25px;
+        width: 22%;
+        max-height: 200px;
+        max-width: 300px;
+    }
 }
 
 .challenge-index-title {
