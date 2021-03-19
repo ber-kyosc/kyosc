@@ -29,11 +29,11 @@
     <div class="container d-flex margin-bottom">
         <div class="row">
             <div class="container col-lg-6 col-12">
-                <label for="edit_profil_profilPhotoFile_file" class="form-group img-display profil-picture-border">
+                <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
                     {% if app.user.profilPhoto is not null%}
-                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo">
+                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer">
                     {% else %}
-                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
+                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
                     {% endif %}
                 </label>
             </div>
