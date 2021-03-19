@@ -10,11 +10,11 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1 class="mt-2">Inscription</h1>
+    </header>
     <div class="container top-20-vh">
         {{ form_start(registrationForm, {'attr': {'class': 'form-kyosc'} }) }}
-        <header class="arrow-header my-3 text-uppercase">
-            <h1 class="mt-2">Inscription</h1>
-        </header>
         <div class="row mt-4">
             <div class="form-group col-lg-4 col-md-6 col-sm-6 col-6">
                 {{ form_widget(registrationForm.firstName) }}
@@ -60,15 +60,13 @@
             {{ form_row(registrationForm.agreeTerms) }}
             {{ form_errors(registrationForm.agreeTerms) }}
         </div>
-        <div class="button-registration-login d-flex justify-content-end">
-            <div class="d-flex justify-content-end">
-                <a href="{{ path('app_login') }}" class="btn mr-2 align-self-center btn-register" type="submit">
-                    J'ai déjà un compte
-                </a>
-                <button class="btn ml-2 align-self-center btn-login" type="submit">
-                    S'inscrire
-                </button>
-            </div>
+        <div class="button-registration-login mt-3 d-flex justify-content-between">
+            <a href="{{ path('app_login') }}" class="btn mr-2 align-self-center btn-register" type="submit">
+                J'ai déjà un compte
+            </a>
+            <button class="btn ml-2 align-self-center btn-login" type="submit">
+                S'inscrire
+            </button>
         </div>
         {{ form_end(registrationForm) }}
     </div>

@@ -47,6 +47,21 @@ body {
     }
 }
 
+.transparent-background-light {
+    background-color: $transparent-light;
+    border-radius: 20px;
+}
+
+.transparent-background-dark {
+    background-color: $transparent-black;
+    border-radius: 20px;
+    color: $light;
+}
+
+.big-padding {
+    padding: 45px;
+}
+
 .challenge-index-title {
     flex: auto;
 
