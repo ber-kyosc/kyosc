@@ -18,22 +18,9 @@
 }
 
 .arrow-header {
-    background-color: black;
-
-    h1{
-        color: $light;
-    }
-
-    @extend .arrow;
-    text-align: center;
-
-    @include sm {
-        margin: 0 auto;
-        width: 90%;
-    }
-
-    @include lg {
-        max-width: 1000px;
-    }
+    background-color: $light;
+    border-radius: 10px;
+    margin: auto;
+    max-width: 350px;
 }
 

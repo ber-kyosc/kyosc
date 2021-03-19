@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="container min-vh-100">
-        <form method="post" class="form-kyosc">
+        <form method="post" class="form-kyosc top-20-vh">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
