@@ -40,12 +40,12 @@ class CookieConsentController extends BaseController
     /**
      * @var string
      */
-    protected $cookieConsentTheme;
+    protected $cookConsTheme = 'dark';
 
     /**
      * @var string
      */
-    protected $cookieConsentPosition;
+    protected $cookConsPosition = 'bottom';
 
     /**
      * @var TranslatorInterface
@@ -55,24 +55,24 @@ class CookieConsentController extends BaseController
     /**
      * @var bool
      */
-    protected $cookieConsentSimplified;
+    protected $cookConsSimplified = true;
 
     public function __construct(
         Environment $twigEnvironment,
         FormFactoryInterface $formFactory,
         CookieChecker $cookieChecker,
         TranslatorInterface $translator,
-        string $cookieConsentTheme = 'dark',
-        string $cookieConsentPosition = 'bottom',
-        bool $cookieConsentSimplified = true
+        bool $cookConsSimplified,
+        string $cookConsTheme,
+        string $cookConsPosition
     ) {
         $this->twigEnvironment         = $twigEnvironment;
         $this->formFactory             = $formFactory;
         $this->cookieChecker           = $cookieChecker;
-        $this->cookieConsentTheme      = $cookieConsentTheme;
-        $this->cookieConsentPosition   = $cookieConsentPosition;
+        $this->cookConsTheme      = $cookConsTheme;
+        $this->cookConsPosition   = $cookConsPosition;
         $this->translator              = $translator;
-        $this->cookieConsentSimplified = $cookieConsentSimplified;
+        $this->cookConsSimplified = $cookConsSimplified;
     }
 
     /**
@@ -87,9 +87,9 @@ class CookieConsentController extends BaseController
         return new Response(
             $this->twigEnvironment->render('@CHCookieConsent/cookie_consent.html.twig', [
                 'form'       => $this->createCookieConsentForm()->createView(),
-                'theme'      => $this->cookieConsentTheme,
-                'position'   => $this->cookieConsentPosition,
-                'simplified' => $this->cookieConsentSimplified,
+                'theme'      => $this->cookConsTheme,
+                'position'   => $this->cookConsPosition,
+                'simplified' => $this->cookConsSimplified,
             ])
         );
     }
@@ -118,11 +118,13 @@ class CookieConsentController extends BaseController
 
     /**
      * Set locale if available as GET parameter.
+     * @param Request $request
      */
-    protected function setLocale(Request $request)
+    protected function setLocale(Request $request): void
     {
         $locale = $request->get('locale');
         if (empty($locale) === false) {
+            /* @phpstan-ignore-next-line */
             $this->translator->setLocale($locale);
             $request->setLocale($locale);
         }

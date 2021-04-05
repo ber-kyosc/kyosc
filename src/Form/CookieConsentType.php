@@ -23,28 +23,28 @@ class CookieConsentType extends AbstractType
     /**
      * @var CookieChecker
      */
-    protected $cookieChecker;
+    protected CookieChecker $cookieChecker;
 
     /**
      * @var array
      */
-    protected $cookieCategories;
+    protected array $cookieCategories;
 
     /**
      * @var bool
      */
-    protected $cookieConsentSimplified;
+    protected bool $cookConsSimplified = false;
 
-    public function __construct(CookieChecker $cookieChecker, array $cookieCategories = [
+    public function __construct(CookieChecker $cookieChecker, bool $cookConsSimplified, array $cookieCategories = [
         'analytics',
         'tracking',
         'marketing',
         'social_media'
-    ], bool $cookieConsentSimplified = false)
+    ])
     {
         $this->cookieChecker           = $cookieChecker;
         $this->cookieCategories        = $cookieCategories;
-        $this->cookieConsentSimplified = $cookieConsentSimplified;
+        $this->cookConsSimplified = $cookConsSimplified;
     }
 
     /**
@@ -64,9 +64,27 @@ class CookieConsentType extends AbstractType
             ]);
         }
 
-        $builder->add('save', SubmitType::class, ['label' => 'ch_cookie_consent.save', 'attr' => ['class' => 'btn ch-cookie-consent__btn']]);
-        $builder->add('use_only_functional_cookies', SubmitType::class, ['label' => 'ch_cookie_consent.use_only_functional_cookies', 'attr' => ['class' => 'btn ch-cookie-consent__btn']]);
-        $builder->add('use_all_cookies', SubmitType::class, ['label' => 'ch_cookie_consent.use_all_cookies', 'attr' => ['class' => 'btn ch-cookie-consent__btn ch-cookie-consent__btn--secondary']]);
+        $builder->add(
+            'save',
+            SubmitType::class,
+            ['label' => 'ch_cookie_consent.save', 'attr' => [
+                'class' => 'btn ch-cookie-consent__btn'
+            ]]
+        );
+        $builder->add(
+            'use_only_functional_cookies',
+            SubmitType::class,
+            ['label' => 'ch_cookie_consent.use_only_functional_cookies', 'attr' => [
+                'class' => 'btn ch-cookie-consent__btn'
+            ]]
+        );
+        $builder->add(
+            'use_all_cookies',
+            SubmitType::class,
+            ['label' => 'ch_cookie_consent.use_all_cookies', 'attr' => [
+                'class' => 'btn ch-cookie-consent__btn ch-cookie-consent__btn--secondary'
+            ]]
+        );
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
