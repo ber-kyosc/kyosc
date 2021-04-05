@@ -1,25 +1,23 @@
 ch_cookie_consent:
     title: 'KYOSC et les Cookies'
-    intro: 'Nous utilisons les cookies afin de fournir les services et fonctionnalités proposés sur notre site et afin d’améliorer l’expérience de nos utilisateurs. Les cookies sont des données qui sont téléchargés ou stockés sur votre ordinateur ou sur tout autre appareil.
-            En cliquant sur ”J’accepte”, vous acceptez l’utilisation des cookies. Vous pourrez toujours les désactiver ultérieurement. Si vous supprimez ou désactivez nos cookies, vous pourriez rencontrer des interruptions ou des problèmes d’accès au site.
-            Les cookies « nécessaires », internes, permettent d’enregistrer des informations entre deux consultations d’un même site web sur un même appareil. Ils permettent d’enregistrer un panier d’achat, des identifiants de connexion ou encore des éléments de personnalisation de l’interface.'
+    intro: 'Nous utilisons des cookies sur ce site : certains cookies sont indispensables car utilisés à des fins de bon fonctionnement et de sécurité ; d’autres sont facultatifs. Ces cookies permettent notamment d’améliorer l’expérience de nos utilisateurs.'
     read_more: 'En savoir plus'
     analytics:
-        title: 'Souhaitez vous autoriser les Cookies techniques ?'
-        description: ''
+        title: 'Souhaitez vous autoriser les Cookies analytiques ?'
+        description: 'Ces cookies permettent de faire une analyse statistique de la fréquentation/utilisation du site et ainsi en améliorer les performances'
     tracking:
         title: 'Souhaitez vous autoriser les Cookies de traçage ?'
-        description: ''
+        description: 'Ces cookies permettent de suivre l’itinéraire d’un utilisateur sur ce site et entre différents sites'
     marketing:
         title: 'Souhaitez vous autoriser les Cookies publicitaires ?'
-        description: ''
+        description: 'Ces cookies permettent de vos proposer des publicités plus pertinentes et personnalisées'
     social_media:
         title: 'Souhaitez vous autoriser les Cookies liés aux réseaux sociaux ?'
-        description: 'Ppour vous permettre de partager du contenu sur Facebook et Twitter, nous déposons des cookies de Réseaux Sociaux qui ne deviennent opérationnels que lorsque vous les activez avec la fonction de partage.'
+        description: 'Ces cookies permettent de partager du contenu sur des réseaux sociaux comme Facebook et Twitter'
     no: 'Non'
     yes: 'Oui'
     save: 'Sauvegarder mes préférences'
     use_only_functional_cookies: 'Tout refuser'
     use_all_cookies: 'Tout autoriser'
-    show_details: 'Plus de détails'
+    show_details: 'Personnaliser mes choix'
     hide_details: 'Moins de details'
