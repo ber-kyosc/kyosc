@@ -1,2 +1,2 @@
-ch_cookie_consent:
-    resource: "@CHCookieConsentBundle/Resources/config/routing.yaml"
+#ch_cookie_consent:
+#    resource: "@CHCookieConsentBundle/Resources/config/routing.yaml"
