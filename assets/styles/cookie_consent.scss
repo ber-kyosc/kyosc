@@ -176,6 +176,10 @@
     display: none;
 }
 
+.ch-cookie-consent__toggle-details {
+    margin-left: auto;
+}
+
 .ch-cookie-consent__toggle-details-hide {
     display: none;
     cursor: pointer;
@@ -189,9 +193,13 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: start;
 
     @include md {
         flex-direction: row;
     }
+}
+
+.ch-cookie-consent__btn-wrapper {
+    margin: 5px 15px;
 }
