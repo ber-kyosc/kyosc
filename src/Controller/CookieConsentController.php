@@ -19,73 +19,75 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use ConnectHolland\CookieConsentBundle\Controller\CookieConsentController as BaseController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class CookieConsentController extends BaseController
 {
     /**
      * @var Environment
      */
-    protected $twigEnvironment;
+    protected Environment $twigEnvironment;
 
     /**
      * @var FormFactoryInterface
      */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
     /**
      * @var CookieChecker
      */
-    protected $cookieChecker;
+    protected CookieChecker $cookieChecker;
 
     /**
      * @var string
      */
-    protected $cookConsTheme = 'dark';
+    protected string $cookConsTheme = 'dark';
 
     /**
      * @var string
      */
-    protected $cookConsPosition = 'bottom';
+    protected string $cookConsPosition = 'bottom';
 
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     /**
      * @var bool
      */
-    protected $cookConsSimplified = true;
+    protected bool $cookConsSimplified = true;
 
     public function __construct(
         Environment $twigEnvironment,
         FormFactoryInterface $formFactory,
         CookieChecker $cookieChecker,
-        TranslatorInterface $translator,
-        bool $cookConsSimplified,
-        string $cookConsTheme,
-        string $cookConsPosition
+        TranslatorInterface $translator
     ) {
         $this->twigEnvironment         = $twigEnvironment;
         $this->formFactory             = $formFactory;
         $this->cookieChecker           = $cookieChecker;
-        $this->cookConsTheme      = $cookConsTheme;
-        $this->cookConsPosition   = $cookConsPosition;
         $this->translator              = $translator;
-        $this->cookConsSimplified = $cookConsSimplified;
     }
 
     /**
      * Show cookie consent.
      *
      * @Route("/cookie_consent", name="ch_cookie_consent.show")
+     * @param Request $request
+     * @return Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function show(Request $request): Response
     {
         $this->setLocale($request);
 
         return new Response(
-            $this->twigEnvironment->render('@CHCookieConsent/cookie_consent.html.twig', [
+            $this->twigEnvironment->render('bundles/CHCookieConsentBundle/cookie_consent.html.twig', [
                 'form'       => $this->createCookieConsentForm()->createView(),
                 'theme'      => $this->cookConsTheme,
                 'position'   => $this->cookConsPosition,
@@ -98,6 +100,11 @@ class CookieConsentController extends BaseController
      * Show cookie consent.
      *
      * @Route("/cookie_consent_alt", name="ch_cookie_consent.show_if_cookie_consent_not_set")
+     * @param Request $request
+     * @return Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function showIfCookieConsentNotSet(Request $request): Response
     {

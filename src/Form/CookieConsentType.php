@@ -30,12 +30,7 @@ class CookieConsentType extends AbstractType
      */
     protected array $cookieCategories;
 
-    /**
-     * @var bool
-     */
-    protected bool $cookConsSimplified = false;
-
-    public function __construct(CookieChecker $cookieChecker, bool $cookConsSimplified, array $cookieCategories = [
+    public function __construct(CookieChecker $cookieChecker, array $cookieCategories = [
         'analytics',
         'tracking',
         'marketing',
@@ -44,7 +39,6 @@ class CookieConsentType extends AbstractType
     {
         $this->cookieChecker           = $cookieChecker;
         $this->cookieCategories        = $cookieCategories;
-        $this->cookConsSimplified = $cookConsSimplified;
     }
 
     /**
