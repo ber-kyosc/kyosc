@@ -5,6 +5,7 @@
         "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "amphp/http-client": "^4.5",
         "composer/package-versions-deprecated": "^1.11",
         "connectholland/cookie-consent-bundle": "^0.9.6",
         "doctrine/annotations": "^1.0",

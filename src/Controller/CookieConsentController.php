@@ -136,4 +136,26 @@ class CookieConsentController extends BaseController
             $request->setLocale($locale);
         }
     }
+
+    /**
+     * @Route ("/cookies", name="about_cookies")
+     * @param Request $request
+     * @return Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function about(Request $request): Response
+    {
+        $this->setLocale($request);
+
+        return new Response(
+            $this->twigEnvironment->render('cookies/about_cookies.html.twig', [
+                'form'       => $this->createCookieConsentForm()->createView(),
+                'theme'      => $this->cookConsTheme,
+                'position'   => $this->cookConsPosition,
+                'simplified' => $this->cookConsSimplified,
+            ])
+        );
+    }
 }

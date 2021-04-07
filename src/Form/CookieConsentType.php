@@ -43,6 +43,8 @@ class CookieConsentType extends AbstractType
 
     /**
      * Build the cookie consent form.
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -62,7 +64,7 @@ class CookieConsentType extends AbstractType
             'use_all_cookies',
             SubmitType::class,
             ['label' => 'ch_cookie_consent.use_all_cookies', 'attr' => [
-                'class' => 'btn ch-cookie-consent__btn ch-cookie-consent__btn--secondary'
+                'class' => 'btn ch-cookie-consent__btn'
             ]]
         );
         $builder->add(
@@ -82,22 +84,25 @@ class CookieConsentType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
-
-            foreach ($this->cookieCategories as $category) {
-                $data[$category] = isset($data['use_all_cookies']) ? 'true' : 'false';
+            if (isset($data['use_all_cookies']) || isset($data['use_only_functional_cookies'])) {
+                $value = isset($data['use_all_cookies']) ? 'true' : 'false';
+                foreach ($this->cookieCategories as $category) {
+                    $data[$category] = $value;
+                }
+                $event->setData($data);
             }
-
-            $event->setData($data);
         });
     }
 
     /**
      * Default options.
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'translation_domain' => 'CHCookieConsentBundle',
+            'allow_extra_fields' => true,
         ]);
     }
 }
