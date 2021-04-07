@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // eslint-disable-next-line func-names
                 xhr.onload = function () {
                     if (xhr.status >= 200 && xhr.status < 300) {
-                        // cookieConsent.style.display = 'none';
+                        cookieConsent.style.display = 'none';
                         const buttonEvent = new CustomEvent('cookie-consent-form-submit-successful', {
                             detail: event.target,
                         });
