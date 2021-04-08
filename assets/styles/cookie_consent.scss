@@ -187,6 +187,8 @@
 
 .ch-cookie-consent__toggle-details-show {
     cursor: pointer;
+    //Remove the display none here to enable cookie individual preference save
+    display: none;
 }
 
 .ch-cookie-consent__btn-group{
