@@ -153,8 +153,6 @@ class CookieConsentController extends BaseController
             $this->twigEnvironment->render('cookies/about_cookies.html.twig', [
                 'form'       => $this->createCookieConsentForm()->createView(),
                 'theme'      => $this->cookConsTheme,
-                'position'   => $this->cookConsPosition,
-                'simplified' => $this->cookConsSimplified,
             ])
         );
     }
