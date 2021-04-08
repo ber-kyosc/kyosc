@@ -10,6 +10,7 @@
 @import 'carousel';
 @import 'footer';
 @import 'checkbox';
+@import 'cookie_consent';
 
 .cursor-pointer {
     cursor: pointer;
@@ -35,8 +36,30 @@ body {
 .logo-challenge {
     background-color: white;
     min-width: 200px;
-    padding: 5px;
+    padding: 5px 10px;
     width: 15%;
+
+    @include md {
+        padding: 5px 25px;
+        width: 22%;
+        max-height: 200px;
+        max-width: 300px;
+    }
+}
+
+.transparent-background-light {
+    background-color: $transparent-light;
+    border-radius: 20px;
+}
+
+.transparent-background-dark {
+    background-color: $transparent-black;
+    border-radius: 20px;
+    color: $light;
+}
+
+.big-padding {
+    padding: 45px;
 }
 
 .challenge-index-title {

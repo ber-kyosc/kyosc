@@ -8,6 +8,7 @@ use App\Entity\ChallengeSearch;
 use App\Entity\Sport;
 use App\Form\ChallengeSearchType;
 use App\Form\ChallengeType;
+use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,13 +66,18 @@ class ChallengeController extends AbstractController
      *     methods={"GET", "POST"}
      * )
      * @param SportRepository $sportRepository
+     * @param CategoryRepository $categoryRepository
      * @param Request $request
      * @return Response
      */
-    public function new(SportRepository $sportRepository, Request $request): Response
-    {
+    public function new(
+        SportRepository $sportRepository,
+        CategoryRepository $categoryRepository,
+        Request $request
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $sports = $sportRepository->findAll();
+        $categories = $categoryRepository->findAll();
         $challenge = new Challenge();
         $form = $this->createForm(ChallengeType::class, $challenge);
         $form->handleRequest($request);
@@ -93,7 +99,11 @@ class ChallengeController extends AbstractController
 
             return $this->redirectToRoute('challenge_index');
         }
-        return $this->render('challenge/new.html.twig', ['form' => $form->createView(), 'sports' => $sports]);
+        return $this->render('challenge/new.html.twig', [
+            'form' => $form->createView(),
+            'sports' => $sports,
+            'categories' => $categories
+            ]);
     }
 
     /**

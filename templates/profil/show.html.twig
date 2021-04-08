@@ -29,11 +29,11 @@
     <div class="container d-flex margin-bottom">
         <div class="row">
             <div class="container col-lg-6 col-12">
-                <label for="edit_profil_profilPhotoFile_file" class="form-group img-display profil-picture-border">
+                <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
                     {% if app.user.profilPhoto is not null%}
-                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo">
+                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer">
                     {% else %}
-                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
+                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
                     {% endif %}
                 </label>
             </div>
@@ -96,11 +96,11 @@
         </div>
     </div>
     <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
-        <h2 class="mt-5">{{ form_label(form.favoriteSports) }}</h2>
+        <h2 class="mt-5 arrow-header">{{ form_label(form.favoriteSports) }}</h2>
         <div class="form-check d-flex align-items-center pl-0 flex-row flex-wrap justify-content-center background-grey w-100">
             {% for category in categories %}
-                <div class="d-flex flex-column align-items-center w-100 mt-5">
-                    <h3 style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
+                <div class="d-flex flex-column align-items-center w-100 mt-2 mx-5 pt-2 transparent-background-dark">
+                    <h3 class="text-center" style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
                     <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
                         {% for sport in form.favoriteSports.children %}
                             {% if sport.vars.attr['category'].id == category.id %}

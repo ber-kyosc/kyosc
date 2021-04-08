@@ -8,7 +8,10 @@
 
 {% block body %}
     <div class="container min-vh-100">
-        <form method="post" class="form-kyosc">
+        <header class="arrow-header my-3 text-uppercase">
+            <h1 class="mt-2">Connexion</h1>
+        </header>
+        <form method="post" class="form-kyosc top-20-vh">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
@@ -17,10 +20,6 @@
                     Vous êtes connectés en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
                 </div>
             {% endif %}
-
-            <header class="arrow-header my-3 text-uppercase">
-                <h1 class="mt-2">Connexion</h1>
-            </header>
             <div class="form-group d-flex flex-column">
                 <div class="col-12 col-md-9 col-lg-8 align-self-center">
                     <label for="inputEmail"></label>
