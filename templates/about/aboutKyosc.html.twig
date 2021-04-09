@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title%}A propos de KYOSC{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <h1 class="arrow-header">A propos de KYOSC</h1>
+{% endblock %}
