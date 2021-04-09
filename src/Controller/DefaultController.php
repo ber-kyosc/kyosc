@@ -76,4 +76,12 @@ class DefaultController extends AbstractController
     {
         return $this->render('about/gamification.html.twig');
     }
+
+    /**
+     * @Route("/cgu", name="cgu")
+     */
+    public function cgu(): Response
+    {
+        return $this->render('about/cgu.html.twig');
+    }
 }
