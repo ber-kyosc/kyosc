@@ -44,4 +44,12 @@ class DefaultController extends AbstractController
             'imagesCarousel' => $imagesCarousel,
         ]);
     }
+
+    /**
+     * @Route("/a-propos", name="about_us")
+     */
+    public function aboutUs(): Response
+    {
+        return $this->render('default/aboutUs.html.twig');
+    }
 }
