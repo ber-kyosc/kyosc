@@ -1,0 +1,39 @@
+@import "variables";
+@import "breakpoint";
+
+.about-us-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include md {
+        flex-direction: row;
+    }
+}
+
+.dark-container {
+    background-color: $black;
+    padding: 2em;
+    text-align: center;
+    width: 100%;
+
+    hr {
+        background-color: $light;
+        height: 2px;
+        width: 75%;
+    }
+}
+
+.about-logo {
+    max-width: 500px;
+    width: 80%;
+}
+
+.about-picture {
+    border: solid 3px $light;
+    border-radius: 20px;
+    height: 90%;
+    max-height: 350px;
+    max-width: 300px;
+}
