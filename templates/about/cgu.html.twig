@@ -1,15 +1,89 @@
 {% extends 'base.html.twig' %}
 {% block title%}Mentions légales{% endblock %}
 
-{% block background %}
-    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
-{% endblock %}
-
 {% block body %}
-    <h1 class="arrow-header hide-before-scroll show-on-scroll">Mentions légales</h1>
-    <div class="dark-container hide-before-scroll show-on-scroll">
-        <p class="text-light about-text">Afin d'améliorer votre expérience d’utilisation de ce site, nous utilisons des cookies pour conserver les informations de connexion et fournir une connexion sûre, collecter les statistiques en vue d'optimiser les fonctionnalités du site et adapter le contenu à vos centres d'intérêt. Les données collectées peuvent également donner lieu à démarchage commercial, si vous ne vous êtes pas opposé à ces sollicitations.
-            Lors de la consultation de notre site internet, des informations relatives à votre navigation sont susceptibles d'être enregistrées dans des fichiers "Cookies" installés sur votre terminal (ordinateur, tablette, smartphone…), sous réserve de vos choix. Les informations ci-dessous vous permettent de mieux comprendre le fonctionnement des cookies et l'utilisation des outils actuels afin de les paramétrer.
+    <div class="dark-container">
+        <h1 class="arrow-header hide-before-scroll show-on-scroll mb-5">Mentions légales</h1>
+        <p class="text-light about-text hide-before-scroll show-on-scroll">
+            La plateforme KYOSC est un espace d’information, de collaboration, de partage et d’échanges dédié à une communauté de membres partageant des sujets et/ou des projets concernant le sport outdoor.
+            KYOSC est une plateforme collaborative à usage professionnel.
+            <br>
+            KYOSC a été développé à l’initiative de Bertrand Ollagnon et Jean-Christophe Simon, pour favoriser le travail en mode collaboratif entre l’équipe,les adhérents et les partenaires du cluster. Elle est un outil pour la définition, la conduite et la réalisation des projets des membres et facilite l’effet réseau entre les différentes communautés métiers de la filière de l’aménagement touristique en montagne.
+            <br>
+            Avant de vous inscrire comme membre, merci de consulter les conditions générales d’utilisation de KYOSC qui suivent :
+        </p>
+       <h2 class="text-light hide-before-scroll show-on-scroll">1. Accès au service</h2>
+        <p class="text-light about-text hide-before-scroll show-on-scroll">
+            Pour accéder au site et utiliser les services du réseau social, l’utilisateur doit créer un compte de «Membre » en suivant les étapes du formulaire d’inscription. Pour pouvoir s’inscrire et bénéficier des services de KYOSC, l’utilisateur doit lire et accepter les présentes conditions générales d’utilisation. Si le visiteur n'accepte pas les conditions d'utilisation du réseau social, il ne pourra pas l'utiliser. L’utilisateur est informé que la création d’un compte sur KYOSC constitue une collecte de données personnelles et accepte cette collecte. Si l’utilisateur s’oppose à la collecte de données personnelles, il ne doit pas créer de compte.
+            <br>
+            1.1. Modification des présentes conditions générales d’utilisation
+            Les présentes conditions d’utilisation peuvent être modifiées à tout moment. L’utilisateur sera prévenu de ces modifications, au préalable. Si l'utilisateur continue d'utiliser KYOSC après modification des conditions d'utilisation, cela signifie qu'il est en en accord avec les modifications apportées sur ces conditions.
+            <hr>
+        </p>
+        <h2 class="text-light hide-before-scroll show-on-scroll">2. Membres de KYOSC</h2>
+        <p class="text-light about-text hide-before-scroll show-on-scroll">
+            Les utilisateurs de KYOSC sont des « membres » invités ou inscrits à leur demande.
+            La plateforme KYOSC et ses contenus ne sont pas directement accessibles aux internautes, via les moteurs de recherche.
+            Pour tirer le meilleur parti des outils et fonctionnalités proposés par KYOSC, l’utilisateur est invité à créer son compte membre en respectant les étapes d’inscription.
+            <br>
+            2.1. Inscription ou création d’un compte "membre"
+            Lors de la phase d’inscription, l’utilisateur fournit les informations qui apparaîtront sur son profil. Une fois le formulaire d’inscription complété, l’utilisateur dispose d’une fiche "membre" (ou "profil"). Sa fiche est consultable tout ou partie par les autres membres de KYOSC.
+            <br>
+            2.2. Responsabilité
+            L'auteur d'un message est seul responsable des propos qu'il tient.
+            En cas de non respect des dispositions de cette charte de bonne conduite et des lois et réglementations en vigueur en France, l'auteur s'expose, au delà de la suppression de son message, aux sanctions civiles ou pénales prévues.
+            <br>
+            2.3. Informatique et libertés
+            Conformément aux dispositions de la loi "Informatique et Libertés" du 6 janvier 1978, les auteurs disposent d'un droit d'accès, de modification, de rectification et de suppression des données qui les concernent.
+            <br>
+            2.4. Protection des données personnelles
+            Un cookie dit "persistant" est installé sur votre poste suite à votre inscription sur KYOSC. Ce cookie sert à accéder automatiquement à votre espace et à publier des articles sur KYOSC sans vous reconnecter lors de votre navigation sur internet. Le cookie est conservé dans votre navigateur, et peut-être supprimé. Les cookies sont également utilisés à des fins statistiques et de sécurité.
+            <br>
+            2.5. Suppression du compte Membre
+            L'utilisateur peut supprimer son compte à tout moment. La suppression de son compte entraînera la suppression de l'ensemble des données personnelles liées au compte de l'utilisateur. Les contenus générés par l'utilisateur (référencement d’une fiche projet, création d'un groupe) sont susceptibles de rester visibles sur KYOSC. La référence à son auteur sera en revanche invisible.
+            <hr>
+        </p>
+        <h2 class="text-light hide-before-scroll show-on-scroll">3. Règles de fonctionnement général</h2>
+        <p class="text-light about-text hide-before-scroll show-on-scroll">
+            Cette plateforme de discussion offre un espace avec des modules fonctionnels de collaboration par projets ou thématiques d’intérêt.
+            En se connectant à KYOSC chaque utilisateur s'engage à respecter les règles déontologiques de la plateforme collaborative :
+            • Ne pas effectuer d'opérations pouvant nuire au bon fonctionnement de la plateforme.
+            • Exercer une vigilance toute particulière dans l'utilisation des éléments qui sont mis à sa disposition et observer toutes les précautions d'usage.
+            • Ne pas diffuser de contenus, de messages ou de liens internet à caractère raciste ou diffamatoire, grossier ou injurieux, agressif ou violent, discriminatoire.
+            • Ne pas publier, ni diffuser des informations contraires aux droits d’auteurs ou droits voisins, au droit applicable aux bases de données, au droit à l’image ou au droit au respect de la vie privée, qui enfreindraient toute autre disposition législative ou réglementaire
+            en vigueur.
+            • Seuls les membres adhérents, les partenaires et l’équipe opérationnelle du Cluster Montagne sont autorisés à communiquer des informations via la plateforme.
+            • Ne pas diffuser des numéros de téléphone ou des adresses e-mail non publiques sans l'autorisation des personnes ou sociétés concernées.
+            • Respecter les règles de droits d’accès et d’usage qui différent selon le statut attribué à chaque membre (administrateurs, rédacteur, membre, visiteur,…) par les administrateurs de la plateforme et les fondateurs-administrateurs des groupes collaboratifs.
+            Les utilisateurs qui ne respecteraient pas les présentes règles sont susceptibles de voir leur compte membre supprimé par les administrateurs de KYOSC.
+            <hr>
+        </p>
+        <h2 class="text-light hide-before-scroll show-on-scroll">4. Règles d’usage spécifiques aux groupes collaboratifs</h2>
+        <p class="text-light about-text hide-before-scroll show-on-scroll">
+            KYOSC est un espace qui permet l’ouverture de groupes d’intérêt ou thématiques ou de projet. Les groupes peuvent être publics (visibles par l’ensemble des membres de la plateforme) ou privés (visibles et réservés nominativement à plusieurs membres invités). L’ouverture des groupes collaboratifs doit répondre à des besoins et des usages partagés par plusieurs membres.
+            Ouverte à l’ensemble des membres de KYOSC, l’accessibilité des groupes collaboratifs publics sera sans condition, si ce n’est l’intérêt personnel de chaque membre par la thématique et sa volonté de partager de l’information, de communiquer sur le sujet, de capitaliser les échanges, d’apporter une plus-value personnelle.
+            Accessibles etvisibles aux seuls membres invités, qui constituent une équipe projet existante ou en création, les groupes collaboratif privatifs auront pour principal objectif de faciliter le travail d’équipes projet ou d’acteurs métiers en vue d’améliorer l’avancement des travaux (rapidité d’accès et gestion de l’information, mise en relation directe des membres d’une équipe, coproduction et/ou échanges de documents, …).
+            <br>
+            4.1. Création des groupes collaboratifs
+            Chaque membre inscrit sur la plateforme KYOSC a la possibilité de contribuer aux échanges au sein des groupes publics constitués en respectant les règles de fonctionnement générales (art.4).
+            La création d’un groupe collaboratif implique de le faire vivre et d’animer les échanges entreles membres qui le composent. C’est la fonction principale des fondateurs et administrateurs des groupes. La valeur ajoutée et l’intérêt de la plateforme résident principalement dans l’usage que les membres en font.
+            A ce titre, le fondateur d’un nouveau groupe s’engage à :
+            • Créer un groupe qui n’existe pas déjà au sein de KYOSC et qui répond aux besoins partagés par les membres,
+            • Publier des articles et documents sur les thèmes du groupe,
+            • Assurer l’animation du groupe avec la contribution des membres « administrateurs » de son choix,
+            • Contribuer au respect des conditions générales d’utilisation de KYOSC par les membres du groupe,
+            • Accepter d’être sollicité par l’équipe de KYOSC, entre autre pour l’évaluation des usages.
+            <br>
+            4.2. Publication de contenus, images, documents
+            Le membre de KYOSC a la possibilité de publier des contenus écrits, des documents, ainsi que des images pour illustrer les différentes fiches (profil, structure, projet). Le membre atteste disposer de l'ensemble des droits sur les contenus et documents publiés. Les éditeurs de KYOSC ne sauraient être tenus responsable de l'hébergement de documents publiés par un utilisateur non titulaire des droits ou sans consentement du ou des auteurs. Toute requête en cas de contenu ou document publié sur la plateforme sans l’autorisation de son auteur doit être envoyée aux administrateurs de KYOSC et sera immédiatement traitée par l’équipe d’animation du réseau.
+            La confidentialité des informations diffusées sur la plateforme peut être garantie par la création de groupes collaboratifs privés (réservés à un nombre limité de membres), ainsi que par le respect des clauses de confidentialités et de diffusion propre à chaque document, note…
+            <hr>
+        </p>
+        <h2 class="text-light hide-before-scroll show-on-scroll">5. Informations complémentaires</h2>
+        <p class="text-light about-text hide-before-scroll show-on-scroll">
+            Pour garantir le respect de ces règles, KYOSC a mis en place un système de modération des contenus abusifs et se réserve le droit de ne pas publier et de supprimer sans préavis tout propos contraire à ces recommandations et exigences.
+            Par ailleurs, pour rendre le site agréable à consulter, nous vous serions reconnaissants de rédiger des messages lisibles et compréhensibles par tous, donc sans abréviation, sans langage de type SMS et en soignant votre orthographe. En cas de difficulté de compréhension d'un message, nous serons dans l'obligation de le refuser.
+            La qualité de ce réseau dépend de la qualité des communications, des échanges d’information, des conversations et des collaborations en ligne entre les membres.
         </p>
         <hr>
     </div>
