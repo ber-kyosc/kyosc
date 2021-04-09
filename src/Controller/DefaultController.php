@@ -52,4 +52,28 @@ class DefaultController extends AbstractController
     {
         return $this->render('default/aboutUs.html.twig');
     }
+
+    /**
+     * @Route("/kyosc", name="about_kyosc")
+     */
+    public function aboutKyosc(): Response
+    {
+        return $this->render('default/aboutUs.html.twig');
+    }
+
+    /**
+     * @Route("/aide-challenge", name="challenge_help")
+     */
+    public function aboutChallenge(): Response
+    {
+        return $this->render('default/aboutUs.html.twig');
+    }
+
+    /**
+     * @Route("/experience", name="gamification")
+     */
+    public function aboutExperience(): Response
+    {
+        return $this->render('default/aboutUs.html.twig');
+    }
 }
