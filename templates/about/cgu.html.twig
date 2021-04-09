@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
-{% block title%}A propos de KYOSC{% endblock %}
+{% block title%}Mentions légales{% endblock %}
 
 {% block background %}
     class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
 {% endblock %}
 
 {% block body %}
-    <h1 class="arrow-header hide-before-scroll show-on-scroll">A propos de KYOSC</h1>
+    <h1 class="arrow-header hide-before-scroll show-on-scroll">Mentions légales</h1>
     <div class="dark-container hide-before-scroll show-on-scroll">
-        <img src="{{ asset(defaultLogo) }}" alt="Logo KYOSC" class="mb-5 about-logo hide-before-scroll show-on-scroll">
         <p class="text-light about-text">Afin d'améliorer votre expérience d’utilisation de ce site, nous utilisons des cookies pour conserver les informations de connexion et fournir une connexion sûre, collecter les statistiques en vue d'optimiser les fonctionnalités du site et adapter le contenu à vos centres d'intérêt. Les données collectées peuvent également donner lieu à démarchage commercial, si vous ne vous êtes pas opposé à ces sollicitations.
             Lors de la consultation de notre site internet, des informations relatives à votre navigation sont susceptibles d'être enregistrées dans des fichiers "Cookies" installés sur votre terminal (ordinateur, tablette, smartphone…), sous réserve de vos choix. Les informations ci-dessous vous permettent de mieux comprendre le fonctionnement des cookies et l'utilisation des outils actuels afin de les paramétrer.
         </p>

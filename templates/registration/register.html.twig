@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-background">
+            <div class="transparent-background-dark p-2">
                 <span> Votre mot de passe doit contenir au minimum 8 caractères, à savoir : au moins une lettre minuscule, une lettre majuscule et un chiffre. </span>
             </div>
             <div class="form-group col-lg-4 col-md-6 col-sm-6">
@@ -58,6 +58,7 @@
         </div>
         <div class="form-group form-group-cgu">
             {{ form_row(registrationForm.agreeTerms) }}
+            <div><a href="{{ path('cgu') }}" class="cgu-link transparent-background-dark p-2">Voir les mentions légales</a></div>
             {{ form_errors(registrationForm.agreeTerms) }}
         </div>
         <div class="button-registration-login mt-3 d-flex justify-content-between">
