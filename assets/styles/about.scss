@@ -15,7 +15,6 @@
 .dark-container {
     background-color: $black;
     padding: 2em;
-    text-align: center;
     width: 100%;
 
     hr {
@@ -36,4 +35,17 @@
     height: 90%;
     max-height: 350px;
     max-width: 300px;
+}
+
+.cgu-text {
+    text-align: justify;
+
+    p, ul {
+        margin: auto;
+        width: 70%;
+    }
+
+    h1, h2, h3 {
+        text-align: center;
+    }
 }
