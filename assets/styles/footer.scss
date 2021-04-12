@@ -1,5 +1,4 @@
 @import 'variables';
-@import '~bootstrap/scss/bootstrap';
 @import 'breakpoint';
 
 .footer {
@@ -46,7 +45,7 @@
     }
 }
 
-.dropdown-container {
+.dropdown-flag-container {
     margin: auto 40% 10px auto;
 
     @include md {
@@ -63,4 +62,16 @@
 
 .flag-choice-dropdown {
     background-color: $drawer-menu;
+}
+
+.flag-hide {
+    display: none;
+}
+
+.flag-show {
+    display: block;
+}
+
+.footer-flag-dropdown {
+    cursor: pointer;
 }
