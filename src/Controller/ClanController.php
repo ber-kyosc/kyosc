@@ -33,6 +33,7 @@ class ClanController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $clan = new Clan();
         $form = $this->createForm(ClanType::class, $clan);
         $form->handleRequest($request);
