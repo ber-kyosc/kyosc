@@ -98,7 +98,10 @@ class EditProfilType extends AbstractType
                         ->orderBy('s.name', 'ASC');
                 },
                 'choice_attr' => function ($sport) {
-                    return ['data-img' => $sport->getGoutte()];
+                    return [
+                        'data-img' => $sport->getGoutte(),
+                        'category' => $sport->getCategory(),
+                    ];
                 }
             ])
             ->add('favoriteBrands', EntityType::class, [

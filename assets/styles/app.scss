@@ -8,6 +8,9 @@
 @import "errors";
 @import 'form';
 @import 'carousel';
+@import 'footer';
+@import 'checkbox';
+@import 'cookie_consent';
 
 .cursor-pointer {
     cursor: pointer;
@@ -19,13 +22,52 @@ h1, h2 {
 }
 
 body {
-    background: linear-gradient($light, $light 50%, theme-color-level('arrowBackground') 50%, theme-color-level('arrowBackground')) no-repeat;
-    min-height: 200vh;
+    font-family: $font-text;
+    display: flex;
+    flex-direction: column;
+    min-height: 190vh;
 }
 
 .logo {
     height: auto;
     width: 60px;
+}
+
+.logo-challenge {
+    background-color: white;
+    min-width: 200px;
+    padding: 5px 10px;
+    width: 15%;
+
+    @include md {
+        padding: 5px 25px;
+        width: 22%;
+        max-height: 200px;
+        max-width: 300px;
+    }
+}
+
+.transparent-background-light {
+    background-color: $transparent-light;
+    border-radius: 20px;
+}
+
+.transparent-background-dark {
+    background-color: $transparent-black;
+    border-radius: 20px;
+    color: $light;
+}
+
+.big-padding {
+    padding: 45px;
+}
+
+.challenge-index-title {
+    flex: auto;
+
+    @include md {
+        font-size: 3em;
+    }
 }
 
 .fit-content {
@@ -34,23 +76,30 @@ body {
 
 .arrow-background {
     background-color: theme-color-level('arrowBackground');
-    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
+    clip-path: polygon(50% 0, 100% 10%, 100% 100%, 50% 90%, 0 100%, 0 10%);
     height: 100%;
     position: absolute;
     top: 90%;
-    width: 100vw;
+    width: 100%;
     z-index: -1000;
 }
 
-.img-picto {
-    background-color: $light;
-    border: 3px solid;
+.white-circle-img-goutte {
+    background-color: #fff;
     border-radius: 50%;
-    height: auto;
-    left: 7px;
+    height: 32px;
+    left: 14px;
     padding: 5px;
     position: absolute;
-    top: 10px;
+    top: 24px;
+    width: 28px;
+}
+
+.img-goutte-index {
+    height: auto;
+    left: 7px;
+    position: absolute;
+    top: 5px;
     width: 40px;
 }
 
@@ -104,8 +153,14 @@ body {
     border-radius: 50%;
 }
 
+.biography-text {
+    font-size: 1.4em;
+}
+
 .background-grey {
     background-color: theme-color-level('grey');
+    margin-bottom: -25px;
+    margin-top: 25px;
 }
 
 .avatar-testimony {
@@ -127,7 +182,7 @@ body {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 10vh;
+    top: 18vh;
     z-index: 500;
 }
 
@@ -136,8 +191,15 @@ body {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 5vh;
+    top: 24vh;
     z-index: 500;
+    animation: hide 1s linear 3s 1 forwards;
+}
+
+@keyframes hide {
+    to {
+        opacity: 0;
+    }
 }
 
 .close-picto {
@@ -147,4 +209,17 @@ body {
     &:hover {
         transform: scale(1.4);
     }
+}
+
+.hide-before-scroll {
+    opacity: 0;
+    transform: translateY(6em);
+    transition: transform 1s .25s,
+    opacity .3s .25s ease-out;
+    will-change: transform, opacity;
+}
+
+.is-visible {
+    opacity: 1;
+    transform: translateY(0em);
 }

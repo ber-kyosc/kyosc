@@ -18,23 +18,31 @@
 
 {% block body %}
     {% include 'challenge/_filterChallenge.html.twig' %}
-    {% if sport %}
-        <header class="arrow-header text-center text-uppercase my-4" style="background-color: {{ sport.color }};">
-            <h2>
+    {% if sportColor and sport %}
+        <header class="d-flex align-items-center text-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};">
+            <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
+            <h2 class="challenge-index-title">
                 les prochains challenges
                 <span class="text-white">{{ sport.name }}</span>
             </h2>
         </header>
     {% else %}
-        <header class="arrow-header text-uppercase my-4 bg-dark text-white">
-            <h2>Tous les challenges</h2>
+        <header {% if sportColor %} class="d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
+                {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
+                {% endif %}>
+            <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
+            <h2 class="challenge-index-title">Tous les challenges
+                {% if category %}
+                    "{{ category.name }}"
+                {% endif %}
+            </h2>
         </header>
     {% endif %}
 
     <main class="container-fluid">
         <div class="row justify-content-center">
             {% for challenge in pagination %}
-                {% set sportPicto = challenge.sports|length>1 ? multiSportPicto : challenge.sports|length==1 ? "/uploads/picto/"~challenge.sports['0'].picto : defaultLogo %}
+                {% set sportGoutte = challenge.sports|length>1 ? multiSportGoutte : challenge.sports|length==1 ? "/uploads/goutte/"~challenge.sports['0'].goutte : defaultLogo %}
                 {% set sportColor = challenge.sports|length>1 ? multiSportColor : challenge.sports|length==1 ? challenge.sports['0'].color : '#FFF' %}
                 <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative">
                     <a class="card text-decoration-none text-dark h-100 no-bg-border"
@@ -48,10 +56,8 @@
                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
                                      alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                             {% endif %}
-                            <img
-                                    class="img-picto"
-                                    style="border-color:  {{ sportColor }};"
-                                    src={{ asset(sportPicto) }}>
+                            <div class="white-circle-img-goutte"></div>
+                            <img class="img-goutte-index" src={{ asset(sportGoutte) }}>
                         </div>
                         <div class="card-body p-2">
                             <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title }}</h3>

@@ -6,24 +6,54 @@
     <div class="home-menu">
         <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
         <h1 class="text-uppercase">À vous de créer <br><span class="second-color-title">votre propre aventure sportive</span></h1>
-        <p>Selon vos envies, vos coups de coeur ou vos affects</p>
-        {% if app.user %}
-            <a class="home-button dark-button" href="{{ path("profil_show") }}">Mon Espace</a>
-            <a class="home-button dark-button" href="{{ path("app_logout") }}">Déconnexion</a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
-        {% endif %}
-        <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Lancer mon challenge</a>
-    </div>
-    <div class="desktop-options">
-        <a href="#">FAQ</a>
-        <a href="mailto:contact@kyosc.com">Nous contacter</a>
-        <a href="#"><img src="{{ asset('build/images/flag/flagFR.png') }}" alt="Drapeau français" class="country-flag"></a>
+        <div class="d-flex flex-column align-items-center home-button-wrapper">
+            {% if app.user %}
+                <div class="d-flex home-profil-button">
+                    <a class="home-button dark-button" href="{{ path("profil_my_profil") }}">Mon Espace</a>
+                    <a class="home-button dark-button d-flex align-items-center justify-content-center" href="{{ path("app_logout") }}">Déconnexion</a>
+                </div>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
+            {% endif %}
+            <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Créer mon challenge</a>
+        </div>
     </div>
     <div class="main-carousel-home-page">
         {{ include('component/_home_main_carousel.html.twig') }}
     </div>
-    <section class="home-section home-challenges align-items-center">
+    <section class="home-banner" style="background: url('{{ asset('build/images/background/bgimg1.jpeg') }}') no-repeat center; background-size: cover;">
+        <p class="hide-before-scroll show-on-scroll">En recherche de défis sportifs pour vous ou votre groupe d'amis ?
+            <br>KYOSC est la plateforme qu'il vous faut pour vous challenger dans une ambiance conviviale !
+            <br>Alors n'attendez plus, et lancez vous dans l'aventure !
+        </p>
+    </section>
+    <section class="home-choice-container">
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Connaitre KYOSC</h2>
+            <img src="{{ asset('build/images/picto/ketoile.png') }}" class="home-choice-picto">
+            <a href="#">En savoir plus</a>
+            <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
+        </div>
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Parcourir KYOSC</h2>
+            <img src="{{ asset('build/images/picto/komplice.png') }}" class="home-choice-picto">
+            <a href="#">En savoir plus</a>
+            <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
+        </div>
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Créer un challenge</h2>
+            <img src="{{ asset('build/images/picto/kequipe.png') }}" class="home-choice-picto">
+            <a href="#">En savoir plus</a>
+            <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
+        </div>
+        <div class="home-choice hide-before-scroll show-on-scroll">
+            <h2>Gagner de l'experience</h2>
+            <img src="{{ asset('build/images/picto/kblason.png') }}" class="home-choice-picto">
+            <a href="#">En savoir plus</a>
+            <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
+        </div>
+    </section>
+    <section class="home-section home-challenges align-items-center hide-before-scroll show-on-scroll">
         {% if topChallenge %}
         <div class="homeTopSelection home-cartouche">
             <figure>
@@ -42,12 +72,12 @@
                         <p class="card-text text-center">"{{ topChallenge.quotation }}"</p>
                     </div>
                 </a>
-                <figcaption class="home-figcaption text-one">À LA UNE</figcaption>
+                <figcaption class="home-figcaption text-selection">À LA UNE</figcaption>
             </figure>
         </div>
         {% endif %}
         {% if featuredChallenges %}
-        <div class="homeSelection home-cartouche">
+        <div class="homeSelection home-cartouche hide-before-scroll show-on-scroll">
             <figure>
                 <div class="container-fluid">
                     <div class="row justify-content-center">
@@ -74,21 +104,27 @@
             </figure>
         </div>
         {% endif %}
-        <div class="all-projects home-cartouche">
+        <div class="all-projects home-cartouche show-on-scroll hide-before-scroll">
             <span id="all-projects">TOUS LES CHALLENGES</span>
             <a href="{{ path("challenge_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/universKyosc.png') }}"></a>
             <a href="{{ path("challenge_index") }}" class="button-discover btn-lg">Je découvre</a>
         </div>
     </section>
-    <section class="home-section testimonials">
-        <h6 class="text-uppercase"><img class="w-25" src="{{ asset('build/images/picto/klaurier.png') }}"> Témoignages <img class="w-25" src="{{ asset('build/images/picto/klaurier.png') }}"></h6>
+    <section class="home-section testimonials hide-before-scroll show-on-scroll">
+        <h6 class="text-uppercase d-flex justify-content-center align-items-center">
+            <img class="w-25 mx-4" src="{{ asset('build/images/picto/kampagne.png') }}">
+            Témoignages
+            <img class="w-25 mx-4" src="{{ asset('build/images/picto/kaquatique.png') }}">
+        </h6>
         <div class="d-flex flex-column align-items-center">
             {% for user in usersTestimonials %}
+                <a href="{{ path("profil_show", {id: user.id}) }}" class="w-25 text-center">
                 {% if user.profilPhoto is not null%}
-                    <img src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ user.profilPhoto }}" class="profil-photo w-25 avatar-testimony">
+                    <img src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ user.profilPhoto }}" class="avatar-testimony">
                 {% else %}
-                    <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="w-25 avatar-testimony">
+                    <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                 {% endif %}
+                </a>
                 <p class="testimonial">
                     <strong>
                         {% if user.pseudo is not null %}

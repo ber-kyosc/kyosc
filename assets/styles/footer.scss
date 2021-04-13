@@ -1,0 +1,66 @@
+@import 'variables';
+@import '~bootstrap/scss/bootstrap';
+@import 'breakpoint';
+
+.footer {
+    align-items: center;
+    background-color: $drawer-menu;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    justify-content: center;
+    margin-top: auto;
+    padding: 20px;
+    width: 100%;
+
+    @include md {
+        max-height: 200px;
+    }
+
+    a {
+        color: $light;
+        margin-bottom: 10px;
+
+        &:hover {
+            text-decoration: none;
+            transform: scale(1.2);
+        }
+    }
+
+    hr {
+        background-color: white;
+        height: 2px;
+        width: 35%;
+    }
+}
+
+.footer-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+    @include md {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+}
+
+.dropdown-container {
+    margin: auto 40% 10px auto;
+
+    @include md {
+        margin: auto 10% 10px auto;
+    }
+}
+
+.flag-logo {
+    border-radius: 15%;
+    height: 24px;
+    margin-right: 10px;
+    width: 36px;
+}
+
+.flag-choice-dropdown {
+    background-color: $drawer-menu;
+}

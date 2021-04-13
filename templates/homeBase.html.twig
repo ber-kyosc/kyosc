@@ -11,18 +11,20 @@
     </head>
 
     <body class="home-body">
-    {% if app.user and not app.user.isVerified %}
-        {{ include('component/_email-verified.html.twig') }}
-    {% endif %}
-    {% for category, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ category }} email-flash-popup">
-                {{ message }}
-            </div>
+        {% if app.user and not app.user.isVerified %}
+            {{ include('component/_email-verified.html.twig') }}
+        {% endif %}
+        {{ render_esi(path('ch_cookie_consent.show_if_cookie_consent_not_set', { 'locale' : 'fr' })) }}
+        {% for category, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ category }} email-flash-popup">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
         {% block body %}{% endblock %}
-        <div class="arrow-background"></div>
+        <div class="arrow-background" style="top: 150%"></div>
+        {{ include('component/_footer.html.twig') }}
         {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}
     </body>
