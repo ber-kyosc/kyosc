@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Clan;
 use App\Form\ClanType;
 use App\Repository\ClanRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,8 @@ class ClanController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -36,8 +39,19 @@ class ClanController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $clan->setCreatedAt(new DateTime());
+            $clan->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $clan->setCreator($this->getUser());
+            /* @phpstan-ignore-next-line */
+            $clan->addMember($this->getUser());
             $entityManager->persist($clan);
             $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre clan a bien été créé !"
+            );
 
             return $this->redirectToRoute('clan_index');
         }

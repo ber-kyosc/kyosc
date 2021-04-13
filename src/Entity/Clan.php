@@ -3,9 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ClanRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ClanRepository::class)
@@ -21,6 +26,9 @@ class Clan
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez choisir un nom pour votre clan")
+     * @Assert\Length(max="255", min="2", minMessage="Veuillez choisir un nom faisant plus de 2 caractères",
+     * maxMessage="Un maximum de 255 caractères est autorisé")
      */
     private string $name;
 
@@ -35,9 +43,47 @@ class Clan
     private ?string $logo = null;
 
     /**
+     * @Vich\UploadableField(mapping="clan_logo", fileNameProperty="logo")
+     * @var File|null
+     * @Assert\Image(
+     *     uploadErrorMessage="Une erreur est survenue lors du téléchargement.",
+     *     maxSize="10000000",
+     *     maxSizeMessage="Votre image est trop grande. Veuillez selectionner une image de moins de 10Mo.",
+     *     detectCorrupted=true,
+     *     sizeNotDetectedMessage= true,
+     *     mimeTypes = {
+     *          "image/png",
+     *          "image/jpeg",
+     *          "image/jpg",
+     *      },
+     *     mimeTypesMessage="Seuls les formats png, jpeg, jpg sont acceptés."
+     * )
+     */
+    private ?File $logoFile;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $banner = null;
+
+    /**
+     * @Vich\UploadableField(mapping="clan_banner", fileNameProperty="banner")
+     * @var File|null
+     * @Assert\Image(
+     *     uploadErrorMessage="Une erreur est survenue lors du téléchargement.",
+     *     maxSize="20000000",
+     *     maxSizeMessage="Votre image est trop grande. Veuillez selectionner une image de moins de 20Mo.",
+     *     detectCorrupted=true,
+     *     sizeNotDetectedMessage= true,
+     *     mimeTypes = {
+     *          "image/png",
+     *          "image/jpeg",
+     *          "image/jpg",
+     *      },
+     *     mimeTypesMessage="Seuls les formats png, jpeg, jpg sont acceptés."
+     * )
+     */
+    private ?File $bannerFile;
 
     /**
      * @ORM\Column(type="text")
@@ -48,6 +94,21 @@ class Clan
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="createdClans")
      */
     private ?User $creator;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private ?\DateTimeInterface $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private ?\DateTimeInterface $updatedAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private ?bool $isPublic;
 
     public function __construct()
     {
@@ -119,6 +180,44 @@ class Clan
         return $this;
     }
 
+    /**
+     * @param File|UploadedFile|null $image
+     * @param File|null $image
+     * @return $this
+     */
+    public function setBannerFile(File $image = null): Clan
+    {
+        $this->bannerFile = $image;
+        if (null !== $image) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+        return $this;
+    }
+
+    public function getBannerFile(): ?File
+    {
+        return $this->bannerFile;
+    }
+
+    /**
+     * @param File|UploadedFile|null $image
+     * @param File|null $image
+     * @return $this
+     */
+    public function setLogoFile(File $image = null): Clan
+    {
+        $this->logoFile = $image;
+        if (null !== $image) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+        return $this;
+    }
+
+    public function getLogoFile(): ?File
+    {
+        return $this->logoFile;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -139,6 +238,42 @@ class Clan
     public function setCreator(?User $creator): self
     {
         $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getIsPublic(): ?bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): self
+    {
+        $this->isPublic = $isPublic;
 
         return $this;
     }
