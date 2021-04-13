@@ -47,7 +47,7 @@ class ClanType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Dites-en plus sur votre challenge !',
+                    'placeholder' => 'Décrivez votre clan',
                     'rows' => 5],
             ])
             ->add('isPublic', CheckboxType::class, [

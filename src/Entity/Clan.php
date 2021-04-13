@@ -14,6 +14,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ClanRepository::class)
+ * @Vich\Uploadable
  */
 class Clan
 {
