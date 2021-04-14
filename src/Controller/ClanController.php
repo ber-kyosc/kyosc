@@ -6,10 +6,12 @@ use App\Entity\Clan;
 use App\Form\ClanType;
 use App\Repository\ClanRepository;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/clan", name="clan_")
@@ -74,15 +76,32 @@ class ClanController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route(
+     *     "/{id}/edition",
+     *     name="edit",
+     *     methods={"GET", "POST", "PUT"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param Clan $clan
+     * @return Response
      */
     public function edit(Request $request, Clan $clan): Response
     {
+        if (!($this->getUser() == $clan->getCreator())) {
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un clan peut le modifier.');
+        }
+
         $form = $this->createForm(ClanType::class, $clan);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash(
+                'success',
+                "Les informations sur votre clan ont bien été modifiées!"
+            );
 
             return $this->redirectToRoute('clan_index');
         }
@@ -95,13 +114,23 @@ class ClanController extends AbstractController
 
     /**
      * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Clan $clan
+     * @return Response
      */
-    public function delete(Request $request, Clan $clan): Response
+    public function delete(Request $request, EntityManagerInterface $entityManager, Clan $clan): Response
     {
+        if (!($this->getUser() == $clan->getCreator())) {
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un clan peut le supprimer.');
+        }
         if ($this->isCsrfTokenValid('delete' . $clan->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($clan);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "Votre clan a bien été supprimé."
+            );
         }
 
         return $this->redirectToRoute('clan_index');
