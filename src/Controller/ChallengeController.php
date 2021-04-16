@@ -329,7 +329,7 @@ class ChallengeController extends AbstractController
                 "Les informations sur votre challenge ont bien été modifiées!"
             );
 
-            return $this->redirectToRoute('profil_show');
+            return $this->redirectToRoute('profil_my_profil');
         }
 
         return $this->render('challenge/edit.html.twig', [
@@ -363,7 +363,7 @@ class ChallengeController extends AbstractController
                 "Votre challenge a bien été supprimé."
             );
         }
-        return $this->redirectToRoute("profil_show");
+        return $this->redirectToRoute("profil_my_profil");
     }
 
     /**
