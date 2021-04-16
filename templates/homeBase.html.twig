@@ -25,6 +25,8 @@
         {% block body %}{% endblock %}
         <div class="arrow-background" style="top: 150%"></div>
         {{ include('component/_footer.html.twig') }}
+        {{ encore_entry_script_tags('cookies') }}
+        {{ encore_entry_script_tags('cookie_consent') }}
         {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}
     </body>
