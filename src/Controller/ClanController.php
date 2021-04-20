@@ -20,6 +20,8 @@ class ClanController extends AbstractController
 {
     /**
      * @Route("/", name="index", methods={"GET"})
+     * @param ClanRepository $clanRepository
+     * @return Response
      */
     public function index(ClanRepository $clanRepository): Response
     {

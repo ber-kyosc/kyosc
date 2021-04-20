@@ -1,41 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Clan index{% endblock %}
+{% block title %}Tous les clans{% endblock %}
 
 {% block body %}
-    <h1>Clan index</h1>
+    <h1>Tous les clans</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Logo</th>
-                <th>Banner</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for clan in clans %}
-            <tr>
-                <td>{{ clan.id }}</td>
-                <td>{{ clan.name }}</td>
-                <td>{{ clan.logo }}</td>
-                <td>{{ clan.banner }}</td>
-                <td>{{ clan.description }}</td>
-                <td>
-                    <a href="{{ path('clan_show', {'id': clan.id}) }}">show</a>
-                    <a href="{{ path('clan_edit', {'id': clan.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('clan_new') }}">Create new</a>
+    <main class="container-fluid">
+        <div class="row justify-content-center">
+            {% for clan in clans %}
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative">
+                    <a class="card text-decoration-none text-dark h-100 no-bg-border"
+                       href="{{ path("clan_show", {id: clan.id}) }}">
+                        <div class="position-relative">
+                            {% if clan.banner is not null %}
+                                <img src="{{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
+                                     alt="photo du clan" class="w-100 challenge-photo-container">
+                            {% else %}
+                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                     alt="photo par défaut du clan" class="w-100 challenge-photo-container">
+                            {% endif %}
+                            <img class="img-goutte-index w-25 profil-photo" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
+                        </div>
+                        <div class="card-body p-2">
+                            <h3 class="card-title h6 text-center text-uppercase">{{ clan.name }}</h3>
+                            <p class="card-text">"{{ clan.description }}"</p>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <p>Il n'existe pas de clan actuellement.</p>
+            {% endfor %}
+        </div>
+    </main>
+    <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
 {% endblock %}
