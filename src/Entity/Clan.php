@@ -60,7 +60,7 @@ class Clan
      *     mimeTypesMessage="Seuls les formats png, jpeg, jpg sont acceptés."
      * )
      */
-    private ?File $logoFile;
+    private $logoFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -84,7 +84,7 @@ class Clan
      *     mimeTypesMessage="Seuls les formats png, jpeg, jpg sont acceptés."
      * )
      */
-    private ?File $bannerFile;
+    private $bannerFile;
 
     /**
      * @ORM\Column(type="text")

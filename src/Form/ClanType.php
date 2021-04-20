@@ -52,7 +52,7 @@ class ClanType extends AbstractType
             ])
             ->add('isPublic', CheckboxType::class, [
                 'help' => 'Visibilité de votre clan',
-                'label' => 'Public',
+                'label' => 'Ouvert',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ]);
