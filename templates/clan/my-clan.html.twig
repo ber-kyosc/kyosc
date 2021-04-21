@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clan #{{ clan.id }}{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background:
+    {% if clan.banner is not null %}
+        url('{{ vich_uploader_asset(clan, 'bannerFile')}}')
+    {% else %}
+        url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}')
+    {% endif %} no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1>{{ clan.name }}</h1>
+        <p class="m-0">Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }} par {{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</p>
+    </header>
+    <section class="container px-5 my-2 my-md-5">
+        <div class="row justify-content-center justify-content-md-around">
+            <div class="col-lg-6 text-center my-3">
+                {% if clan.logo is not null%}
+                    <img src="{{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb')}}" alt="logo du clan" class="profil-photo">
+                {% endif %}
+            </div>
+            <div class="col-lg-6 transparent-background-dark p-3">
+                <h2 class="challenge-quotation mb-4">Description du clan</h2>
+                <p class="challenge-description">{{ clan.description }}</p>
+            </div>
+        </div>
+    </section>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2 class="h5 text-uppercase text-center mb-4">{{ clan.members|length}} membre{{ clan.members|length>1?'s':''}}</h2>
+        <div class=" container d-flex justify-content-center">
+            {% for member in clan.members %}
+                <div class="d-flex flex-column align-items-center m-4">
+                    <a href="{{ path("profil_show", {id: member.id}) }}">
+                        {% if member.profilPhoto is not null %}
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile') }}" alt="photo de profil du membre du clan">
+                        {% else %}
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="photo de profil par défaut">
+                        {% endif %}
+                    </a>
+                    <p>{{ member.pseudo? member.pseudo : member.firstname ~' '~ member.lastname}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

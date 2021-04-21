@@ -46,6 +46,14 @@
             {% endif %}
         {% endif %}
 
+        {% if app.user and app.user in clan.members or app.user == clan.creator %}
+            <div class="form-kyosc">
+                <a class="btn text-uppercase btn-login"
+                   href="{{ path("clan_my-clan", {id: clan.id}) }}"
+                >Entrer dans l'espace privé</a>
+            </div>
+        {% endif %}
+
         {% if app.user and app.user == clan.creator %}
             <div class="form-kyosc">
                 <a class="btn text-uppercase btn-profil"

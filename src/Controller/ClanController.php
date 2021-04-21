@@ -261,4 +261,20 @@ class ClanController extends AbstractController
             'id' => $clan->getId(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/mon-clan", name="my-clan", methods={"GET"})
+     */
+    public function myClan(Clan $clan): Response
+    {
+        if (!($this->getUser() == $clan->getCreator())) {
+            throw new AccessDeniedException('Seul un membre du clan "'
+                . $clan->getName()
+                . '" peut acceder à cet espace');
+        }
+
+        return $this->render('clan/my-clan.html.twig', [
+            'clan' => $clan,
+        ]);
+    }
 }

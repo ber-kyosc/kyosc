@@ -28,7 +28,7 @@ class ClanType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Choisir un logo',
                 ],
-                'help' => 'Illustrer votre clan en sélectionnant un logo',
+                'help' => 'Illustrez votre clan en sélectionnant un logo',
                 'allow_delete'  => true, // not mandatory, default is true
                 'download_uri' => true, // not mandatory, default is true
                 'asset_helper' => true,
@@ -39,7 +39,7 @@ class ClanType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Choisir une image',
                 ],
-                'help' => 'Illustrer votre clan en sélectionnant une image',
+                'help' => 'Illustrez votre clan en sélectionnant une image',
                 'allow_delete'  => true, // not mandatory, default is true
                 'download_uri' => true, // not mandatory, default is true
                 'asset_helper' => true,
