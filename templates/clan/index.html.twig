@@ -12,7 +12,7 @@
     <main class="container-fluid">
         <div class="row justify-content-center">
             {% for clan in clans %}
-                <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative index-card-max-width">
                     <a class="card text-decoration-none text-dark no-bg-border"
                        href="{{ path("clan_show", {id: clan.id}) }}">
                         <div class="position-relative">
