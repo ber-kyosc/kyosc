@@ -10,6 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -136,5 +139,126 @@ class ClanController extends AbstractController
         }
 
         return $this->redirectToRoute('clan_index');
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/rejoindre",
+     *     name="join",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param ClanRepository $clanRepository
+     * @return Response
+     */
+    public function join(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ClanRepository $clanRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $clanId = $request->request->get('clanId');
+        $submittedToken = $request->request->get('token');
+        if (
+            $this->isCsrfTokenValid('clan-join', $submittedToken) &&
+            filter_var($clanId, FILTER_VALIDATE_INT)
+        ) {
+            $clan = $clanRepository->find($clanId);
+            if ($clan && $user) {
+                /* @phpstan-ignore-next-line */
+                $clan->addMember($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('clan_show', [
+                    'id' => $clanId,
+                ]);
+            }
+        }
+        return $this->redirectToRoute('clan_index');
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/quitter",
+     *     name="leave",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param ClanRepository $clanRepository
+     * @return Response
+     */
+    public function leave(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ClanRepository $clanRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $clanId = $request->request->get('clanId');
+        $submittedToken = $request->request->get('token');
+        if (
+            $this->isCsrfTokenValid('clan-leave', $submittedToken) &&
+            filter_var($clanId, FILTER_VALIDATE_INT)
+        ) {
+            $clan = $clanRepository->find($clanId);
+            if ($clan && $user) {
+                /* @phpstan-ignore-next-line */
+                $clan->removeMember($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('clan_show', [
+                    'id' => $clanId,
+                ]);
+            }
+        }
+        return $this->redirectToRoute('clan_index');
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/invitation",
+     *     name="invite",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @param Clan $clan
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function invite(Request $request, MailerInterface $mailer, Clan $clan): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $emailAddress = $request->request->get('email');
+        $submittedToken = $request->request->get('token');
+        if (
+            $this->isCsrfTokenValid('clan-invite', $submittedToken) &&
+            filter_var($emailAddress, FILTER_VALIDATE_EMAIL)
+        ) {
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to($emailAddress)
+                ->subject('Invitation à rejoindre un clan Kyosc')
+                ->html(
+                    $this->renderView(
+                        'email/clan-invitation.html.twig',
+                        ['clan' => $clan, 'user' => $this->getUser()]
+                    )
+                );
+            $mailer->send($email);
+            $this->addFlash(
+                'success',
+                'Votre invitation a bien été envoyée à l\'adresse suivante ' . $emailAddress . '.'
+            );
+        } else {
+            $this->addFlash('danger', 'L\'adresse email ' . $emailAddress . ' est invalide.');
+        }
+        return $this->redirectToRoute('clan_show', [
+            'id' => $clan->getId(),
+        ]);
     }
 }
