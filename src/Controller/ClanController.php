@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Clan;
+use App\Entity\Message;
+use App\Entity\User;
 use App\Form\ClanType;
+use App\Form\MessageType;
 use App\Repository\ClanRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,10 +76,27 @@ class ClanController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
-    public function show(Clan $clan): Response
+    public function show(Clan $clan, Request $request): Response
     {
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $message->setClan($clan);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $message->setCreatedAt(new DateTime());
+            $message->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $message->setAuthor($this->getUser());
+            $message->setIsPublic(true);
+            $entityManager->persist($message);
+            $entityManager->flush();
+        }
         return $this->render('clan/show.html.twig', [
             'clan' => $clan,
+            'form' => $form->createView(),
         ]);
     }
 
