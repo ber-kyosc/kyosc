@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,12 +14,12 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('isPublic')
-            ->add('author')
-            ->add('clan')
+            ->add('content', TextareaType::class, [
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Entrez votre message',
+                    'rows' => 5],
+            ])
         ;
     }
 
