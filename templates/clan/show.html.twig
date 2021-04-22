@@ -121,4 +121,31 @@
             {% endfor %}
         </div>
     </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Commentaires</h2>
+        {% if clan.messages|length >= 1 %}
+            {% for message in clan.messages|reverse %}
+                {% if message.isPublic %}
+                <div>
+                    <h4>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                    <span class="h6">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
+                    <p>{{ message.content }}</p>
+                    {% if app.user %}
+                        {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
+                            {{ include('message/_delete_form.html.twig') }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Ce clan n'a pas encore de commentaire</p>
+        {% endif %}
+        {% if app.user %}
+            <h3>Ajoutez un commentaire !</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
 {% endblock %}

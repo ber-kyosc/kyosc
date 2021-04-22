@@ -74,7 +74,7 @@ class ClanController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET","POST"})
      */
     public function show(Clan $clan, Request $request): Response
     {
@@ -82,7 +82,8 @@ class ClanController extends AbstractController
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        /* @phpstan-ignore-next-line */
+        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
             $entityManager = $this->getDoctrine()->getManager();
             $message->setClan($clan);
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');

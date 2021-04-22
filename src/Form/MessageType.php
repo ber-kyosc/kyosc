@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,6 +20,9 @@ class MessageType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Entrez votre message',
                     'rows' => 5],
+            ])
+            ->add('save-message', SubmitType::class, [
+                'label' => 'Enregistrer'
             ])
         ;
     }

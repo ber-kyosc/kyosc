@@ -83,12 +83,17 @@ class MessageController extends AbstractController
      */
     public function delete(Request $request, Message $message): Response
     {
+        /* @phpstan-ignore-next-line */
+        $clanId = $message->getClan()->getId();
+
         if ($this->isCsrfTokenValid('delete' . $message->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($message);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('message_index');
+        return $this->redirectToRoute('clan_show', [
+            'id' => $clanId
+        ]);
     }
 }
