@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Clan #{{ clan.id }}{% endblock %}
+{% block title %}Mon clan #{{ clan.id }}{% endblock %}
 
 {% block background %}
     class="background-profile" style="background:
@@ -29,6 +29,34 @@
             </div>
         </div>
     </section>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Messages</h2>
+        <p>Les messages laissés ici ne peuvent être vus que par les membres du clan</p>
+        {% if clan.messages|length >= 1 %}
+            {% for message in clan.messages|reverse %}
+                {% if message.isPublic == false %}
+                    <div>
+                        <h4>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                        <span class="h6">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
+                        <p>{{ message.content }}</p>
+                        {% if app.user %}
+                            {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
+                                {{ include('message/_delete_form.html.twig') }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Ce clan n'a pas encore de commentaire privé</p>
+        {% endif %}
+        {% if app.user %}
+            <h3>Ajoutez un commentaire !</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2 class="h5 text-uppercase text-center mb-4">{{ clan.members|length}} membre{{ clan.members|length>1?'s':''}}</h2>
         <div class=" container d-flex justify-content-center">

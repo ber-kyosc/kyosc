@@ -102,6 +102,41 @@ class ClanController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/mon-clan", name="my-clan", methods={"GET","POST"})
+     */
+    public function myClan(Clan $clan, Request $request): Response
+    {
+        if (!($this->getUser() == $clan->getCreator())) {
+            throw new AccessDeniedException('Seul un membre du clan "'
+                . $clan->getName()
+                . '" peut acceder à cet espace');
+        }
+
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        /* @phpstan-ignore-next-line */
+        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $message->setClan($clan);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $message->setCreatedAt(new DateTime());
+            $message->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $message->setAuthor($this->getUser());
+            $message->setIsPublic(false);
+            $entityManager->persist($message);
+            $entityManager->flush();
+        }
+
+        return $this->render('clan/my-clan.html.twig', [
+            'clan' => $clan,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route(
      *     "/{id}/edition",
      *     name="edit",
@@ -280,22 +315,6 @@ class ClanController extends AbstractController
         }
         return $this->redirectToRoute('clan_show', [
             'id' => $clan->getId(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/mon-clan", name="my-clan", methods={"GET"})
-     */
-    public function myClan(Clan $clan): Response
-    {
-        if (!($this->getUser() == $clan->getCreator())) {
-            throw new AccessDeniedException('Seul un membre du clan "'
-                . $clan->getName()
-                . '" peut acceder à cet espace');
-        }
-
-        return $this->render('clan/my-clan.html.twig', [
-            'clan' => $clan,
         ]);
     }
 }
