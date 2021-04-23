@@ -9,6 +9,9 @@
         <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
         <h1 class="challenge-index-title">Tous les clans</h1>
     </header>
+    <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+        <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+    </div>
     <main class="container-fluid">
         <div class="row justify-content-center">
             {% for clan in clans %}
@@ -61,5 +64,7 @@
             {% endfor %}
         </div>
     </main>
-    <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+    <div class="form-kyosc d-flex align-items-center justify-content-center mt-4">
+        <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+    </div>
 {% endblock %}
