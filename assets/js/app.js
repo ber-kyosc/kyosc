@@ -4,8 +4,6 @@ import './pagination';
 import './footer-flag';
 import './popup';
 import './show-on-scroll';
-import './cookies';
-import './cookie_consent';
 
 const $ = require('jquery');
 require('bootstrap');

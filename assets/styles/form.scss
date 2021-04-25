@@ -36,6 +36,7 @@
 
     .btn-login {
         background-color: theme-color-level('kgreen');
+        cursor: pointer;
         font-family: $title;
         font-size: $font-size-btn;
         height: fit-content;
@@ -46,6 +47,7 @@
     }
 
     .btn-participation {
+        cursor: pointer;
         font-family: $title;
         font-size: $font-size-btn;
 
@@ -56,6 +58,7 @@
 
     .btn-register {
         background-color: theme-color-level('korange');
+        cursor: pointer;
         font-family: $title;
         font-size: $font-size-btn;
 
@@ -66,6 +69,7 @@
 
     .btn-delete {
         background-color: theme-color-level('kdelete');
+        cursor: pointer;
         font-family: $title;
         font-size: $font-size-btn;
 
@@ -76,6 +80,7 @@
 
     .btn-profil {
         background-color: theme-color-level('kblue-typo');
+        cursor: pointer;
         font-family: $title;
         font-size: $font-size-btn;
         color: white!important;
