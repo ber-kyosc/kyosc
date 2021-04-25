@@ -45,6 +45,15 @@
   }
 }
 
+.journey-link-dark {
+    cursor: pointer;
+    color: $black;
+
+    &:hover {
+        color: $black;
+    }
+}
+
 .title-info-event {
     h3 {
         text-align: center;

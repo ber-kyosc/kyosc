@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifiez votre clan{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1 class="mt-2">Modifiez votre clan</h1>
+    </header>
+    {{ include('clan/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    {{ include('clan/_delete_form.html.twig') }}
+{% endblock %}

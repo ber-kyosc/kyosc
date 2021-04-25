@@ -310,9 +310,11 @@ class ChallengeController extends AbstractController
      *     requirements={"id"="^\d+$"},
      * )
      * @param Challenge $challenge
+     * @param CategoryRepository $categoryRepository
+     * @param Request $request
      * @return Response
      */
-    public function edit(Challenge $challenge, Request $request): Response
+    public function edit(Challenge $challenge, CategoryRepository $categoryRepository, Request $request): Response
     {
         if (!($this->getUser() == $challenge->getCreator())) {
             throw new AccessDeniedException('Seul le créateur.la créatrice d\'un challenge peut le modifier.');
@@ -320,6 +322,8 @@ class ChallengeController extends AbstractController
 
         $form = $this->createForm(ChallengeType::class, $challenge);
         $form->handleRequest($request);
+
+        $categories = $categoryRepository->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
@@ -335,6 +339,7 @@ class ChallengeController extends AbstractController
         return $this->render('challenge/edit.html.twig', [
             'form' => $form->createView(),
             'challenge' => $challenge,
+            'categories' => $categories,
         ]);
     }
 

@@ -183,12 +183,30 @@ class User implements UserInterface, Serializable
      */
     private ?string $brandSuggestion;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Clan::class, mappedBy="members")
+     */
+    private Collection $clans;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Clan::class, mappedBy="creator")
+     */
+    private Collection $createdClans;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
+     */
+    private Collection $messages;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
         $this->favoriteSports = new ArrayCollection();
         $this->updatedAt = new DateTimeImmutable('now');
         $this->favoriteBrands = new ArrayCollection();
+        $this->clans = new ArrayCollection();
+        $this->createdClans = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function __toString()
@@ -643,6 +661,93 @@ class User implements UserInterface, Serializable
     public function setBrandSuggestion(?string $brandSuggestion): self
     {
         $this->brandSuggestion = $brandSuggestion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Clan[]
+     */
+    public function getClans(): Collection
+    {
+        return $this->clans;
+    }
+
+    public function addClan(Clan $clan): self
+    {
+        if (!$this->clans->contains($clan)) {
+            $this->clans[] = $clan;
+            $clan->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClan(Clan $clan): self
+    {
+        if ($this->clans->removeElement($clan)) {
+            $clan->removeMember($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Clan[]
+     */
+    public function getCreatedClans(): Collection
+    {
+        return $this->createdClans;
+    }
+
+    public function addCreatedClan(Clan $createdClan): self
+    {
+        if (!$this->createdClans->contains($createdClan)) {
+            $this->createdClans[] = $createdClan;
+            $createdClan->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedClan(Clan $createdClan): self
+    {
+        if ($this->createdClans->removeElement($createdClan)) {
+            // set the owning side to null (unless already changed)
+            if ($createdClan->getCreator() === $this) {
+                $createdClan->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getAuthor() === $this) {
+                $message->setAuthor(null);
+            }
+        }
 
         return $this;
     }

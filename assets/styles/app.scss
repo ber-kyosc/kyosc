@@ -11,6 +11,8 @@
 @import 'footer';
 @import 'checkbox';
 @import 'cookie_consent';
+@import 'clan';
+@import 'message';
 
 .cursor-pointer {
     cursor: pointer;
@@ -222,4 +224,16 @@ body {
 .is-visible {
     opacity: 1;
     transform: translateY(0em);
+}
+
+.close-picto {
+    cursor: pointer;
+}
+
+.index-card-max-width {
+    max-width: 400px;
+}
+
+.profil-container {
+    max-width: 90vw;
 }

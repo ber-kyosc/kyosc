@@ -14,7 +14,7 @@
             <h1>{{ user.firstName}} {{ user.lastName}}</h1>
         {% endif %}
         {% if app.user.profilPhoto is not null%}
-            <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo mt-4">
+            <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo mt-4">
         {% else %}
             <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="mt-4">
         {% endif %}
