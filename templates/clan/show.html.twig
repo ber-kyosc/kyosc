@@ -123,26 +123,36 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Commentaires</h2>
-        {% if clan.messages|length >= 1 %}
-            {% for message in clan.messages|reverse %}
-                {% if message.isPublic %}
-                <div>
-                    <h4>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
-                    <span class="h6">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
-                    <p>{{ message.content }}</p>
-                    {% if app.user %}
-                        {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
-                            {{ include('message/_delete_form.html.twig') }}
-                        {% endif %}
+        <div class="d-flex flex-column w-100">
+            {% if clan.messages|length >= 1 %}
+                {% for message in clan.messages|reverse %}
+                    {% if message.isPublic %}
+                        <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
+                            <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
+                                <p>{{ message.content }}</p>
+                                {% if app.user %}
+                                    {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
+                                        {{ include('message/_delete_form.html.twig') }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <h4 class="mt-4"><a href="{{ path("profil_show", {id: message.author.id}) }}" class="w-25 text-center">
+                                    {% if message.author.profilPhoto is not null%}
+                                        <img src="{{ vich_uploader_asset(message.author, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ message.author.profilPhoto }}" class="avatar-testimony">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
+                                    {% endif %}
+                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                            <span class="message-date">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
+                        </div>
                     {% endif %}
-                </div>
-                {% endif %}
-            {% endfor %}
+                {% endfor %}
         {% else %}
             <p>Ce clan n'a pas encore de commentaire</p>
         {% endif %}
+        </div>
         {% if app.user %}
-            <h3>Ajoutez un commentaire !</h3>
+            <h3 class="mt-3">Ajoutez un commentaire !</h3>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}

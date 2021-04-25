@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ClanType;
 use App\Form\MessageType;
 use App\Repository\ClanRepository;
+use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -106,7 +107,13 @@ class ClanController extends AbstractController
      */
     public function myClan(Clan $clan, Request $request): Response
     {
-        if (!($this->getUser() == $clan->getCreator())) {
+        $membersId = [];
+        foreach ($clan->getMembers() as $member) {
+            $membersId[] = $member->getId();
+        }
+
+        /* @phpstan-ignore-next-line */
+        if (!($this->getUser() == $clan->getCreator() || in_array($this->getUser()->getId(), $membersId))) {
             throw new AccessDeniedException('Seul un membre du clan "'
                 . $clan->getName()
                 . '" peut acceder à cet espace');

@@ -17,12 +17,14 @@ class MessageType extends AbstractType
         $builder
             ->add('content', TextareaType::class, [
                 'required' => true,
+                'label' => false,
                 'attr' => [
                     'placeholder' => 'Entrez votre message',
-                    'rows' => 5],
+                    'rows' => 5,
+                    'autocomplete' => 'off'],
             ])
             ->add('save-message', SubmitType::class, [
-                'label' => 'Enregistrer'
+                'label' => 'Envoyer'
             ])
         ;
     }
