@@ -22,7 +22,11 @@
             {% if user.biography %}
                 <p class="biography-text">"{{ user.biography }}"</p>
             {% else %}
-                <p>L'organisateur.trice du challenge n'a pas encore renseigné de biographie.</p>
+                <p>{% if user.pseudo %}
+                        {{ user.pseudo }}
+                    {% else %}
+                        {{ user.firstName}} {{ user.lastName}}
+                    {% endif %} n'a pas encore renseigné de biographie.</p>
             {% endif %}
         </div>
     </div>
@@ -45,7 +49,7 @@
     </div>
     <div class="container">
         <div class="container margin">
-            <h2 class="mb-4"> Les challenges de
+            <h2 class="mb-4"> Les aventures de
                 {% if user.pseudo %}
                     {{ user.pseudo }}
                 {% else %}

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title%}FAQ{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <h1 class="arrow-header">Foire aux questions</h1>
+{% endblock %}

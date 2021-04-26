@@ -236,7 +236,7 @@ input[type="checkbox"].demo2 + label::before {
     border: 2px solid $light;
     border-radius: 20%;
     color: transparent;
-    content:'X';
+    content:'✓';
     cursor: pointer;
     font-weight: bold;
     padding: 2px 6px;
@@ -246,5 +246,14 @@ input[type="checkbox"].demo2 + label::before {
 input[type="checkbox"].demo2:checked + label::before {
     cursor: pointer;
     color: $light;
-    content:'X';
+    content:'✓';
+}
+
+.cgu-link {
+    color: $light;
+}
+
+.cgu-link:hover {
+    text-decoration: none;
+    transform: scale(1.2);
 }

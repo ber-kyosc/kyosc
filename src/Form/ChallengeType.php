@@ -46,7 +46,7 @@ class ChallengeType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Choisir une image',
                 ],
-                'help' => 'Illustrer votre challenge en sélectionnant une photo',
+                'help' => 'Illustrer votre aventure en sélectionnant une photo',
                 'allow_delete'  => true, // not mandatory, default is true
                 'download_uri' => true, // not mandatory, default is true
                 'asset_helper' => true,
@@ -54,12 +54,12 @@ class ChallengeType extends AbstractType
             ->add('title', TextType::class, [
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Titre du challenge'
+                    'placeholder' => 'Titre de l\'aventure'
                 ]
             ])
             ->add('quotation', TextType::class, [
                 'required' => true,
-                'help' => 'Incitez les gens à participer à votre challenge en partageant une citation !',
+                'help' => 'Incitez les gens à participer à votre aventure en partageant une citation !',
                 'label' => 'Citation Qualifiante',
                 'attr' => [
                     'placeholder' => 'Citation qualifiante',
@@ -67,7 +67,7 @@ class ChallengeType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Dites-en plus sur votre challenge !',
+                    'placeholder' => 'Dites-en plus sur votre aventure !',
                     'rows' => 5],
             ])
             ->add('location', TextType::class, [
@@ -87,12 +87,12 @@ class ChallengeType extends AbstractType
                 'html5'  => false,
                 'format' => 'dd-MM-yyyy',
                 'attr' => [
-                    'placeholder' => 'Date du challenge'],
+                    'placeholder' => 'Date de l\'aventure'],
             ])
             ->add('journey', TextareaType::class, [
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Parcours et grandes étapes de votre challenge',
+                    'placeholder' => 'Parcours et grandes étapes de votre aventure',
                     'rows' => 5],
             ])
             ->add('distance', NumberType::class, [
@@ -109,8 +109,8 @@ class ChallengeType extends AbstractType
                     'rows' => 3],
             ])
             ->add('isPublic', CheckboxType::class, [
-                'help' => 'Visibilité de votre challenge',
-                'label' => 'Public',
+                'help' => 'possibilité de rejoindre votre aventure',
+                'label' => 'ouvert à tous',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ]);

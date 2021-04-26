@@ -11,6 +11,7 @@
 @import 'footer';
 @import 'checkbox';
 @import 'cookie_consent';
+@import 'about';
 @import 'clan';
 @import 'message';
 
@@ -28,6 +29,22 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 190vh;
+}
+
+.text-korange {
+    color: theme-color-level('korange');
+}
+
+.text-kred {
+    color: theme-color-level('kred');
+}
+
+.text-kgreen {
+    color: theme-color-level('kgreen');
+}
+
+.text-kblue {
+    color: theme-color-level('kblue');
 }
 
 .logo {
@@ -58,6 +75,11 @@ body {
     background-color: $transparent-black;
     border-radius: 20px;
     color: $light;
+}
+
+.transparent-background-round-darker {
+    background-color: $transparent-dark;
+    border-radius: 50px;
 }
 
 .big-padding {

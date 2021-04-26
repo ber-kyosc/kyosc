@@ -1,20 +1,21 @@
 <footer class="footer">
     <div class="footer-container footer-upper">
-        <a href="#">A propos de KYOSC</a>
-        <a href="#">FAQ</a>
+        <a href="{{ path('about_us') }}">A propos de KYOSC</a>
+        <a href="{{ path('faq') }}">FAQ</a>
         <a href="mailto:contact@kyosc.com">Nous contacter</a>
     </div>
     <hr>
     <div class="footer-container footer-lower">
-        <a href="#">Mentions légales</a>
+        <a href="{{ path('cgu') }}">Mentions légales</a>
+        <a href="{{ path('about_cookies') }}">Cookies</a>
     </div>
-    <div class="dropup show dropdown-container">
-        <a class="dropdown-toggle" href="#" role="button" id="footerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Langues
-        </a>
-        <div class="dropdown-menu flag-choice-dropdown" aria-labelledby="footerDropdown">
-            <a class="dropdown-item" href="#"><img src="{{ asset('build/images/flag/flagFR.png') }}" class="flag-logo">Fr</a>
-            <a class="dropdown-item" href="#"><img src="{{ asset('build/images/flag/flagEN.png') }}" class="flag-logo">En</a>
-        </div>
-    </div>
+{#    <div class="dropdown-flag-container">#}
+{#        <a class="footer-flag-dropdown">#}
+{#            Langues △#}
+{#        </a>#}
+{#        <div class="flag-choice-dropdown flag-hide">#}
+{#            <a class="dropdown-item" href="#"><img src="{{ asset('build/images/flag/flagFR.png') }}" class="flag-logo">Fr</a>#}
+{#            <a class="dropdown-item" href="#"><img src="{{ asset('build/images/flag/flagEN.png') }}" class="flag-logo">En</a>#}
+{#        </div>#}
+{#    </div>#}
 </footer>

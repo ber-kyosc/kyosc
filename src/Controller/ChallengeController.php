@@ -108,7 +108,7 @@ class ChallengeController extends AbstractController
 
     /**
      * @Route(
-     *     "/category/{name}",
+     *     "/categorie/{name}",
      *     name="by_category",
      *     methods={"GET"},
      *     requirements={"name"="^[a-z-]+$"},
