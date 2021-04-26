@@ -50,7 +50,8 @@ class DefaultController extends AbstractController
      */
     public function aboutUs(): Response
     {
-        return $this->render('about/aboutUs.html.twig');
+//        return $this->render('about/aboutUs.html.twig');
+        return $this->render('about/workInProgress.html.twig');
     }
 
     /**
@@ -58,7 +59,8 @@ class DefaultController extends AbstractController
      */
     public function aboutKyosc(): Response
     {
-        return $this->render('about/aboutKyosc.html.twig');
+//        return $this->render('about/aboutKyosc.html.twig');
+        return $this->render('about/workInProgress.html.twig');
     }
 
     /**
@@ -66,7 +68,8 @@ class DefaultController extends AbstractController
      */
     public function aboutChallenge(): Response
     {
-        return $this->render('about/aboutChallenge.html.twig');
+//        return $this->render('about/aboutChallenge.html.twig');
+        return $this->render('about/workInProgress.html.twig');
     }
 
     /**
@@ -74,7 +77,8 @@ class DefaultController extends AbstractController
      */
     public function aboutExperience(): Response
     {
-        return $this->render('about/gamification.html.twig');
+//        return $this->render('about/gamification.html.twig');
+        return $this->render('about/workInProgress.html.twig');
     }
 
     /**
@@ -90,6 +94,7 @@ class DefaultController extends AbstractController
      */
     public function faq(): Response
     {
-        return $this->render('about/faq.html.twig');
+//        return $this->render('about/faq.html.twig');
+        return $this->render('about/workInProgress.html.twig');
     }
 }
