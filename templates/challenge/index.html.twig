@@ -2,9 +2,9 @@
 
 {% block title %}
     {% if sport %}
-        {{ sport.name | capitalize }} challenge
+        {{ sport.name | capitalize }} aventures
     {% else %}
-        Tous les challenges
+        Toutes les aventures
     {% endif %}
 {% endblock %}
 
@@ -22,7 +22,7 @@
         <header class="d-flex align-items-center text-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};">
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
             <h1 class="challenge-index-title">
-                les prochains challenges
+                les prochaines aventures
                 <span class="text-white">{{ sport.name }}</span>
             </h1>
         </header>
@@ -31,7 +31,7 @@
                 {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
                 {% endif %}>
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
-            <h1 class="challenge-index-title">Tous les challenges
+            <h1 class="challenge-index-title">Toutes les aventures
                 {% if category %}
                     "{{ category.name }}"
                 {% endif %}
@@ -66,7 +66,7 @@
                     </a>
                 </div>
             {% else %}
-                <p>Il n'existe pas de challenge actuellement.</p>
+                <p>Il n'existe pas d'aventure actuellement.</p>
             {% endfor %}
         </div>
         {{ knp_pagination_render(pagination) }}

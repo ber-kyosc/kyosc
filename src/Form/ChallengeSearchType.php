@@ -19,7 +19,7 @@ class ChallengeSearchType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Date du Challenge',
+                    'placeholder' => 'Date de l\'aventure',
 
                 ],
             ])
