@@ -44,4 +44,57 @@ class DefaultController extends AbstractController
             'imagesCarousel' => $imagesCarousel,
         ]);
     }
+
+    /**
+     * @Route("/a-propos", name="about_us")
+     */
+    public function aboutUs(): Response
+    {
+//        return $this->render('about/aboutUs.html.twig');
+        return $this->render('about/workInProgress.html.twig');
+    }
+
+    /**
+     * @Route("/kyosc", name="about_kyosc")
+     */
+    public function aboutKyosc(): Response
+    {
+//        return $this->render('about/aboutKyosc.html.twig');
+        return $this->render('about/workInProgress.html.twig');
+    }
+
+    /**
+     * @Route("/aide-challenge", name="about_challenge")
+     */
+    public function aboutChallenge(): Response
+    {
+//        return $this->render('about/aboutChallenge.html.twig');
+        return $this->render('about/workInProgress.html.twig');
+    }
+
+    /**
+     * @Route("/experience", name="gamification")
+     */
+    public function aboutExperience(): Response
+    {
+//        return $this->render('about/gamification.html.twig');
+        return $this->render('about/workInProgress.html.twig');
+    }
+
+    /**
+     * @Route("/cgu", name="cgu")
+     */
+    public function cgu(): Response
+    {
+        return $this->render('about/cgu.html.twig');
+    }
+
+    /**
+     * @Route("/faq", name="faq")
+     */
+    public function faq(): Response
+    {
+//        return $this->render('about/faq.html.twig');
+        return $this->render('about/workInProgress.html.twig');
+    }
 }

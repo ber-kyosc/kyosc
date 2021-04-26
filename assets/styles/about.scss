@@ -1,0 +1,57 @@
+@import "variables";
+@import "breakpoint";
+
+.about-us-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include md {
+        flex-direction: row;
+    }
+}
+
+.dark-container {
+    background-color: $black;
+    padding: 2em;
+    width: 100%;
+
+    hr {
+        background-color: $light;
+        height: 2px;
+        width: 75%;
+    }
+}
+
+.about-logo {
+    max-width: 500px;
+    width: 80%;
+}
+
+.about-picture {
+    border: solid 3px $light;
+    border-radius: 20px;
+    height: 90%;
+    max-height: 350px;
+    max-width: 300px;
+}
+
+.cgu-text {
+    text-align: justify;
+
+    p, ul {
+        margin: auto;
+        width: 70%;
+    }
+
+    h1, h2, h3 {
+        text-align: center;
+    }
+
+    h3 {
+        font-size: 1.3em;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+}

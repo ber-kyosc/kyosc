@@ -1,0 +1,51 @@
+.bubble {
+    position: relative;
+    font-size: 1.3em;
+    max-width: 300px;
+    background: $light;
+    border-radius: 40px;
+    padding: 30px 20px 15px 20px;
+    text-align: center;
+    color: $black;
+}
+
+.bubble-bottom-left:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 24px solid $light;
+    border-right: 12px solid transparent;
+    border-top: 12px solid $light;
+    border-bottom: 20px solid transparent;
+    left: 32px;
+    bottom: -24px;
+}
+
+.bubble-bottom-right:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 24px solid $light;
+    border-right: 24px solid transparent;
+    border-top: 24px solid $light;
+    border-bottom: 20px solid transparent;
+    right: 32px;
+    bottom: -24px;
+}
+
+.delete-container {
+    position: absolute;
+    top: -20px;
+    right: -10px;
+}
+
+.delete-icon {
+    max-width: 30px;
+}
+
+.message-date {
+    font-size: 0.7em;
+    color: $transparent-light;
+}

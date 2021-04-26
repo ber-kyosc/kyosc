@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clan #{{ clan.id }}{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background:
+    {% if clan.banner is not null %}
+        url('{{ vich_uploader_asset(clan, 'bannerFile')}}')
+    {% else %}
+        url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}')
+    {% endif %} no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1>{{ clan.name }}</h1>
+        <p class="m-0">Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }} par {{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</p>
+    </header>
+    <section class="container px-5 my-2 my-md-5">
+        <div class="row justify-content-center justify-content-md-around">
+            <div class="col-lg-6 text-center my-3">
+                {% if clan.logo is not null%}
+                    <img src="{{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb')}}" alt="logo du clan" class="profil-photo">
+                {% endif %}
+            </div>
+            <div class="col-lg-6 transparent-background-dark p-3">
+                <h2 class="challenge-quotation mb-4">Description du clan</h2>
+                <p class="challenge-description">{{ clan.description }}</p>
+            </div>
+        </div>
+    </section>
+    <section class="container d-flex flex-column flex-md-row align-items-center justify-content-around">
+        {% if app.user in clan.members %}
+            <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('clan_leave', {id: clan.id}) }}">
+                <input type="hidden" name="clanId" value="{{ clan.id }}">
+                <input type="hidden" name="token" value="{{ csrf_token('clan-leave') }}"/>
+                <button class="btn btn-register text-uppercase">Je veux quitter ce clan</button>
+            </form>
+        {% else %}
+            {% if clan.isPublic == true or app.user and app.user == clan.creator %}
+            <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('clan_join', {id: clan.id}) }}">
+                <input type="hidden" name="clanId" value="{{ clan.id }}">
+                <input type="hidden" name="token" value="{{ csrf_token('clan-join') }}"/>
+                <button class="btn text-uppercase btn-login">Je veux rejoindre ce clan</button>
+            </form>
+            {% endif %}
+        {% endif %}
+
+        {% if app.user and app.user in clan.members or app.user == clan.creator %}
+            <div class="form-kyosc">
+                <a class="btn text-uppercase btn-login"
+                   href="{{ path("clan_my-clan", {id: clan.id}) }}"
+                >Entrer dans l'espace privé</a>
+            </div>
+        {% endif %}
+
+        {% if app.user and app.user == clan.creator %}
+            <div class="form-kyosc">
+                <a class="btn text-uppercase btn-profil"
+                   data-toggle="modal" data-target="#modalInvitation"
+                >J'invite des nouveaux membres</a>
+            </div>
+        {% endif %}
+    </section>
+
+    {#        modal for clan invitation pop-up#}
+    <div class="modal fade" id="modalInvitation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">INVITER VOS AMIS A REJOINDRE CE CLAN</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    {% include 'clan/_form_clan-invitation.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for journey pop-up#}
+
+    <div class="container w-75 mx-auto my-5 challenge-organisator transparent-background-dark p-3">
+        <h2 class="mb-3 h5 text-uppercase text-center">Qui a créé ce clan ?</h2>
+        <div class="row">
+            <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
+                <a href="{{ path("profil_show", {id: clan.creator.id}) }}" class="text-center">
+                    {% if clan.creator.profilPhoto is not null %}
+                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                    {% else %}
+                        <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
+                    {% endif %}
+                </a>
+                <h4>{{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</h4>
+            </div>
+            <div class="col-lg-6 col-12 mt-lg-3 text-center">
+                <h3>Biographie</h3>
+                {% if clan.creator.biography is not null %}
+                    <p> {{ clan.creator.biography }}</p>
+                {% else %}
+                    <p>Le créateur.trice du clan n'a pas encore de biographie.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2 class="h5 text-uppercase text-center mb-4">{{ clan.members|length}} membre{{ clan.members|length>1?'s':''}}</h2>
+        <div class=" container d-flex justify-content-center">
+            {% for member in clan.members %}
+                <div class="d-flex flex-column align-items-center m-4">
+                    <a href="{{ path("profil_show", {id: member.id}) }}">
+                        {% if member.profilPhoto is not null %}
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile') }}" alt="photo de profil du membre du clan">
+                        {% else %}
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="photo de profil par défaut">
+                        {% endif %}
+                    </a>
+                    <p>{{ member.pseudo? member.pseudo : member.firstname ~' '~ member.lastname}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Commentaires</h2>
+        <div class="d-flex flex-column w-100">
+            {% if clan.messages|length >= 1 %}
+                {% for message in clan.messages|reverse %}
+                    {% if message.isPublic %}
+                        <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
+                            <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
+                                <p>{{ message.content }}</p>
+                                {% if app.user %}
+                                    {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
+                                        {{ include('message/_delete_form.html.twig') }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <h4 class="mt-4"><a href="{{ path("profil_show", {id: message.author.id}) }}" class="w-25 text-center">
+                                    {% if message.author.profilPhoto is not null%}
+                                        <img src="{{ vich_uploader_asset(message.author, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ message.author.profilPhoto }}" class="avatar-testimony">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
+                                    {% endif %}
+                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                            <span class="message-date">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        {% else %}
+            <p>Ce clan n'a pas encore de commentaire</p>
+        {% endif %}
+        </div>
+        {% if app.user %}
+            <h3 class="mt-3">Ajoutez un commentaire !</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Aventures du clan</h2>
+        <div class="container form-kyosc mb-4">
+            <div class="row justify-content-center">
+                {% for userChallenges in challenges %}
+                    {% for challenge in userChallenges %}
+                        <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                <div class="position-relative" >
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                             alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du challenge" class="w-100">
+                                    {% endif %}
+                                    <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
+                                </div>
+                                <div class="card-body p-2">
+                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

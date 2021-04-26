@@ -91,7 +91,7 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => 'Code Postal',
                 ]])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => "Accepter les CGU",
+                'label' => 'Accepter les mentions légales',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [

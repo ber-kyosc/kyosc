@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau clan{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1 class="mt-2">Créez votre clan</h1>
+    </header>
+    {{ include('clan/_form.html.twig') }}
+{% endblock %}

@@ -16,3 +16,17 @@ vich_uploader:
             inject_on_load: false
             delete_on_update: true
             delete_on_remove: true
+        clan_logo:
+            uri_prefix: /uploads/clan/logo
+            upload_destination: '%kernel.project_dir%/public/uploads/clan/logo'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+        clan_banner:
+            uri_prefix: /uploads/clan/banner
+            upload_destination: '%kernel.project_dir%/public/uploads/clan/banner'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

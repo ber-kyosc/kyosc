@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les clans{% endblock %}
+
+{% block body %}
+    <header {% if sportColor %} class="d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
+    {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
+            {% endif %}>
+        <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
+        <h1 class="challenge-index-title">Tous les clans</h1>
+    </header>
+    <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+        <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+    </div>
+    <main class="container-fluid">
+        <div class="row justify-content-center">
+            {% for clan in clans %}
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative index-card-max-width">
+                    <a class="card text-decoration-none text-dark no-bg-border"
+                       href="{{ path("clan_show", {id: clan.id}) }}">
+                        <div class="position-relative">
+                            {% if clan.banner is not null %}
+                                <img src="{{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
+                                     alt="photo du clan" class="w-100 challenge-photo-container">
+                            {% else %}
+                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                     alt="photo par défaut du clan" class="w-100 challenge-photo-container">
+                            {% endif %}
+                            {% if clan.logo is not null %}
+                            <img class="img-goutte-index w-25 profil-photo" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
+                            {% else %}
+                                <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="img-goutte-index">
+                            {% endif %}
+                            {% if clan.isPublic %}
+                                <span class="is-public-text open-text">Ouvert</span>
+                            {% else %}
+                                <span class="is-public-text close-text">Fermé</span>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="card-body p-2 text-center">
+                        <h2 class="card-title text-center text-uppercase">{{ clan.name }}</h2>
+                        <a class="journey-link-dark" data-toggle="modal" data-target="#modalJourney{{ clan.id }}">Voir la description</a>
+                        <div class="modal fade" id="modalJourney{{ clan.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="exampleModalLongTitle">"{{ clan.name }}" :</h2>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ clan.description}}
+                                    </div>
+                                    <div class="h6 mt-4 mx-auto">Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Il n'existe pas de clan actuellement.</p>
+            {% endfor %}
+        </div>
+    </main>
+    <div class="form-kyosc d-flex align-items-center justify-content-center mt-4">
+        <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+    </div>
+{% endblock %}

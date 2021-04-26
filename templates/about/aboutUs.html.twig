@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title%}A propos de KYOSC{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
+{% block body %}
+    <h1 class="arrow-header">A propos des créateurs de KYOSC</h1>
+    <section class="home-banner">
+        <p class="hide-before-scroll show-on-scroll">En recherche de défis sportifs pour vous ou votre groupe d'amis ?
+            <br>KYOSC est la plateforme qu'il vous faut pour vous challenger dans une ambiance conviviale !
+            <br>Alors n'attendez plus, et lancez vous dans l'aventure !
+        </p>
+    </section>
+    <div class="about-us-container m-5 hide-before-scroll show-on-scroll">
+        <img src="https://via.placeholder.com/700x1400" class="about-picture">
+        <div class="dark-container rounded">
+            <p class="text-light">Afin d'améliorer votre expérience d’utilisation de ce site, nous utilisons des cookies pour conserver les informations de connexion et fournir une connexion sûre, collecter les statistiques en vue d'optimiser les fonctionnalités du site et adapter le contenu à vos centres d'intérêt. Les données collectées peuvent également donner lieu à démarchage commercial, si vous ne vous êtes pas opposé à ces sollicitations.
+                Lors de la consultation de notre site internet, des informations relatives à votre navigation sont susceptibles d'être enregistrées dans des fichiers "Cookies" installés sur votre terminal (ordinateur, tablette, smartphone…), sous réserve de vos choix. Les informations ci-dessous vous permettent de mieux comprendre le fonctionnement des cookies et l'utilisation des outils actuels afin de les paramétrer.
+            </p>
+        </div>
+    </div>
+    <div class="about-us-container m-5 flex-row-reverse hide-before-scroll show-on-scroll">
+        <img src="https://via.placeholder.com/700x1400" class="about-picture">
+        <div class="dark-container rounded">
+            <p class="text-light">Afin d'améliorer votre expérience d’utilisation de ce site, nous utilisons des cookies pour conserver les informations de connexion et fournir une connexion sûre, collecter les statistiques en vue d'optimiser les fonctionnalités du site et adapter le contenu à vos centres d'intérêt. Les données collectées peuvent également donner lieu à démarchage commercial, si vous ne vous êtes pas opposé à ces sollicitations.
+                Lors de la consultation de notre site internet, des informations relatives à votre navigation sont susceptibles d'être enregistrées dans des fichiers "Cookies" installés sur votre terminal (ordinateur, tablette, smartphone…), sous réserve de vos choix. Les informations ci-dessous vous permettent de mieux comprendre le fonctionnement des cookies et l'utilisation des outils actuels afin de les paramétrer.
+            </p>
+        </div>
+    </div>
+{% endblock %}

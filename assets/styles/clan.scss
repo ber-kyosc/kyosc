@@ -1,0 +1,18 @@
+@import 'variables';
+
+.is-public-text {
+    border-radius: 5px;
+    bottom: 5px;
+    color: $light;
+    padding: 5px;
+    position: absolute;
+    right: 7px;
+}
+
+.open-text {
+    background-color: theme-color-level('kgreen');
+}
+
+.close-text {
+    background-color: theme-color-level('kred');
+}

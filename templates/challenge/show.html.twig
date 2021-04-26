@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Challenge #{{ challenge.id }}{% endblock %}
+{% block title %}Aventure #{{ challenge.id }}{% endblock %}
 
 {% block body %}
     {% set color = challenge.sports[0].color %}
@@ -51,8 +51,8 @@
                             <p>{{challenge.distance}} km</p>
                         </div>
                         <div class="key-info-row">
-                            <p class="mb-0"><span class="key-info">PARCOURS:</span>
-                                <a class="journey-link" data-toggle="modal" data-target="#modalJourney">Voir le parcours</a>
+                            <p class="mb-0"><span class="key-info">ETAPES:</span>
+                                <a class="journey-link" data-toggle="modal" data-target="#modalJourney">Voir les grandes étapes</a>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">PARCOURS:</h2>
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">ETAPES:</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -114,7 +114,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header align-self-center">
-                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">PARCOURS</h2>
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">ETAPES:</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -133,7 +133,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">INVITER VOS AMIS A PARTICIPER A CE CHALLENGE</h2>
+                        <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">INVITER VOS AMIS A PARTICIPER A CETTE AVENTURE</h2>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -147,7 +147,7 @@
     {#       end of modal for journey pop-up#}
 
     <div class="container w-75 mx-auto my-5 challenge-organisator">
-        <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise le challenge ?</h2>
+        <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise l'aventure ?</h2>
         <div class="row">
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
                 <a href="{{ path("profil_show", {id: challenge.creator.id}) }}" class="text-center">
@@ -157,14 +157,14 @@
                     <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                 {% endif %}
                 </a>
-                        <h4>{{ challenge.creator.firstname }}</h4>
+                <h4>{{ challenge.creator.firstname }}</h4>
             </div>
             <div class="col-lg-6 col-12 mt-lg-3 text-center">
                 <h3>Biographie</h3>
                 {% if challenge.creator.biography is not null %}
                 <p> {{ challenge.creator.biography }}</p>
                 {% else %}
-                <p>L'organisateur.trice du challenge n'a pas encore mis de biographie.</p>
+                <p>L'organisateur.trice de l'aventure n'a pas encore rédigé de biographie.</p>
                 {% endif %}
             </div>
         </div>

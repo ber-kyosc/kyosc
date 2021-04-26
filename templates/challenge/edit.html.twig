@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifiez votre challenge!{% endblock %}
+{% block title %}Modifiez votre aventure!{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% endblock %}
+
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
 {% endblock %}
 
 {% block body %}

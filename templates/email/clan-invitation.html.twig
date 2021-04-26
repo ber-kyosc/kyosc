@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Invitation à rejoindre un clan</title>
+</head>
+    <body>
+        <h1>Invitation à rejoindre un clan KYOSC</h1>
+        <p>Hello, vous avez été convié·e·s par {{ user.firstName }} {{ user.lastName }} à rejoindre le clan "{{ clan.name }}".</p>
+        <p>Voici le lien pour voir les détails de celui-ci:</p>
+        <p>
+            <a href="{{url('clan_show', {id: clan.id}) }}">Voir le clan</a>
+        </p>
+        <a href="https://kyosc.com/">
+            <img src="https://kyosc.com/build/images/logo/kyoscblanc.0fb22059.png" style="height: 150px;background-color: black;">
+        </a>
+        <p>A bientôt sur la plateforme !</p>
+        <p>l'équipe Kyosc</p>
+    </body>
+</html>
