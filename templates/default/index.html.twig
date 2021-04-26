@@ -15,41 +15,32 @@
             {% else %}
                 <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
             {% endif %}
-            <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Créer mon challenge</a>
+            <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Créez vos aventures</a>
         </div>
     </div>
     <div class="main-carousel-home-page">
         {{ include('component/_home_main_carousel.html.twig') }}
     </div>
     <section class="home-banner" style="background: url('{{ asset('build/images/background/bgimg1.jpeg') }}') no-repeat center; background-size: cover;">
-        <p class="hide-before-scroll show-on-scroll">En recherche de défis sportifs pour vous ou votre groupe d'amis ?
-            <br>KYOSC est la plateforme qu'il vous faut pour vous challenger dans une ambiance conviviale !
-            <br>Alors n'attendez plus, et lancez vous dans l'aventure !
-        </p>
+        <h2 class="hide-before-scroll show-on-scroll text-korange transparent-background-round-darker p-4">En recherche d’activités de plein air, faites pour vous, vos amis ou vos clans ?<br>
+            KYOSC est la plateforme qu’il vous faut pour organiser et partager des moments forts dans une ambiance conviviale.<br>
+            Alors n’attendez plus et lancez-vous dans votre propre aventure !
+        </h2>
     </section>
     <section class="home-choice-container">
-        <div class="home-choice hide-before-scroll show-on-scroll">
-            <h2>Connaitre KYOSC</h2>
-            <img src="{{ asset('build/images/picto/ketoile.png') }}" class="home-choice-picto">
-            <a href="{{ path('about_us') }}">En savoir plus</a>
+        <div class="home-choice hide-before-scroll show-on-scroll d-flex align-baseline">
+            <img src="{{ asset('build/images/picto/komplice.png') }}" class="home-choice-picto mb-3">
+            <h2 class="text-kblue">Retrouvez facilement les informations <br> essentielles des aventures <br> créés avec vos clans</h2>
             <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
         </div>
         <div class="home-choice hide-before-scroll show-on-scroll">
-            <h2>Parcourir KYOSC</h2>
-            <img src="{{ asset('build/images/picto/komplice.png') }}" class="home-choice-picto">
-            <a href="{{ path('about_kyosc') }}">En savoir plus</a>
+            <img src="{{ asset('build/images/picto/kequipe.png') }}" class="home-choice-picto mb-3">
+            <h2 class="text-kgreen">Echangez et partagez avec vos clans <br> autour de vos aventures</h2>
             <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
         </div>
         <div class="home-choice hide-before-scroll show-on-scroll">
-            <h2>Créer un challenge</h2>
-            <img src="{{ asset('build/images/picto/kequipe.png') }}" class="home-choice-picto">
-            <a href="{{ path('about_challenge') }}">En savoir plus</a>
-            <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
-        </div>
-        <div class="home-choice hide-before-scroll show-on-scroll">
-            <h2>Gagner de l'experience</h2>
-            <img src="{{ asset('build/images/picto/kblason.png') }}" class="home-choice-picto">
-            <a href="{{ path('gamification') }}">En savoir plus</a>
+            <img src="{{ asset('build/images/picto/kblason.png') }}" class="home-choice-picto mb-3">
+            <h2 class="text-kred">Venez cumuler des points<br> et remporter des challenges</h2>
             <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
         </div>
     </section>
@@ -105,7 +96,7 @@
         </div>
         {% endif %}
         <div class="all-projects home-cartouche show-on-scroll hide-before-scroll">
-            <span id="all-projects">TOUS LES CHALLENGES</span>
+            <span id="all-projects">TOUTES LES AVENTURES</span>
             <a href="{{ path("challenge_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/universKyosc.png') }}"></a>
             <a href="{{ path("challenge_index") }}" class="button-discover btn-lg">Je découvre</a>
         </div>
