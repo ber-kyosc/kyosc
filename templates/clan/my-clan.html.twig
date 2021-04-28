@@ -88,27 +88,25 @@
         <h2>Aventures du clan</h2>
         <div class="container form-kyosc mb-4">
             <div class="row justify-content-center">
-                {% for userChallenges in challenges %}
-                    {% for challenge in userChallenges %}
-                        <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
-                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                                <div class="position-relative" >
-                                    {% if challenge.challengePhoto is not null %}
-                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                             alt="photo du challenge" class="w-100 challenge-photo-container-profil">
-                                    {% else %}
-                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                             alt="photo par défaut du challenge" class="w-100">
-                                    {% endif %}
-                                    <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
-                                </div>
-                                <div class="card-body p-2">
-                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                                </div>
-                            </a>
-                        </div>
-                    {% endfor %}
+                {% for challenge in clan.challenges %}
+                    <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                        <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                            <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                            <div class="position-relative" >
+                                {% if challenge.challengePhoto is not null %}
+                                    <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                         alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                {% else %}
+                                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                         alt="photo par défaut du challenge" class="w-100">
+                                {% endif %}
+                                <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
+                            </div>
+                            <div class="card-body p-2">
+                                <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                            </div>
+                        </a>
+                    </div>
                 {% endfor %}
             </div>
         </div>
