@@ -23,7 +23,7 @@
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
             <h1 class="challenge-index-title">
                 les aventures
-                <span class="text-white">{{ sport.name }}</span>
+                <span class="text-white">"{{ sport.name }}"</span>
             </h1>
         </header>
     {% else %}
@@ -58,6 +58,11 @@
                             {% endif %}
                             <div class="white-circle-img-goutte"></div>
                             <img class="img-goutte-index" src={{ asset(sportGoutte) }}>
+                            {% if challenge.isPublic %}
+                                <span class="is-public-text open-text">Ouvert</span>
+                            {% else %}
+                                <span class="is-public-text close-text">Fermé</span>
+                            {% endif %}
                         </div>
                         <div class="card-body p-2">
                             <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title }}</h3>
