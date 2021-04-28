@@ -26,11 +26,6 @@
                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
                                      alt="photo par défaut du clan" class="w-100 challenge-photo-container">
                             {% endif %}
-                            {% if clan.logo is not null %}
-                            <img class="img-goutte-index w-25 profil-photo" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
-                            {% else %}
-                                <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="img-goutte-index">
-                            {% endif %}
                             {% if clan.isPublic %}
                                 <span class="is-public-text open-text">Ouvert</span>
                             {% else %}
