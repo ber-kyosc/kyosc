@@ -268,7 +268,7 @@
             {% for clan in user.createdClans %}
                 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
                     {% if clan.logo is not null %}
-                        <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
+                        <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                     {% else %}
                         <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                     {% endif %}
@@ -299,7 +299,7 @@
                 {% for clan in user.clans %}
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
                         {% if clan.logo is not null %}
-                            <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
+                            <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                         {% else %}
                             <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                         {% endif %}
