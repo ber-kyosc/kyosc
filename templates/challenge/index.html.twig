@@ -19,7 +19,7 @@
 {% block body %}
     {% include 'challenge/_filterChallenge.html.twig' %}
     {% if sportColor and sport %}
-        <header class="d-flex align-items-center text-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};">
+        <header class="index-header d-flex align-items-center text-center text-uppercase mt-5 mb-5" style="background: {{ sportColor }};">
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
             <h1 class="challenge-index-title">
                 les aventures
@@ -27,7 +27,7 @@
             </h1>
         </header>
     {% else %}
-        <header {% if sportColor %} class="d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
+        <header {% if sportColor %} class="index-header d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
                 {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
                 {% endif %}>
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">

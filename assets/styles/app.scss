@@ -259,3 +259,10 @@ body {
 .profil-container {
     max-width: 90vw;
 }
+
+.index-header {
+
+    @include md {
+        max-height: 110px;
+    }
+}
