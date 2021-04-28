@@ -14,7 +14,7 @@
 {% block body %}
     <header class="arrow-header my-3 text-uppercase">
         <h1>{{ clan.name }}</h1>
-        <p class="m-0">Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }} par {{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</p>
+        <p class="m-0">Créé par {{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</p>
     </header>
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
