@@ -162,11 +162,17 @@ class Challenge
      */
     private Collection $clans;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="challenge")
+     */
+    private Collection $messages;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
         $this->participants = new ArrayCollection();
         $this->clans = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -440,6 +446,36 @@ class Challenge
     {
         if ($this->clans->removeElement($clan)) {
             $clan->removeChallenge($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getChallenge() === $this) {
+                $message->setChallenge(null);
+            }
         }
 
         return $this;

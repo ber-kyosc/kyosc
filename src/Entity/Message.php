@@ -48,6 +48,11 @@ class Message
      */
     private ?bool $isPublic;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Challenge::class, inversedBy="messages")
+     */
+    private ?Challenge $challenge;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class Message
     public function setIsPublic(bool $isPublic): self
     {
         $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    public function getChallenge(): ?Challenge
+    {
+        return $this->challenge;
+    }
+
+    public function setChallenge(?Challenge $challenge): self
+    {
+        $this->challenge = $challenge;
 
         return $this;
     }
