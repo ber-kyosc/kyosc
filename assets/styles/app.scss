@@ -24,6 +24,22 @@ h1, h2 {
     text-align: center;
 }
 
+h2 {
+    font-size: 1.4rem;
+
+    @include sm {
+        font-size: 1.6rem;
+    }
+
+    @include md {
+        font-size: 1.8rem;
+    }
+
+    @include xl {
+        font-size: 2rem;
+    }
+}
+
 body {
     font-family: $font-text;
     display: flex;

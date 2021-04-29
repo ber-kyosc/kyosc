@@ -3,7 +3,7 @@
 {% block title %}KYOSC{% endblock %}
 
 {% block body %}
-    <div class="home-menu">
+    <div class="home-menu d-flex justify-content-between align-items-center">
         <ul class="sidenav">
             {% if app.user %}
                 {% if is_granted('ROLE_ADMIN') %}
@@ -22,7 +22,7 @@
                 <li> <a href="{{ path("app_login") }}">Se connecter</a> </li>
             {% endif %}
         </ul>
-        <button class="navbar-toggler" type="button">
+        <button class="navbar-toggler home-logo" type="button">
             <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
         </button>
         <h1 class="text-uppercase">À vous de créer <br><span class="second-color-title">votre propre aventure sportive</span></h1>
@@ -116,7 +116,7 @@
             </figure>
         </div>
         {% endif %}
-        <div class="all-projects home-cartouche show-on-scroll hide-before-scroll">
+        <div class="all-projects home-cartouche show-on-scroll hide-before-scroll text-center">
             <span id="all-projects">TOUTES LES AVENTURES</span>
             <a href="{{ path("challenge_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/universKyosc.png') }}"></a>
             <a href="{{ path("challenge_index") }}" class="button-discover btn-lg">Je découvre</a>
