@@ -40,6 +40,9 @@
     {% endif %}
 
     <main class="container-fluid">
+        <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+            <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+        </div>
         <div class="row justify-content-center">
             {% for challenge in pagination %}
                 {% set sportGoutte = challenge.sports|length>1 ? multiSportGoutte : challenge.sports|length==1 ? "/uploads/goutte/"~challenge.sports['0'].goutte : defaultLogo %}
