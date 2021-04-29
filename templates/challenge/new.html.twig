@@ -26,24 +26,34 @@
         <div class="justify-content-center list-unstyled text-center transparent-background-dark big-padding mx-4" id="sports-checkboxes">
             {% for category in categories %}
                 <div class="d-flex flex-column align-items-center w-100 mt-1">
-                    <h3 style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
-                    <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
-                        {% for sport in form.sports.children %}
-                            {% if sport.vars.attr['category'].id == category.id %}
-                                <div class="favorite-sport-container d-flex flex-column align-items-center form-group cursor-pointer py-2 m-1 {{ sport.vars.checked? "my-sport-check" : "" }}"
-                                     data-checkBoxContainer
-                                >
-                                    <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
-                                    <p class="m-0">
-                                        <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
-                                    </p>
-                                    <div class="d-none">
-                                        {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
-                                    </div>
-                                    {{ form_errors(sport) }}
+                    <a class="journey-link-dark" data-toggle="modal" data-target="#category_{{ category.id }}">
+                        <h3 style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}<br>
+                            <img src="{{ asset('build/images/fleche/fb' ~ category.name ~ '.png') }}" class="w-25">
+                        </h3>
+                    </a>
+                    <div class="modal fade" id="category_{{ category.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content transparent-background-round-darker">
+                                <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+                                    {% for sport in form.sports.children %}
+                                        {% if sport.vars.attr['category'].id == category.id %}
+                                            <div class="favorite-sport-container d-flex flex-column align-items-center form-group cursor-pointer py-2 m-1 {{ sport.vars.checked? "my-sport-check" : "" }}"
+                                                 data-checkBoxContainer
+                                            >
+                                                <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
+                                                <p class="m-0">
+                                                    <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
+                                                </p>
+                                                <div class="d-none">
+                                                    {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
+                                                </div>
+                                                {{ form_errors(sport) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endif %}
-                        {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
