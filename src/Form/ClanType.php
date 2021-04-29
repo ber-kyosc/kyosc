@@ -22,17 +22,6 @@ class ClanType extends AbstractType
                     'placeholder' => 'Nom du clan'
                 ]
             ])
-            ->add('logoFile', VichFileType::class, [
-                'required' => false,
-                'download_label' => false,
-                'attr' => [
-                    'placeholder' => 'Choisir un logo',
-                ],
-                'help' => 'Illustrez votre clan en sélectionnant un logo',
-                'allow_delete'  => true, // not mandatory, default is true
-                'download_uri' => true, // not mandatory, default is true
-                'asset_helper' => true,
-            ])
             ->add('bannerFile', VichFileType::class, [
                 'required' => false,
                 'download_label' => false,

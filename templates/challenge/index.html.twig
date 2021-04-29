@@ -19,15 +19,15 @@
 {% block body %}
     {% include 'challenge/_filterChallenge.html.twig' %}
     {% if sportColor and sport %}
-        <header class="d-flex align-items-center text-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};">
+        <header class="index-header d-flex align-items-center text-center text-uppercase mt-5 mb-5" style="background: {{ sportColor }};">
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
             <h1 class="challenge-index-title">
-                les prochaines aventures
-                <span class="text-white">{{ sport.name }}</span>
+                les aventures
+                <span class="text-white">"{{ sport.name }}"</span>
             </h1>
         </header>
     {% else %}
-        <header {% if sportColor %} class="d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
+        <header {% if sportColor %} class="index-header d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
                 {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
                 {% endif %}>
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
@@ -40,6 +40,9 @@
     {% endif %}
 
     <main class="container-fluid">
+        <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+            <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+        </div>
         <div class="row justify-content-center">
             {% for challenge in pagination %}
                 {% set sportGoutte = challenge.sports|length>1 ? multiSportGoutte : challenge.sports|length==1 ? "/uploads/goutte/"~challenge.sports['0'].goutte : defaultLogo %}
@@ -58,6 +61,11 @@
                             {% endif %}
                             <div class="white-circle-img-goutte"></div>
                             <img class="img-goutte-index" src={{ asset(sportGoutte) }}>
+                            {% if challenge.isPublic %}
+                                <span class="is-public-text open-text">Ouverte</span>
+                            {% else %}
+                                <span class="is-public-text close-text">Fermée</span>
+                            {% endif %}
                         </div>
                         <div class="card-body p-2">
                             <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title }}</h3>

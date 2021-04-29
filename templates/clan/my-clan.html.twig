@@ -14,15 +14,10 @@
 {% block body %}
     <header class="arrow-header my-3 text-uppercase">
         <h1>{{ clan.name }}</h1>
-        <p class="m-0">Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }} par {{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</p>
+        <p class="m-0">Créé par {{ clan.creator.pseudo? clan.creator.pseudo : clan.creator.firstname ~' '~ clan.creator.lastname}}</p>
     </header>
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
-            <div class="col-lg-6 text-center my-3">
-                {% if clan.logo is not null%}
-                    <img src="{{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb')}}" alt="logo du clan" class="profil-photo">
-                {% endif %}
-            </div>
             <div class="col-lg-6 transparent-background-dark p-3">
                 <h2 class="challenge-quotation mb-4">Description du clan</h2>
                 <p class="challenge-description">{{ clan.description }}</p>
@@ -32,7 +27,7 @@
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Messages</h2>
         <p>Les messages laissés ici ne peuvent être vus que par les membres du clan</p>
-        <div class="d-flex flex-column w-100">
+        <div class="d-flex flex-column w-100 scroll-comment">
         {% if clan.messages|length >= 1 %}
             {% for message in clan.messages|reverse %}
                 {% if message.isPublic == false %}
@@ -86,10 +81,13 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Aventures du clan</h2>
+        <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+            <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+        </div>
         <div class="container form-kyosc mb-4">
-            <div class="row justify-content-center">
-                {% for userChallenges in challenges %}
-                    {% for challenge in userChallenges %}
+            <div class="row justify-content-center scroll-comment">
+                {% for challenge in clan.challenges %}
+                    {% if challenge.creator in clan.members %}
                         <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
                             <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
                                 <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
@@ -105,10 +103,11 @@
                                 </div>
                                 <div class="card-body p-2">
                                     <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                    Créée par {{ challenge.creator.pseudo? challenge.creator.pseudo : challenge.creator.firstname ~' '~ challenge.creator.lastname}}
                                 </div>
                             </a>
                         </div>
-                    {% endfor %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

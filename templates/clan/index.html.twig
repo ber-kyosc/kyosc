@@ -3,11 +3,11 @@
 {% block title %}Tous les clans{% endblock %}
 
 {% block body %}
-    <header {% if sportColor %} class="d-flex align-items-center text-uppercase mt-3 mb-5" style="background: {{ sportColor }};"
+    <header {% if sportColor %} class="index-header d-flex align-items-center text-uppercase mt-5 mb-5" style="background: {{ sportColor }};"
     {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
             {% endif %}>
         <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
-        <h1 class="challenge-index-title">Tous les clans</h1>
+        <h1 class="challenge-index-title text-white">Tous les clans</h1>
     </header>
     <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
         <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
@@ -25,11 +25,6 @@
                             {% else %}
                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
                                      alt="photo par défaut du clan" class="w-100 challenge-photo-container">
-                            {% endif %}
-                            {% if clan.logo is not null %}
-                            <img class="img-goutte-index w-25 profil-photo" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
-                            {% else %}
-                                <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="img-goutte-index">
                             {% endif %}
                             {% if clan.isPublic %}
                                 <span class="is-public-text open-text">Ouvert</span>

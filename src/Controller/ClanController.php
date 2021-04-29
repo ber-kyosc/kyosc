@@ -78,19 +78,11 @@ class ClanController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET","POST"})
      */
-    public function show(Clan $clan, ChallengeRepository $challengeRepository, Request $request): Response
+    public function show(Clan $clan, Request $request): Response
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
-
-        $challenges = [];
-        foreach ($clan->getMembers() as $member) {
-            $challenges[] = $challengeRepository->findBy(
-            /* @phpstan-ignore-next-line */
-                ['creator' => $member->getId()]
-            );
-        }
 
         /* @phpstan-ignore-next-line */
         if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
@@ -108,23 +100,17 @@ class ClanController extends AbstractController
         return $this->render('clan/show.html.twig', [
             'clan' => $clan,
             'form' => $form->createView(),
-            'challenges' => $challenges,
         ]);
     }
 
     /**
      * @Route("/{id}/mon-clan", name="my-clan", methods={"GET","POST"})
      */
-    public function myClan(Clan $clan, ChallengeRepository $challengeRepository, Request $request): Response
+    public function myClan(Clan $clan, Request $request): Response
     {
         $membersId = [];
-        $challenges = [];
         foreach ($clan->getMembers() as $member) {
             $membersId[] = $member->getId();
-            $challenges[] = $challengeRepository->findBy(
-            /* @phpstan-ignore-next-line */
-                ['creator' => $member->getId()]
-            );
         }
 
         /* @phpstan-ignore-next-line */
@@ -155,7 +141,6 @@ class ClanController extends AbstractController
         return $this->render('clan/my-clan.html.twig', [
             'clan' => $clan,
             'form' => $form->createView(),
-            'challenges' => $challenges,
         ]);
     }
 

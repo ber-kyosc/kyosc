@@ -18,15 +18,8 @@
             {{ form_help(form.description) }}
         </div>
     </div>
-    <div class="row">
-        <div class="fileUpload col-lg-6 align-self-end">
-            {{ form_errors(form.logoFile) }}
-            {{ form_widget(form.logoFile) }}
-            <div class="transparent-background-light py-1 px-3">
-                {{ form_help(form.logoFile) }}
-            </div>
-        </div>
-        <div class="fileUpload col-lg-6 align-self-end">
+    <div class="row mb-4">
+        <div class="fileUpload col-lg-8 align-self-end">
             {{ form_errors(form.bannerFile) }}
             {{ form_widget(form.bannerFile) }}
             <div class="transparent-background-light py-1 px-3">
