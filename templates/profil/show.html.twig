@@ -96,55 +96,85 @@
         </div>
     </div>
     <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
-        <h2 class="mt-5 arrow-header">{{ form_label(form.favoriteSports) }}</h2>
-        <div class="form-check d-flex align-items-center pl-0 flex-row flex-wrap justify-content-center background-grey w-100">
-            {% for category in categories %}
-                <div class="d-flex flex-column align-items-center w-100 mt-2 mx-5 pt-2 transparent-background-dark">
-                    <h3 class="text-center" style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
-                    <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
-                        {% for sport in form.favoriteSports.children %}
-                            {% if sport.vars.attr['category'].id == category.id %}
-                                <div class="favorite-sport-container d-flex flex-column align-items-center form-group cursor-pointer py-2 m-1 {{ sport.vars.checked? "my-sport-check" : "" }}"
-                                     data-checkBoxContainer
-                                >
-                                    <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
-                                    <p class="m-0">
-                                        <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
-                                    </p>
-                                    <div class="d-none">
-                                        {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
-                                    </div>
-                                    {{ form_errors(sport) }}
+        <a class="journey-link-dark" data-toggle="modal" data-target="#favoriteSportChoice">
+            <h2 class="mt-5 arrow-header">{{ form_label(form.favoriteSports) }}
+                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+            </h2>
+        </a>
+        <div class="modal fade" id="favoriteSportChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="form-check d-flex align-items-center mt-0 py-5 flex-row flex-wrap justify-content-center background-grey w-100">
+                        {% for category in categories %}
+                            <div class="d-flex flex-column align-items-center w-100 mt-2 mx-5 pt-2 transparent-background-dark">
+                                <h3 class="text-center" style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
+                                <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
+                                    {% for sport in form.favoriteSports.children %}
+                                        {% if sport.vars.attr['category'].id == category.id %}
+                                            <div class="favorite-sport-container d-flex flex-column align-items-center form-group cursor-pointer py-2 m-1 {{ sport.vars.checked? "my-sport-check" : "" }}"
+                                                 data-checkBoxContainer
+                                            >
+                                                <img class="img-goutte" src="/uploads/goutte/{{ sport.vars.attr['data-img'] }}" alt="{{ sport.vars.label }}">
+                                                <p class="m-0">
+                                                    <label class="m-0 text-center" for="{{ sport.vars.id }}">{{ sport.vars.label }}</label>
+                                                </p>
+                                                <div class="d-none">
+                                                    {{ form_widget(sport, {'attr': {'class': 'd-none'}}) }}
+                                                </div>
+                                                {{ form_errors(sport) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
     <div class="background-grey">
         <div class="container d-flex flex-column pt-3">
-            <h2>Mes marques préférées</h2>
-            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
-                {{ form_help(form.favoriteBrands) }}
-                {{ form_widget(form.favoriteBrands) }}
-                {{ form_errors(form.favoriteBrands) }}
-            </div>
-            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
-                {{ form_help(form.brandSuggestion) }}
-                {{ form_widget(form.brandSuggestion) }}
-                {{ form_errors(form.brandSuggestion) }}
+            <a class="journey-link-dark" data-toggle="modal" data-target="#favoriteBrandsChoice">
+                <h2 class="mt-5 arrow-header">Mes marques préférées<br>
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                </h2>
+            </a>
+            <div class="modal fade" id="favoriteBrandsChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                            {{ form_help(form.favoriteBrands) }}
+                            {{ form_widget(form.favoriteBrands) }}
+                            {{ form_errors(form.favoriteBrands) }}
+                        </div>
+                        <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                            {{ form_help(form.brandSuggestion) }}
+                            {{ form_widget(form.brandSuggestion) }}
+                            {{ form_errors(form.brandSuggestion) }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container d-flex flex-column mt-3">
-            <h2>Mes destinations préférées</h2>
-            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
-                {{ form_help(form.favoriteDestination) }}
-                {{ form_widget(form.favoriteDestination) }}
-                {{ form_errors(form.favoriteDestination) }}
+            <a class="journey-link-dark mb-5" data-toggle="modal" data-target="#favoriteDestinationsChoice">
+                <h2 class="mt-5 arrow-header">Mes destinations préférées<br>
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                </h2>
+            </a>
+            <div class="modal fade" id="favoriteDestinationsChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                            {{ form_help(form.favoriteDestination) }}
+                            {{ form_widget(form.favoriteDestination) }}
+                            {{ form_errors(form.favoriteDestination) }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center">Enregistrer mes modifications</button>
+            <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center mx-3">Enregistrer mes modifications</button>
             {{ form_end(form) }}
         </div>
         <div class="container margin">
@@ -175,6 +205,8 @@
                         {{ include('challenge/_delete_form.html.twig') }}
                     </div>
                 </div>
+            {% else %}
+                <p class="text-center">Vous n'avez pas encore créé d'aventure</p>
             {% endfor %}
         {% else %}
         <div class="d-flex align-items-center justify-content-center">
@@ -261,14 +293,14 @@
             <!--/.Carousel Wrapper-->
         </div>
         {% endif %}
-        <div class="container margin">
+        <div class="container margin mt-4">
             <h2 class="mb-4"> Mes clans créés - {{ user.createdClans|length }}</h2>
         </div>
-        <div class="d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center scroll-comment">
             {% for clan in user.createdClans %}
                 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
                     {% if clan.logo is not null %}
-                        <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
+                        <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                     {% else %}
                         <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                     {% endif %}
@@ -295,11 +327,11 @@
             <div class="container margin">
                 <h2 class="mb-4"> Les clans dont je suis membre - {{ user.clans|length }}</h2>
             </div>
-            <div class="d-flex flex-column align-items-center">
+            <div class="d-flex flex-column align-items-center scroll-comment">
                 {% for clan in user.clans %}
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
                         {% if clan.logo is not null %}
-                            <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'logoFile') | imagine_filter('square_logo_thumb') }}>
+                            <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                         {% else %}
                             <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                         {% endif %}

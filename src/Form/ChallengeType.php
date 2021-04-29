@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Clan;
 use App\Entity\Sport;
 use App\Entity\Challenge;
+use App\Repository\ClanRepository;
 use App\Repository\SportRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,10 +18,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ChallengeType extends AbstractType
 {
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -107,6 +117,24 @@ class ChallengeType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Informations pratiques.',
                     'rows' => 3],
+            ])
+            ->add('clans', EntityType::class, [
+                'required' => false,
+                'label' => 'Partager avec mes clans',
+                'class' => Clan::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'query_builder' => function (ClanRepository $cr) {
+                    return $cr->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC')
+                        ->where(':user MEMBER OF c.members')
+                        ->setParameter("user", $this->security->getUser());
+                },
+                'by_reference' => false,
+                'help' => 'Avec quels clans souhaitez-vous partager votre aventure',
+                'attr' => [
+                    'class' => 'select-clans',
+                ],
             ])
             ->add('isPublic', CheckboxType::class, [
                 'help' => 'possibilité de rejoindre votre aventure',

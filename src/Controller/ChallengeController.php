@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
+use App\Entity\Message;
 use App\Entity\Sport;
 use App\Form\ChallengeSearchType;
 use App\Form\ChallengeType;
+use App\Form\MessageType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
@@ -289,16 +291,36 @@ class ChallengeController extends AbstractController
      * @Route(
      *     "/{id}",
      *     name="show",
-     *     methods={"GET"},
+     *     methods={"GET", "POST"},
      *     requirements={"id"="^\d+$"},
      * )
      * @param Challenge $challenge
+     * @param Request $request
      * @return Response
      */
-    public function show(Challenge $challenge): Response
+    public function show(Challenge $challenge, Request $request): Response
     {
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        /* @phpstan-ignore-next-line */
+        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $message->setChallenge($challenge);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $message->setCreatedAt(new DateTime());
+            $message->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $message->setAuthor($this->getUser());
+            $message->setIsPublic(true);
+            $entityManager->persist($message);
+            $entityManager->flush();
+        }
+
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
+            'form' => $form->createView(),
         ]);
     }
 

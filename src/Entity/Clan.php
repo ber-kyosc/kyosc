@@ -116,10 +116,16 @@ class Clan
      */
     private Collection $messages;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Challenge::class, inversedBy="clans")
+     */
+    private Collection $challenges;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->challenges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,6 +317,30 @@ class Clan
                 $message->setClan(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Challenge[]
+     */
+    public function getChallenges(): Collection
+    {
+        return $this->challenges;
+    }
+
+    public function addChallenge(Challenge $challenge): self
+    {
+        if (!$this->challenges->contains($challenge)) {
+            $this->challenges[] = $challenge;
+        }
+
+        return $this;
+    }
+
+    public function removeChallenge(Challenge $challenge): self
+    {
+        $this->challenges->removeElement($challenge);
 
         return $this;
     }

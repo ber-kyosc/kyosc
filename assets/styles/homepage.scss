@@ -12,7 +12,6 @@
     background-color: $drawer-menu;
     display: flex;
     justify-content: center;
-    height: 18vh;
     padding: 10px 20px;
     width: 100%;
 
@@ -67,17 +66,20 @@
 
 .home-logo {
     height: auto;
-    margin-right: auto;
-    width: 100px;
+    margin-right: 40px;
+    max-height: 100%;
+    max-width: 100px;
 
     @include sm {
-        width: auto;
-        max-height: 100%;
-        height: auto;
+        max-width: 140px;
     }
 
     @include md {
         max-width: 180px;
+    }
+
+    @include xl {
+        margin-left: 30px;
     }
 }
 
@@ -144,8 +146,6 @@
 }
 
 .home-button-wrapper {
-    margin-left: auto;
-
     @include md {
         width: 30%;
     }

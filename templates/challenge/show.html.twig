@@ -2,6 +2,15 @@
 
 {% block title %}Aventure #{{ challenge.id }}{% endblock %}
 
+{% block background %}
+    class="background-profile" style="background:
+    {% if challenge.challengePhoto is not null %}
+        url('{{ vich_uploader_asset(challenge, 'challengePhotoFile')}}')
+    {% else %}
+        url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}')
+    {% endif %} no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
 {% block body %}
     {% set color = challenge.sports[0].color %}
 
@@ -11,14 +20,7 @@
     </header>
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
-            <div class="col-lg-6">
-                {% if challenge.challengePhoto is not null%}
-                    <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_show_thumb')}}" alt="image du challenge" class="challenge-photo">
-                {% else %}
-                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}" alt="photo par défaut du challenge" class="w-100">
-                {% endif %}
-            </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 transparent-background-dark p-3">
                 <h3 class="challenge-quotation mb-4">{{ challenge.quotation }}</h3>
                 <p class="challenge-description">{{ challenge.description }}</p>
             </div>
@@ -26,7 +28,7 @@
     </section>
 
     <div class="mt-2 mb-4 container d-flex justify-content-center">
-        <div class="col-10 title-info-event">
+        <div class="col-10 title-info-event transparent-background-dark p-3">
             <h3>Informations sur l'évènement:</h3>
             <p>{{ challenge.information}}</p>
         </div>
@@ -34,7 +36,7 @@
 
     <section class="container d-flex flex-row">
         <div class="container arrow-container col-lg-8 col-sm-12">
-            <h2 class="text-center" style="color: {{color}}">LES INFORMATIONS CLEFS</h2>
+            <h2 class="text-center transparent-background-dark p-3" style="color: {{color}}">LES INFORMATIONS CLEFS</h2>
             <div class="arrow-info key-info-arrow" style="background-color: {{color}}">
                 <div class="row">
                     <div class="col-lg-12 ">
@@ -59,28 +61,33 @@
             </div>
         </div>
         <div class="d-flex flex-column justify-content-center">
-            {% if challenge.isPublic == true %}
-                {% if app.user in challenge.participants %}
-                    <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
-                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
-                        <button
-                                class="btn btn-register text-uppercase"
-                                style="background-color: {{ color }}"
-                        >JE NE PARTICIPE PLUS</button>
-                    </form>
-                {% else %}
-                    <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
-                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
-                        <button
-                                class="btn btn-participation btn-lg text-uppercase text-white"
-                                style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
-                        >JE PARTICIPE</button>
-                    </form>
+            {% if app.user in challenge.participants %}
+                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
+                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('challenge-leave') }}"/>
+                    <button
+                            class="btn btn-register text-uppercase"
+                            style="background-color: {{ color }}"
+                    >JE NE PARTICIPE PLUS</button>
+                </form>
+            {% elseif app.user %}
+                {% set isClanMember = false %}
+                {% for clan in challenge.clans %}
+                    {% if app.user in clan.members %}
+                        {% set isClanMember = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if challenge.isPublic == true or isClanMember == true %}
+                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
+                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
+                    <button
+                            class="btn btn-participation btn-lg text-uppercase text-white"
+                            style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                    >JE PARTICIPE</button>
+                </form>
                 {% endif %}
             {% endif %}
-
             {% if app.user and app.user == challenge.creator %}
             <div class="form-kyosc">
                 <a class="btn btn-participation text-uppercase text-white"
@@ -146,7 +153,7 @@
         </div>
     {#       end of modal for journey pop-up#}
 
-    <div class="container w-75 mx-auto my-5 challenge-organisator">
+    <div class="container w-75 mx-auto my-5 challenge-organisator transparent-background-dark p-3">
         <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise l'aventure ?</h2>
         <div class="row">
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
@@ -169,7 +176,7 @@
             </div>
         </div>
     </div>
-    <div class="w-75 mx-auto my-5 participants">
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2 class="h5 text-uppercase text-center mb-4" style="color: {{color}}">{{ challenge.participants|length}} participant{{ challenge.participants|length>1?'s':''}}</h2>
         <div class=" container d-flex justify-content-center">
         {% for participant in challenge.participants %}
@@ -185,5 +192,42 @@
             </div>
         {% endfor %}
         </div>
+    </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Commentaires</h2>
+        <div class="d-flex flex-column w-100 scroll-comment">
+            {% if challenge.messages|length >= 1 %}
+                {% for message in challenge.messages|reverse %}
+                    {% if message.isPublic %}
+                        <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
+                            <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
+                                <p>{{ message.content }}</p>
+                                {% if app.user %}
+                                    {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
+                                        {{ include('message/_delete_form.html.twig') }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <h4 class="mt-4"><a href="{{ path("profil_show", {id: message.author.id}) }}" class="w-25 text-center">
+                                    {% if message.author.profilPhoto is not null%}
+                                        <img src="{{ vich_uploader_asset(message.author, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ message.author.profilPhoto }}" class="avatar-testimony">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
+                                    {% endif %}
+                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                            <span class="message-date">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>Cette aventure n'a pas encore de commentaire</p>
+            {% endif %}
+        </div>
+        {% if app.user %}
+            <h3 class="mt-3">Ajoutez un commentaire !</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        {% endif %}
     </div>
 {% endblock %}

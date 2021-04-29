@@ -16,7 +16,7 @@
         {% endif %}
         {{ render_esi(path('ch_cookie_consent.show_if_cookie_consent_not_set', { 'locale' : 'fr' })) }}
         {% if sport is not defined and (challenge is defined) %}
-            {% set sportLogo = challenge.sports|length>1 ? asset(multiSportLogo) : (challenge.sports|length==1 ? "/uploads/logo/"~challenge.sports['0'].logo : null) %}
+            {% set sportLogo = asset('build/images/logo/kyoscnoir.png') %}
             {% set sportColor = 'black' %}
         {% elseif sport is defined and sport %}
             {% set sportLogo = "/uploads/logo/"~sport.logo  %}
@@ -25,7 +25,7 @@
             {% set sportLogo = "/uploads/logo/"~category.logo  %}
             {% set sportColor = category.color  %}
         {% else %}
-            {% set sportLogo = asset(multiSportLogo)  %}
+            {% set sportLogo = asset('build/images/logo/kyoscnoir.png')  %}
             {% set sportColor = 'black' %}
         {% endif %}
         <div class="arrow-background w-100"></div>
