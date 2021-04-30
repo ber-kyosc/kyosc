@@ -198,6 +198,11 @@ class User implements UserInterface, Serializable
      */
     private Collection $messages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="author")
+     */
+    private Collection $videos;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -207,6 +212,7 @@ class User implements UserInterface, Serializable
         $this->clans = new ArrayCollection();
         $this->createdClans = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function __toString()
@@ -746,6 +752,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($message->getAuthor() === $this) {
                 $message->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getAuthor() === $this) {
+                $video->setAuthor(null);
             }
         }
 

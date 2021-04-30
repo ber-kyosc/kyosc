@@ -121,11 +121,17 @@ class Clan
      */
     private Collection $challenges;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="clan")
+     */
+    private Collection $videos;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->challenges = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -341,6 +347,36 @@ class Clan
     public function removeChallenge(Challenge $challenge): self
     {
         $this->challenges->removeElement($challenge);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setClan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getClan() === $this) {
+                $video->setClan(null);
+            }
+        }
 
         return $this;
     }
