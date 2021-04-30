@@ -153,6 +153,24 @@
         </div>
     {#       end of modal for journey pop-up#}
 
+    {#        modal for youtube video pop-up#}
+    <div class="modal fade" id="youtubeLinkForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">Partagez une video Youtube en lien avec cette aventure !</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    {% include 'video/_form_video.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for youtube video pop-up#}
+
     <div class="container w-75 mx-auto my-5 challenge-organisator transparent-background-dark p-3">
         <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise l'aventure ?</h2>
         <div class="row">
@@ -229,5 +247,26 @@
             {{ form_widget(form) }}
             {{ form_end(form) }}
         {% endif %}
+    </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Vidéos</h2>
+        <a class="journey-link-dark" data-toggle="modal" data-target="#youtubeLinkForm">
+            <h2 class="mt-5 arrow-header">Ajoutez des vidéos !<br>
+                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+            </h2>
+        </a>
+        <div class="d-flex flex-column justify-content-center align-items-center w-100 scroll-comment">
+            {% if challenge.videos|length >= 1 %}
+                {% for video in challenge.videos|reverse %}
+                    <div class="d-flex flex-column justify-content-center align-items-center m-3">
+                        <h4>{{ video.title }}</h4>
+                        <iframe class="youtube-embed-video" src="https://www.youtube.com/embed/{{ video.youtubeId }}?rel=0" frameborder="0" allowfullscreen></iframe>
+                        <span class="message-date">Postée le {{ video.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }} par {{ video.author.pseudo? video.author.pseudo : video.author.firstname ~' '~ video.author.lastname}}</span>
+                    </div>
+                 {% endfor %}
+            {% else %}
+                <p>Cette aventure n'a pas encore de vidéos</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

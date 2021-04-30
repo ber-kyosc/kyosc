@@ -7,9 +7,11 @@ use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
 use App\Entity\Message;
 use App\Entity\Sport;
+use App\Entity\Video;
 use App\Form\ChallengeSearchType;
 use App\Form\ChallengeType;
 use App\Form\MessageType;
+use App\Form\VideoType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
@@ -304,6 +306,10 @@ class ChallengeController extends AbstractController
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
+        $video = new Video();
+        $formVideo = $this->createForm(VideoType::class, $video);
+        $formVideo->handleRequest($request);
+
         /* @phpstan-ignore-next-line */
         if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -318,9 +324,27 @@ class ChallengeController extends AbstractController
             $entityManager->flush();
         }
 
+        /* @phpstan-ignore-next-line */
+        if ($formVideo->isSubmitted() && $formVideo->isValid() && $formVideo->get('save-video')->isClicked()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $video->setChallenge($challenge);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $video->setCreatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $video->setAuthor($this->getUser());
+            $url = $video->getLink();
+            $youtubeVideId = [];
+            /* @phpstan-ignore-next-line */
+            parse_str(parse_url($url, PHP_URL_QUERY), $youtubeVideId);
+            $video->setYoutubeId($youtubeVideId['v']);
+            $entityManager->persist($video);
+            $entityManager->flush();
+        }
+
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
             'form' => $form->createView(),
+            'formVideo' => $formVideo->createView(),
         ]);
     }
 

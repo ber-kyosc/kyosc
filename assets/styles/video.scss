@@ -1,0 +1,16 @@
+@import 'breakpoint';
+
+.youtube-embed-video {
+    min-height: 112px;
+    min-width: 200px;
+
+    @include sm {
+        min-height: 225px;
+        min-width: 400px;
+    }
+
+    @include xl {
+        min-height: 315px;
+        min-width: 560px;
+    }
+}

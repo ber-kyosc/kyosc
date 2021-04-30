@@ -15,12 +15,14 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
+                'label' => false,
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Titre de la vidéo'
                 ]
             ])
             ->add('link', TextType::class, [
+                'label' => false,
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'lien youtube de la vidéo (URL)'
