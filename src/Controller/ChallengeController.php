@@ -17,7 +17,9 @@ use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
+use mysql_xdevapi\Exception;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -333,10 +335,10 @@ class ChallengeController extends AbstractController
             /* @phpstan-ignore-next-line */
             $video->setAuthor($this->getUser());
             $url = $video->getLink();
-            $youtubeVideId = [];
+            $youtubeVideoId = [];
             /* @phpstan-ignore-next-line */
-            parse_str(parse_url($url, PHP_URL_QUERY), $youtubeVideId);
-            $video->setYoutubeId($youtubeVideId['v']);
+            parse_str(parse_url($url, PHP_URL_QUERY), $youtubeVideoId);
+            $video->setYoutubeId($youtubeVideoId['v']);
             $entityManager->persist($video);
             $entityManager->flush();
         }
