@@ -220,10 +220,8 @@
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
                             <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
                                 <p>{{ message.content }}</p>
-                                {% if app.user %}
-                                    {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
-                                        {{ include('message/_delete_form.html.twig') }}
-                                    {% endif %}
+                                {% if app.user and is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
+                                    {{ include('message/_delete_form.html.twig') }}
                                 {% endif %}
                             </div>
                             <h4 class="mt-4"><a href="{{ path("profil_show", {id: message.author.id}) }}" class="w-25 text-center">
@@ -259,7 +257,12 @@
             {% if challenge.videos|length >= 1 %}
                 {% for video in challenge.videos|reverse %}
                     <div class="d-flex flex-column justify-content-center align-items-center m-3">
-                        <h4>{{ video.title }}</h4>
+                        <h4 class="text-center">
+                            {{ video.title }}
+                            {% if app.user and is_granted("ROLE_ADMIN") or app.user == video.author or app.user == challenge.creator %}
+                                {{ include('video/_delete_form.html.twig') }}
+                            {% endif %}
+                        </h4>
                         <iframe class="youtube-embed-video" src="https://www.youtube.com/embed/{{ video.youtubeId }}?rel=0" frameborder="0" allowfullscreen></iframe>
                         <span class="message-date">Postée le {{ video.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }} par {{ video.author.pseudo? video.author.pseudo : video.author.firstname ~' '~ video.author.lastname}}</span>
                     </div>
