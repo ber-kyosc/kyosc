@@ -35,7 +35,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route(
- *     "/challenge",
+ *     "/aventure",
  *     name="challenge_"
  * )
  */
@@ -100,7 +100,7 @@ class ChallengeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Votre challenge a été correctement soumis et sera validé très prochainement !"
+                "Votre aventure a été correctement soumis et sera validée très prochainement !"
             );
 
             return $this->redirectToRoute('challenge_index');
@@ -271,7 +271,7 @@ class ChallengeController extends AbstractController
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
                 ->to($emailAddress)
-                ->subject('Invitation à un challenge Kyosc')
+                ->subject('Invitation à une aventure Kyosc')
                 ->html(
                     $this->renderView(
                         'email/challenge-invitation.html.twig',
@@ -365,7 +365,7 @@ class ChallengeController extends AbstractController
     public function edit(Challenge $challenge, CategoryRepository $categoryRepository, Request $request): Response
     {
         if (!($this->getUser() == $challenge->getCreator())) {
-            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un challenge peut le modifier.');
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'une aventure peut la modifier.');
         }
 
         $form = $this->createForm(ChallengeType::class, $challenge);
@@ -378,7 +378,7 @@ class ChallengeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Les informations sur votre challenge ont bien été modifiées!"
+                "Les informations sur votre aventure ont bien été modifiées!"
             );
 
             return $this->redirectToRoute('profil_my_profil');
@@ -406,14 +406,14 @@ class ChallengeController extends AbstractController
     public function delete(Request $request, EntityManagerInterface $entityManager, Challenge $challenge): Response
     {
         if (!($this->getUser() == $challenge->getCreator())) {
-            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un challenge peut le supprimer.');
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'une aventure peut la supprimer.');
         }
         if ($this->isCsrfTokenValid('delete' . $challenge->getId(), $request->request->get('_token'))) {
             $entityManager->remove($challenge);
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                "Votre challenge a bien été supprimé."
+                "Votre aventure a bien été supprimée."
             );
         }
         return $this->redirectToRoute("profil_my_profil");
