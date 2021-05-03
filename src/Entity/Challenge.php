@@ -104,7 +104,7 @@ class Challenge
      * @ORM\Column(type="float", nullable=true)
      * @Assert\Positive(message="La distance doit être une valeure numérique positive")
      */
-    private float $distance;
+    private ?float $distance;
 
     /**
      * @ORM\Column(type="text")

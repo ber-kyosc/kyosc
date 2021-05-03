@@ -50,11 +50,16 @@
                         </div>
                         <div class="key-info-row">
                             <span class="key-info">DISTANCE:</span>
+                            {% if challenge.distance %}
                             <p>{{challenge.distance}} km</p>
+                            {% else %}
+                            <p>Non spécifiée</p>
+                            {% endif %}
                         </div>
                         <div class="key-info-row">
                             <p class="mb-0"><span class="key-info">ETAPES:</span>
                                 <a class="journey-link" data-toggle="modal" data-target="#modalJourney">Voir les grandes étapes</a>
+                            </p>
                         </div>
                     </div>
                 </div>
