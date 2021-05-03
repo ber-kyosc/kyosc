@@ -82,7 +82,7 @@
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
                 <a href="{{ path("profil_show", {id: clan.creator.id}) }}" class="text-center">
                     {% if clan.creator.profilPhoto is not null %}
-                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
                     {% else %}
                         <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                     {% endif %}
@@ -106,7 +106,7 @@
                 <div class="d-flex flex-column align-items-center m-4">
                     <a href="{{ path("profil_show", {id: member.id}) }}">
                         {% if member.profilPhoto is not null %}
-                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile') }}" alt="photo de profil du membre du clan">
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="photo de profil du membre du clan">
                         {% else %}
                             <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="photo de profil par défaut">
                         {% endif %}

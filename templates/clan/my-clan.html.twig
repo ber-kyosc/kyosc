@@ -69,7 +69,7 @@
                 <div class="d-flex flex-column align-items-center m-4">
                     <a href="{{ path("profil_show", {id: member.id}) }}">
                         {% if member.profilPhoto is not null %}
-                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile') }}" alt="photo de profil du membre du clan">
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="photo de profil du membre du clan">
                         {% else %}
                             <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="photo de profil par défaut">
                         {% endif %}

@@ -182,7 +182,7 @@
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
                 <a href="{{ path("profil_show", {id: challenge.creator.id}) }}" class="text-center">
                 {% if challenge.creator.profilPhoto is not null %}
-                    <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                    <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
                 {% else %}
                     <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                 {% endif %}
@@ -206,7 +206,7 @@
             <div class="d-flex flex-column align-items-center m-4">
                 <a href="{{ path("profil_show", {id: participant.id}) }}">
                 {% if participant.profilPhoto is not null %}
-                    <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(participant, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                    <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(participant, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
                 {% else %}
                     <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                 {% endif %}
