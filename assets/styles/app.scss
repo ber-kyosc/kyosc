@@ -211,11 +211,16 @@ body {
 }
 
 .challenge-photo-container {
+    border-radius: 15px;
     max-height: 275px;
 }
 
 .challenge-photo-container-profil {
     max-height: 200px;
+}
+
+.challenge-card {
+    max-width: 420px;
 }
 
 .email-verif-popup {
