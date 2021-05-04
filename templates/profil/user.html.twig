@@ -61,7 +61,7 @@
         <div class="container form-kyosc mb-4">
             <div class="row justify-content-center scroll-comment">
                 {% for challenge in challenges %}
-                    <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                    <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4 index-card-max-width">
                         <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
                             <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
                             <div class="position-relative" >

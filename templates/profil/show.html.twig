@@ -181,8 +181,9 @@
             <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
         </div>
         {% if challenges|length < 3 %}
+            <div class="d-flex justify-content-center align-items-center">
             {% for challenge in challenges|slice(0, 3) %}
-                <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
                     <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
                         <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
                         <div class="position-relative" >
@@ -208,6 +209,7 @@
             {% else %}
                 <p class="text-center">Vous n'avez pas encore créé d'aventure</p>
             {% endfor %}
+            </div>
         {% else %}
         <div class="d-flex align-items-center justify-content-center">
             <!--Carousel Wrapper-->
