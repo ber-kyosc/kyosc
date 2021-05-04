@@ -7,18 +7,20 @@
 
 {% block body %}
     <div class="my-5 d-flex flex-column justify-content-around align-items-center">
+        <header class="arrow-header text-uppercase">
         {% if user.pseudo %}
             <h1>"{{ user.pseudo }}"</h1>
             <h2>{{ user.firstName}} {{ user.lastName}}</h2>
         {% else %}
             <h1>{{ user.firstName}} {{ user.lastName}}</h1>
         {% endif %}
+        </header>
         {% if app.user.profilPhoto is not null%}
-            <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo mt-4">
+            <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo mt-4 w-75">
         {% else %}
-            <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="mt-4">
+            <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="mt-4 w-75">
         {% endif %}
-        <div class="my-5">
+        <div class="my-5 p-4 w-75 transparent-background-dark">
             {% if user.biography %}
                 <p class="biography-text">"{{ user.biography }}"</p>
             {% else %}
