@@ -179,6 +179,9 @@
         </div>
         <div class="container margin">
             <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
+            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+            </div>
         </div>
         {% if challenges|length < 3 %}
             <div class="d-flex justify-content-center align-items-center">
@@ -297,6 +300,9 @@
         {% endif %}
         <div class="container margin mt-4">
             <h2 class="mb-4"> Mes clans créés - {{ user.createdClans|length }}</h2>
+            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+            </div>
         </div>
         <div class="d-flex flex-column align-items-center scroll-comment">
             {% for clan in user.createdClans %}
