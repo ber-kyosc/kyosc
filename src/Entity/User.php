@@ -143,7 +143,7 @@ class User implements UserInterface, Serializable
     private Collection $challenges;
 
     /**
-     * @ORM\OneToMany(targetEntity=Challenge::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=Challenge::class, mappedBy="creator", cascade={"remove"})
      */
     private Collection $createdChallenges;
 
@@ -189,17 +189,17 @@ class User implements UserInterface, Serializable
     private Collection $clans;
 
     /**
-     * @ORM\OneToMany(targetEntity=Clan::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=Clan::class, mappedBy="creator", cascade={"remove"})
      */
     private Collection $createdClans;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author", cascade={"remove"})
      */
     private Collection $messages;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="author", cascade={"remove"})
      */
     private Collection $videos;
 

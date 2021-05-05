@@ -112,7 +112,7 @@ class Clan
     private ?bool $isPublic;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="clan")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="clan", cascade={"remove"})
      */
     private Collection $messages;
 
@@ -122,7 +122,7 @@ class Clan
     private Collection $challenges;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="clan")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="clan", cascade={"remove"})
      */
     private Collection $videos;
 

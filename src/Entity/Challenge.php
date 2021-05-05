@@ -163,12 +163,12 @@ class Challenge
     private Collection $clans;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $messages;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $videos;
 
