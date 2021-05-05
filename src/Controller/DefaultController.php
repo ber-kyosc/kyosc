@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ChallengeRepository;
+use App\Repository\ClanRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,9 +16,10 @@ class DefaultController extends AbstractController
      * @Route("/", name="home")
      * @param ChallengeRepository $challRepo
      * @param UserRepository $userRepo
+     * @param ClanRepository $clanRepo
      * @return Response
      */
-    public function index(ChallengeRepository $challRepo, UserRepository $userRepo): Response
+    public function index(ChallengeRepository $challRepo, UserRepository $userRepo, ClanRepository $clanRepo): Response
     {
         $featuredChallenges = $challRepo->findBy(['isFeatured' => true]);
         shuffle($featuredChallenges);
@@ -31,6 +33,20 @@ class DefaultController extends AbstractController
             krsort($topChallenges);
             $topChallenge = $topChallenges ? $topChallenges[0] : [];
         }
+
+        $clans = $clanRepo->findBy(['isPublic' => true]);
+        shuffle($clans);
+        if (count($clans) > 4) {
+            $clans = array_slice($clans, 0, 4);
+        }
+        if ($clans) {
+            $topClan = $clans[array_rand($clans)];
+        } else {
+            $topClan = $challRepo->findAll();
+            krsort($topClan);
+            $topClan = $topClan ? $topClan[0] : [];
+        }
+
         $usersTestimonials = $userRepo->findAllNotNullTestimony();
         shuffle($usersTestimonials);
         if (count($usersTestimonials) > 3) {
@@ -42,6 +58,8 @@ class DefaultController extends AbstractController
             'topChallenge' => $topChallenge,
             'usersTestimonials' => $usersTestimonials,
             'imagesCarousel' => $imagesCarousel,
+            'clans' => $clans,
+            'topClan' => $topClan,
         ]);
     }
 
