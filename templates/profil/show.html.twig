@@ -184,7 +184,7 @@
             </div>
         </div>
         {% if challenges|length < 3 %}
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
             {% for challenge in challenges|slice(0, 3) %}
                 <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
                     <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
@@ -192,10 +192,10 @@
                         <div class="position-relative" >
                             {% if challenge.challengePhoto is not null %}
                                 <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                     alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                     alt="photo du challenge" class="w-100 challenge-photo-container">
                             {% else %}
                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
+                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                             {% endif %}
                             <div class="white-circle-img-goutte"></div>
                             <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
@@ -240,10 +240,10 @@
                                         <div class="position-relative" >
                                             {% if challenge.challengePhoto is not null %}
                                                 <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
                                             {% else %}
                                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                                             {% endif %}
                                             <div class="white-circle-img-goutte"></div>
                                             <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
@@ -270,10 +270,10 @@
                                         <div class="position-relative" >
                                             {% if challenge.challengePhoto is not null %}
                                                 <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
                                             {% else %}
                                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                                             {% endif %}
                                             <div class="white-circle-img-goutte"></div>
                                             <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
@@ -307,7 +307,7 @@
         <div class="d-flex flex-column align-items-center scroll-comment">
             {% for clan in user.createdClans %}
                 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
-                    {% if clan.logo is not null %}
+                    {% if clan.banner is not null %}
                         <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                     {% else %}
                         <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
@@ -338,7 +338,7 @@
             <div class="d-flex flex-column align-items-center scroll-comment">
                 {% for clan in user.clans %}
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
-                        {% if clan.logo is not null %}
+                        {% if clan.banner is not null %}
                             <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                         {% else %}
                             <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
