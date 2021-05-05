@@ -45,8 +45,8 @@
         </div>
         <div class="row justify-content-center">
             {% for challenge in pagination %}
+                {% set multiSportGoutte = "build/images/goutte/kmulti.png" %}
                 {% set sportGoutte = challenge.sports|length>1 ? multiSportGoutte : challenge.sports|length==1 ? "/uploads/goutte/"~challenge.sports['0'].goutte : defaultLogo %}
-                {% set sportColor = challenge.sports|length>1 ? multiSportColor : challenge.sports|length==1 ? challenge.sports['0'].color : '#FFF' %}
                 <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative">
                     <a class="card text-decoration-none text-dark h-100 no-bg-border"
                        href="{{ path("challenge_show", {id: challenge.id}) }}">
