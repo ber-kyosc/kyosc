@@ -22,7 +22,7 @@
         {% endif %}
         <div class="my-5 p-4 w-75 transparent-background-dark">
             {% if user.biography %}
-                <p class="biography-text">"{{ user.biography }}"</p>
+                <p class="biography-text pre-line">"{{ user.biography }}"</p>
             {% else %}
                 <p>{% if user.pseudo %}
                         {{ user.pseudo }}

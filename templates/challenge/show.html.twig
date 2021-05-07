@@ -21,8 +21,8 @@
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
             <div class="col-lg-6 transparent-background-dark p-3">
-                <h3 class="challenge-quotation mb-4">{{ challenge.quotation }}</h3>
-                <p class="challenge-description">{{ challenge.description }}</p>
+                <h3 class="challenge-quotation mb-4 pre-line">{{ challenge.quotation }}</h3>
+                <p class="challenge-description pre-line">{{ challenge.description }}</p>
             </div>
         </div>
     </section>
@@ -30,7 +30,7 @@
     <div class="mt-2 mb-4 container d-flex justify-content-center">
         <div class="col-10 title-info-event transparent-background-dark p-3">
             <h3>Informations sur l'évènement:</h3>
-            <p>{{ challenge.information}}</p>
+            <p class="pre-line">{{ challenge.information}}</p>
         </div>
     </div>
 
@@ -115,7 +115,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body pre-line">
                     {{ challenge.journey}}
                 </div>
             </div>
@@ -192,7 +192,7 @@
             <div class="col-lg-6 col-12 mt-lg-3 text-center">
                 <h3>Biographie</h3>
                 {% if challenge.creator.biography is not null %}
-                <p> {{ challenge.creator.biography }}</p>
+                <p class="pre-line"> {{ challenge.creator.biography }}</p>
                 {% else %}
                 <p>L'organisateur.trice de l'aventure n'a pas encore rédigé de biographie.</p>
                 {% endif %}
@@ -224,7 +224,7 @@
                     {% if message.isPublic %}
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
                             <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
-                                <p>{{ message.content }}</p>
+                                <p class="pre-line">{{ message.content }}</p>
                                 {% if app.user and is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
                                     {{ include('message/_delete_form.html.twig') }}
                                 {% endif %}
