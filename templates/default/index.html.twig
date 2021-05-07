@@ -66,128 +66,115 @@
         </div>
     </section>
     <!-- section challenges -->
-    <section class="home-section home-challenges align-items-center hide-before-scroll show-on-scroll">
-        {% if topChallenge %}
-        <div class="homeTopSelection home-cartouche">
-            <figure>
-                <a class="card text-decoration-none text-dark h-100 no-bg-border"
-                   href="{{ path("challenge_show", {id: topChallenge.id}) }}">
-                    <p class="title-date-card text-center bg-dark text-white m-0">{{ topChallenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
-                    <div class="position-relative">
-                        {% if topChallenge.challengePhoto is not null %}
-                            <img src="{{ vich_uploader_asset(topChallenge, 'challengePhotoFile') | imagine_filter('challenge_thumb') }}"
-                                 alt="photo du challenge" class="w-100 challenge-photo-container">
-                        {% else %}
-                            <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                 alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+    <section class="row mx-0">
+        {% for challenge in featuredChallenges %}
+            <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column
+                {% if challenge.id and challenge.id matches '/^([^0-9]*)$/' %}
+                    justify-content-center
+                {% else %}
+                    justify-content-end
+                {% endif %}
+                align-items-center p-1 hide-before-scroll show-on-scroll"
+            {% if challenge.id and challenge.id matches '/^([^0-9]*)$/' %}
+                {% if challenge.id is same as('allChallenges') %}
+                    href="{{ path("challenge_index") }}"
+                {% else %}
+                    href="{{ path('challenge_new') }}"
+                {% endif %}
+                style="background-color: #111"
+            {% elseif challenge.id %}
+                href="{{ path("challenge_show", {id: challenge.id}) }}"
+                    {% if challenge.challengePhoto is not null %}
+                        style="background: url('{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}') no-repeat center; background-size: cover;"
+                    {% else %}
+                        style="background: url('{{ asset('uploads/challenge/challenge-default.jpeg') }}') no-repeat center; background-size: cover;"
+                    {% endif %}
+            {% else %}
+                style="background: url('{{ asset(challenge.challengePhoto) }}') no-repeat center; background-size: cover; opacity: 0.4;"
+            {% endif %}
+            >
+                {% if challenge.id and challenge.id matches '/^([^0-9]*)$/' %}
+                    {% if challenge.id is same as('allChallenges') %}
+                    <h2 class="text-uppercase text-white font-weight-bold mb-0 home-all-links">Toutes les<br>
+                        aventures !</h2>
+                    {% else %}
+                    <div class="form-kyosc d-flex align-items-center justify-content-center">
+                        <div class="btn-login btn btn-lg home-new-links">Créer une aventure</div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-white transparent-background-dark h6
+                        {% if challenge.id and challenge.id matches '/^\\d+$/' %}
+                            p-3
+                        {% endif %}">
+                        <span>
+                        {% if challenge.id and challenge.id matches '/^\\d+$/' %}
+                            {{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }} :<br> {{ challenge.title }}
+                        {% elseif not challenge.id %}
+                            {{ challenge.title }}
                         {% endif %}
+                        </span>
                     </div>
-                    <div class="card-body home-challenge p-2">
-                        <h5 class="card-title text-center text-uppercase">{{ topChallenge.title }}</h5>
-                        <p class="card-text text-center">"{{ topChallenge.quotation }}"</p>
-                    </div>
-                </a>
-                <figcaption class="home-figcaption text-selection">À LA UNE</figcaption>
-            </figure>
-        </div>
-        {% endif %}
-        {% if featuredChallenges %}
-        <div class="homeSelection home-cartouche hide-before-scroll show-on-scroll">
-            <figure>
-                <div class="container-fluid">
-                    <div class="row justify-content-center">
-                    {% for challenge in featuredChallenges %}
-                        <div class="col-12 col-sm-6 p-3 position-relative">
-                            <a class="card text-decoration-none text-dark h-100 no-bg-border"
-                               href="{{ path("challenge_show", {id: challenge.id}) }}">
-                                <div class="position-relative">
-                                    {% if challenge.challengePhoto is not null %}
-                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb') }}"
-                                             alt="photo du challenge" class="w-100 challenge-photo-container">
-                                    {% else %}
-                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                             alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                                    {% endif %}
-                                </div>
-                                <div class="card-body p-1">
-                                    <h5 class="card-title text-center">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }} :<br> {{ challenge.title }}</h5>
-                                </div>
-                            </a>
-                        </div>
-                    {% endfor %}
-                    </div>
-                </div>
-                <figcaption class="home-figcaption text-selection">NOTRE SELECTION</figcaption>
-            </figure>
-        </div>
-        {% endif %}
-        <div class="all-projects home-cartouche show-on-scroll hide-before-scroll text-center">
-            <span id="all-projects">TOUTES LES AVENTURES</span>
-            <a href="{{ path("challenge_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/universKyosc.png') }}"></a>
-            <a href="{{ path("challenge_index") }}" class="button-discover btn-lg">Je découvre</a>
-        </div>
+                {% endif %}
+            </a>
+        {% endfor %}
     </section>
     <!-- section clans -->
-    <section class="home-section home-challenges align-items-center hide-before-scroll show-on-scroll">
-        {% if topClan %}
-            <div class="homeTopSelection home-cartouche">
-                <figure>
-                    <a class="card text-decoration-none text-dark h-100 no-bg-border"
-                       href="{{ path("clan_show", {id: topClan.id}) }}">
-                        <div class="position-relative">
-                            {% if topClan.banner is not null %}
-                                <img src="{{ vich_uploader_asset(topClan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
-                                     alt="photo du clan" class="w-100 challenge-photo-container">
-                            {% else %}
-                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                     alt="photo par défaut du clan" class="w-100 challenge-photo-container">
-                            {% endif %}
+    <section class="row mx-0">
+        {% for clan in clans %}
+            <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column
+                {% if clan.id and clan.id matches '/^([^0-9]*)$/' %}
+                    justify-content-center
+                {% else %}
+                    justify-content-end
+                {% endif %}
+                align-items-center p-1 hide-before-scroll show-on-scroll"
+                    {% if clan.id and clan.id matches '/^([^0-9]*)$/' %}
+                        {% if clan.id is same as('allClans') %}
+                            href="{{ path("clan_index") }}"
+                        {% else %}
+                            href="{{ path('clan_new') }}"
+                        {% endif %}
+                        style="background-color: #111"
+                    {% elseif clan.id %}
+                        href="{{ path("clan_show", {id: clan.id}) }}"
+                        {% if clan.banner is not null %}
+                            style="background: url('{{ vich_uploader_asset(clan, 'bannerFile') }}') no-repeat center; background-size: cover;"
+                        {% else %}
+                            style="background: url('{{ asset('uploads/challenge/challenge-default.jpeg') }}') no-repeat center; background-size: cover;"
+                        {% endif %}
+                    {% else %}
+                        style="background: url('{{ asset(clan.banner) }}') no-repeat center; background-size: cover; opacity: 0.4;"
+                    {% endif %}
+            >
+                {% if clan.id and clan.id matches '/^([^0-9]*)$/' %}
+                    {% if clan.id is same as('allClans') %}
+                        <h2 class="text-uppercase text-white font-weight-bold mb-0 home-all-links">Tous les<br>
+                            clans !</h2>
+                    {% else %}
+                        <div class="form-kyosc d-flex align-items-center justify-content-center">
+                            <div class="btn-login btn btn-lg home-new-links">Créer un clan</div>
                         </div>
-                        <div class="card-body home-challenge p-2">
-                            <h5 class="card-title text-center text-uppercase">{{ topClan.name }}</h5>
-                        </div>
-                    </a>
-                    <figcaption class="home-figcaption text-selection">À LA UNE</figcaption>
-                </figure>
-            </div>
-        {% endif %}
-        {% if clans %}
-            <div class="homeSelection home-cartouche hide-before-scroll show-on-scroll">
-                <figure>
-                    <div class="container-fluid">
-                        <div class="row justify-content-center">
-                            {% for clan in clans %}
-                                <div class="col-12 col-sm-6 p-3 position-relative">
-                                    <a class="card text-decoration-none text-dark h-100 no-bg-border"
-                                       href="{{ path("clan_show", {id: clan.id}) }}">
-                                        <div class="position-relative">
-                                            {% if clan.banner is not null %}
-                                                <img src="{{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
-                                                     alt="photo du clan" class="w-100 challenge-photo-container">
-                                            {% else %}
-                                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du clan" class="w-100 challenge-photo-container">
-                                            {% endif %}
-                                        </div>
-                                        <div class="card-body p-1">
-                                            <h5 class="card-title text-center">{{ clan.name }}</h5>
-                                        </div>
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-white transparent-background-dark h6
+                        {% if clan.id and clan.id matches '/^\\d+$/' %}
+                            p-3
+                        {% endif %}">
+                        <span>
+                        {% if clan.id and clan.id matches '/^\\d+$/' %}
+                            {{ clan.name }}
+                        {% elseif not clan.id %}
+                            {{ clan.name }}
+                        {% endif %}
+                        </span>
                     </div>
-                    <figcaption class="home-figcaption text-selection">NOTRE SELECTION</figcaption>
-                </figure>
-            </div>
-        {% endif %}
-        <div class="all-projects home-cartouche show-on-scroll hide-before-scroll text-center">
-            <span id="all-projects">TOUS LES CLANS</span>
-            <a href="{{ path("clan_index") }}"><img class="home-multi-universes" src="{{ asset('build/images/logo/team.jpg') }}"></a>
-            <a href="{{ path("clan_index") }}" class="button-discover btn-lg">Je découvre</a>
-        </div>
+                {% endif %}
+            </a>
+        {% endfor %}
     </section>
-    <section class="home-section testimonials hide-before-scroll show-on-scroll">
+    <!-- section testimonies -->
+    <section class="m-5 home-section testimonials transparent-background-dark hide-before-scroll show-on-scroll">
         <h6 class="text-uppercase d-flex justify-content-center align-items-center">
             <img class="w-25 mx-4" src="{{ asset('build/images/picto/kampagne.png') }}">
             Témoignages
