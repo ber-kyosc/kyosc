@@ -335,12 +335,22 @@ class ChallengeController extends AbstractController
             /* @phpstan-ignore-next-line */
             $video->setAuthor($this->getUser());
             $url = $video->getLink();
-            $youtubeVideoId = [];
-            /* @phpstan-ignore-next-line */
-            parse_str(parse_url($url, PHP_URL_QUERY), $youtubeVideoId);
-            $video->setYoutubeId($youtubeVideoId['v']);
-            $entityManager->persist($video);
-            $entityManager->flush();
+            if (!is_null($url)) {
+                $youtubeVideoId = [];
+                // phpcs:ignore
+                $youtubeRegex = "/^(?:https?:)?(?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]{7,15})(?:[\?&][a-zA-Z0-9\_-]+=[a-zA-Z0-9\_-]+)*$/";
+                preg_match($youtubeRegex, $url, $youtubeVideoId);
+                if (!empty($youtubeVideoId)) {
+                    $video->setYoutubeId($youtubeVideoId[1]);
+                    $entityManager->persist($video);
+                    $entityManager->flush();
+                } else {
+                    $this->addFlash(
+                        'danger',
+                        "L'URL saisit ne correspond pas à une URL Youtube valide"
+                    );
+                }
+            }
         }
 
         return $this->render('challenge/show.html.twig', [
