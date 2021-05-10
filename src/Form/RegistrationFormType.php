@@ -78,7 +78,7 @@ class RegistrationFormType extends AbstractType
             ->add('address', TextType::class, [
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Addresse',
+                    'placeholder' => 'Adresse',
                 ]])
             ->add('city', TextType::class, [
                 'required' => true,
