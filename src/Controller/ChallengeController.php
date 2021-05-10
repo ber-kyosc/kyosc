@@ -67,7 +67,7 @@ class ChallengeController extends AbstractController
 
     /**
      * @Route(
-     *     "/nouveau",
+     *     "/nouvelle",
      *     name="new",
      *     methods={"GET", "POST"}
      * )
