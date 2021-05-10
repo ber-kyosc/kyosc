@@ -4,12 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Entity\Challenge;
+use App\Entity\Clan;
 use App\Entity\Sport;
 use App\Entity\User;
 use App\Entity\Brand;
 use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use App\Repository\ClanRepository;
 use App\Repository\SportRepository;
 use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -26,19 +28,22 @@ class DashboardController extends AbstractDashboardController
     private SportRepository $sportRepository;
     private UserRepository $userRepository;
     private BrandRepository $brandRepository;
+    private ClanRepository $clanRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
         ChallengeRepository $challengeRepository,
         SportRepository $sportRepository,
         UserRepository $userRepository,
-        BrandRepository $brandRepository
+        BrandRepository $brandRepository,
+        ClanRepository $clanRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->challengeRepository = $challengeRepository;
         $this->sportRepository = $sportRepository;
         $this->userRepository = $userRepository;
         $this->brandRepository = $brandRepository;
+        $this->clanRepository = $clanRepository;
     }
 
     /**
@@ -67,7 +72,8 @@ class DashboardController extends AbstractDashboardController
         return [
             MenuItem::linktoDashboard('Dashboard', 'fa fa-home'),
             MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class),
-            MenuItem::linkToCrud('Challenges', 'fas fa-trophy', Challenge::class),
+            MenuItem::linkToCrud('Aventures', 'fas fa-trophy', Challenge::class),
+            MenuItem::linkToCrud('Clans', 'fas fa-mug-hot', Clan::class),
             MenuItem::linkToCrud('Sports', 'fas fa-quidditch', Sport::class),
             MenuItem::linkToCrud('Catégories', 'fas fa-book', Category::class),
             MenuItem::linkToCrud('Marques', 'fas fa-copyright', Brand::class)
