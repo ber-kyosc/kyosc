@@ -21,7 +21,7 @@
         {% endif %}
     </ul>
     {% if app.user  %}
-        <a href="{{ path("profil_show", {id: app.user.id}) }}" class="w-25 text-center">
+        <a href="{{ path("profil_my_profil") }}" class="w-25 text-center">
             {% if app.user.profilPhoto is not null%}
                 <img src="{{ vich_uploader_asset(app.user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="avatar-testimony">
             {% else %}

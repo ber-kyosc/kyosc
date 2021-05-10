@@ -17,7 +17,7 @@
         </header>
         <div class="row">
             <div class="col-12 col-lg-6">
-                <p class="font-weight-bold">Nombre de points: {{ app.user.points }}</p>
+                <a href="{{ path("profil_show", {id: app.user.id}) }}" class="btn-login btn btn-lg">Voir mon profil public</a>
                 <p class="font-weight-bold">{{ app.user.email }}</p>
             </div>
             <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
