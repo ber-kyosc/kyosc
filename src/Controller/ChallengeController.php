@@ -14,6 +14,7 @@ use App\Form\MessageType;
 use App\Form\VideoType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use App\Repository\MessageRepository;
 use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -28,6 +29,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use DateTime;
@@ -302,7 +304,7 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function show(Challenge $challenge, Request $request): Response
+    public function show(Challenge $challenge, MessageRepository $messageRepository, Request $request): Response
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
@@ -313,7 +315,7 @@ class ChallengeController extends AbstractController
         $formVideo->handleRequest($request);
 
         /* @phpstan-ignore-next-line */
-        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $message->setChallenge($challenge);
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -324,6 +326,23 @@ class ChallengeController extends AbstractController
             $message->setIsPublic(true);
             $entityManager->persist($message);
             $entityManager->flush();
+            $data = $messageRepository->find($message->getId());
+            return $this->json($data, Response::HTTP_OK, [], [
+//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
+                ObjectNormalizer::IGNORED_ATTRIBUTES => [
+                    'clan',
+                    'challenge',
+                    'sport',
+                    'challenges',
+                    'createdChallenges',
+                    'favoriteSports',
+                    'favoriteBrands',
+                    'clans',
+                    'createdClans',
+                    'messages',
+                    'videos',
+                ],
+            ]);
         }
 
         /* @phpstan-ignore-next-line */

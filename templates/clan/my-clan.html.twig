@@ -27,7 +27,7 @@
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Messages</h2>
         <p>Les messages laissés ici ne peuvent être vus que par les membres du clan</p>
-        <div class="d-flex flex-column w-100 scroll-comment">
+        <div class="d-flex flex-column-reverse w-100 scroll-comment comment-space">
         {% if clan.messages|length >= 1 %}
             {% for message in clan.messages|reverse %}
                 {% if message.isPublic == false %}
@@ -57,7 +57,7 @@
         </div>
         {% if app.user %}
             <h3 class="mt-3">Ajoutez un message !</h3>
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
         {% endif %}
