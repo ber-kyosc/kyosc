@@ -12,9 +12,7 @@ commentForm.submit((e) => {
         url: commentForm.attr('action'),
         data: commentForm.serialize(),
         success(data) {
-            console.log('Submission was successful.');
             $('#message_content').val('');
-            console.log(data);
             let pseudo = data.author.firstName;
             if (data.author.profilPhoto !== null) {
                 pseudo = data.author.pseudo;
