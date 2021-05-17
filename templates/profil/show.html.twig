@@ -17,7 +17,7 @@
         </header>
         <div class="row">
             <div class="col-12 col-lg-6">
-                <p class="font-weight-bold">Nombre de points: {{ app.user.points }}</p>
+                <a href="{{ path("profil_show", {id: app.user.id}) }}" class="btn-login btn btn-lg">Voir mon profil public</a>
                 <p class="font-weight-bold">{{ app.user.email }}</p>
             </div>
             <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
@@ -31,7 +31,7 @@
             <div class="container col-lg-6 col-12 profil-container">
                 <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
                     {% if app.user.profilPhoto is not null%}
-                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer">
+                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer w-75">
                     {% else %}
                         <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
                     {% endif %}
@@ -105,6 +105,9 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="form-check d-flex align-items-center mt-0 py-5 flex-row flex-wrap justify-content-center background-grey w-100">
+                        <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
+                            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                        </div>
                         {% for category in categories %}
                             <div class="d-flex flex-column align-items-center w-100 mt-2 mx-5 pt-2 transparent-background-dark">
                                 <h3 class="text-center" style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
@@ -128,6 +131,9 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
+                            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,6 +159,9 @@
                             {{ form_widget(form.brandSuggestion) }}
                             {{ form_errors(form.brandSuggestion) }}
                         </div>
+                        <div class="col-12 col-lg-6 p-3 d-flex justify-content-center align-self-center">
+                            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,6 +180,9 @@
                             {{ form_widget(form.favoriteDestination) }}
                             {{ form_errors(form.favoriteDestination) }}
                         </div>
+                        <div class="col-12 col-lg-6 p-3 d-flex justify-content-center align-self-center">
+                            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,19 +191,23 @@
         </div>
         <div class="container margin">
             <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
+            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+            </div>
         </div>
         {% if challenges|length < 3 %}
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
             {% for challenge in challenges|slice(0, 3) %}
-                <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
                     <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
                         <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
                         <div class="position-relative" >
                             {% if challenge.challengePhoto is not null %}
                                 <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                     alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                     alt="photo du challenge" class="w-100 challenge-photo-container">
                             {% else %}
                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
+                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                             {% endif %}
                             <div class="white-circle-img-goutte"></div>
                             <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
@@ -208,6 +224,7 @@
             {% else %}
                 <p class="text-center">Vous n'avez pas encore créé d'aventure</p>
             {% endfor %}
+            </div>
         {% else %}
         <div class="d-flex align-items-center justify-content-center">
             <!--Carousel Wrapper-->
@@ -235,10 +252,10 @@
                                         <div class="position-relative" >
                                             {% if challenge.challengePhoto is not null %}
                                                 <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
                                             {% else %}
                                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                                             {% endif %}
                                             <div class="white-circle-img-goutte"></div>
                                             <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
@@ -265,10 +282,10 @@
                                         <div class="position-relative" >
                                             {% if challenge.challengePhoto is not null %}
                                                 <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
                                             {% else %}
                                                 <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container-profil">
+                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
                                             {% endif %}
                                             <div class="white-circle-img-goutte"></div>
                                             <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
@@ -295,11 +312,14 @@
         {% endif %}
         <div class="container margin mt-4">
             <h2 class="mb-4"> Mes clans créés - {{ user.createdClans|length }}</h2>
+            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+            </div>
         </div>
         <div class="d-flex flex-column align-items-center scroll-comment">
             {% for clan in user.createdClans %}
                 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
-                    {% if clan.logo is not null %}
+                    {% if clan.banner is not null %}
                         <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                     {% else %}
                         <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
@@ -330,7 +350,7 @@
             <div class="d-flex flex-column align-items-center scroll-comment">
                 {% for clan in user.clans %}
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
-                        {% if clan.logo is not null %}
+                        {% if clan.banner is not null %}
                             <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
                         {% else %}
                             <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
@@ -351,6 +371,9 @@
                 {% endfor %}
             </div>
         </section>
+        <div class="mt-5 pb-5 d-flex flex-column align-items-center">
+            {% include('user/_delete_form.html.twig') %}
+        </div>
     </div>
 {% endblock body %}
 

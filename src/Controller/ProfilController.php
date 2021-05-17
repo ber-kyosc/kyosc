@@ -9,11 +9,13 @@ use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
 use App\Security\EmailVerifier;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route ("/profil", name="profil_")
@@ -125,5 +127,29 @@ class ProfilController extends AbstractController
             }
         }
         return $this->render('profil/editEmail.html.twig', ['form' => $form->createView(), 'error' => $error]);
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param User $user
+     * @return Response
+     */
+    public function delete(Request $request, EntityManagerInterface $entityManager, User $user): Response
+    {
+        if (!($this->getUser() == $user)) {
+            throw new AccessDeniedException('Seul le détenteur d\'un compte peut le supprimer.');
+        }
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "Votre compte a bien été supprimé."
+            );
+        }
+
+        return $this->redirectToRoute('home');
     }
 }

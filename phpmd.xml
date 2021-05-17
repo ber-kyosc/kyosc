@@ -17,10 +17,12 @@
         <exclude name="TooManyPublicMethods" />
         <exclude name="ExcessiveMethodLength" />
         <exclude name="ExcessivePublicCount" />
+        <exclude name="CyclomaticComplexity" />
+        <exclude name="NPathComplexity" />
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods" >
         <properties>
-            <property name="maxmethods" value="20" />
+            <property name="maxmethods" value="40" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessivePublicCount" >
@@ -36,7 +38,7 @@
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods" >
         <properties>
-            <property name="maxmethods" value="20" />
+            <property name="maxmethods" value="40" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessivePublicCount" >
@@ -59,6 +61,7 @@
     </rule>
     <rule ref="rulesets/naming.xml" >
         <exclude name="ShortVariable" />
+        <exclude name="LongVariable" />
     </rule>
     <rule ref="rulesets/naming.xml/ShortVariable">
         <properties>

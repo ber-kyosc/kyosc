@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ChallengeRepository;
+use App\Repository\ClanRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,22 +16,78 @@ class DefaultController extends AbstractController
      * @Route("/", name="home")
      * @param ChallengeRepository $challRepo
      * @param UserRepository $userRepo
+     * @param ClanRepository $clanRepo
      * @return Response
      */
-    public function index(ChallengeRepository $challRepo, UserRepository $userRepo): Response
+    public function index(ChallengeRepository $challRepo, UserRepository $userRepo, ClanRepository $clanRepo): Response
     {
+        $totalChallengesWanted = 6;
         $featuredChallenges = $challRepo->findBy(['isFeatured' => true]);
         shuffle($featuredChallenges);
-        if (count($featuredChallenges) > 4) {
-            $featuredChallenges = array_slice($featuredChallenges, 0, 4);
+        if (count($featuredChallenges) > $totalChallengesWanted) {
+            $featuredChallenges = array_slice($featuredChallenges, 0, $totalChallengesWanted);
+        } elseif (!$featuredChallenges) {
+            $featuredChallenges = $challRepo->findAll();
+            shuffle($featuredChallenges);
+            if (count($featuredChallenges) > $totalChallengesWanted) {
+                $featuredChallenges = array_slice($featuredChallenges, 0, $totalChallengesWanted);
+            }
         }
-        if ($featuredChallenges) {
-            $topChallenge = $featuredChallenges[array_rand($featuredChallenges)];
-        } else {
-            $topChallenges = $challRepo->findAll();
-            krsort($topChallenges);
-            $topChallenge = $topChallenges ? $topChallenges[0] : [];
+
+        if (count($featuredChallenges) < $totalChallengesWanted) {
+            $loops = $totalChallengesWanted - count($featuredChallenges);
+            for ($i = 0; $i < $loops; $i++) {
+                $randomImage = 'build/images/background/bgimg' . rand(1, 11) . '.jpeg';
+                $featuredChallenges[] = [
+                    'id' => false,
+                    'title' => '',
+                    'challengePhoto' => $randomImage,
+                ];
+            }
         }
+
+        $featuredChallenges[] = [
+            'id' => 'allChallenges',
+        ];
+        $featuredChallenges[] = [
+            'id' => 'challengeNew',
+        ];
+        shuffle($featuredChallenges);
+
+        $totalClansWanted = 6;
+        $clans = $clanRepo->findBy(['isPublic' => true]);
+        shuffle($clans);
+        if (count($clans) > $totalClansWanted) {
+            $clans = array_slice($clans, 0, $totalClansWanted);
+        } elseif (!$clans) {
+            $clans = $challRepo->findAll();
+            shuffle($clans);
+            if (count($clans) > $totalClansWanted) {
+                $clans = array_slice($clans, 0, $totalClansWanted);
+            }
+        }
+
+        if (count($clans) < $totalClansWanted) {
+            $loops = $totalClansWanted - count($clans);
+            for ($i = 0; $i < $loops; $i++) {
+                $randomImage = 'build/images/background/bgimg' . rand(1, 11) . '.jpeg';
+                $clans[] = [
+                    'id' => false,
+                    'name' => '',
+                    'banner' => $randomImage,
+                ];
+            }
+        }
+
+        $clans[] = [
+            'id' => 'allClans',
+        ];
+        $clans[] = [
+            'id' => 'clanNew',
+        ];
+        shuffle($clans);
+
+
         $usersTestimonials = $userRepo->findAllNotNullTestimony();
         shuffle($usersTestimonials);
         if (count($usersTestimonials) > 3) {
@@ -39,9 +96,9 @@ class DefaultController extends AbstractController
         $imagesCarousel = $this->getDoctrine()->getRepository(Category::class)->findAll();
         return $this->render('default/index.html.twig', [
             'featuredChallenges' => $featuredChallenges,
-            'topChallenge' => $topChallenge,
             'usersTestimonials' => $usersTestimonials,
             'imagesCarousel' => $imagesCarousel,
+            'clans' => $clans,
         ]);
     }
 
