@@ -20,7 +20,7 @@
         <div class="row justify-content-center justify-content-md-around">
             <div class="col-lg-6 transparent-background-dark p-3">
                 <h2 class="challenge-quotation mb-4">Description du clan</h2>
-                <p class="challenge-description">{{ clan.description }}</p>
+                <p class="challenge-description pre-line">{{ clan.description }}</p>
             </div>
         </div>
     </section>
@@ -82,7 +82,7 @@
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
                 <a href="{{ path("profil_show", {id: clan.creator.id}) }}" class="text-center">
                     {% if clan.creator.profilPhoto is not null %}
-                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
                     {% else %}
                         <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                     {% endif %}
@@ -92,7 +92,7 @@
             <div class="col-lg-6 col-12 mt-lg-3 text-center">
                 <h3>Biographie</h3>
                 {% if clan.creator.biography is not null %}
-                    <p> {{ clan.creator.biography }}</p>
+                    <p class="pre-line"> {{ clan.creator.biography }}</p>
                 {% else %}
                     <p>Le créateur.trice du clan n'a pas encore de biographie.</p>
                 {% endif %}
@@ -106,7 +106,7 @@
                 <div class="d-flex flex-column align-items-center m-4">
                     <a href="{{ path("profil_show", {id: member.id}) }}">
                         {% if member.profilPhoto is not null %}
-                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile') }}" alt="photo de profil du membre du clan">
+                            <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(member, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="photo de profil du membre du clan">
                         {% else %}
                             <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="photo de profil par défaut">
                         {% endif %}
@@ -118,13 +118,13 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Commentaires</h2>
-        <div class="d-flex flex-column w-100 scroll-comment">
+        <div class="d-flex flex-column-reverse w-100 scroll-comment comment-space">
             {% if clan.messages|length >= 1 %}
                 {% for message in clan.messages|reverse %}
                     {% if message.isPublic %}
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
                             <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
-                                <p>{{ message.content }}</p>
+                                <p class="pre-line">{{ message.content }}</p>
                                 {% if app.user %}
                                     {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
                                         {{ include('message/_delete_form.html.twig') }}
@@ -148,7 +148,7 @@
         </div>
         {% if app.user %}
             <h3 class="mt-3">Ajoutez un commentaire !</h3>
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
         {% endif %}

@@ -104,7 +104,7 @@ class Challenge
      * @ORM\Column(type="float", nullable=true)
      * @Assert\Positive(message="La distance doit être une valeure numérique positive")
      */
-    private float $distance;
+    private ?float $distance;
 
     /**
      * @ORM\Column(type="text")
@@ -163,9 +163,14 @@ class Challenge
     private Collection $clans;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="challenge", cascade={"remove"})
+     */
+    private Collection $videos;
 
     public function __construct()
     {
@@ -173,6 +178,7 @@ class Challenge
         $this->participants = new ArrayCollection();
         $this->clans = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -475,6 +481,36 @@ class Challenge
             // set the owning side to null (unless already changed)
             if ($message->getChallenge() === $this) {
                 $message->setChallenge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getChallenge() === $this) {
+                $video->setChallenge(null);
             }
         }
 

@@ -21,8 +21,8 @@
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
             <div class="col-lg-6 transparent-background-dark p-3">
-                <h3 class="challenge-quotation mb-4">{{ challenge.quotation }}</h3>
-                <p class="challenge-description">{{ challenge.description }}</p>
+                <h3 class="challenge-quotation mb-4 pre-line">{{ challenge.quotation }}</h3>
+                <p class="challenge-description pre-line">{{ challenge.description }}</p>
             </div>
         </div>
     </section>
@@ -30,7 +30,7 @@
     <div class="mt-2 mb-4 container d-flex justify-content-center">
         <div class="col-10 title-info-event transparent-background-dark p-3">
             <h3>Informations sur l'évènement:</h3>
-            <p>{{ challenge.information}}</p>
+            <p class="pre-line">{{ challenge.information}}</p>
         </div>
     </div>
 
@@ -50,11 +50,16 @@
                         </div>
                         <div class="key-info-row">
                             <span class="key-info">DISTANCE:</span>
+                            {% if challenge.distance %}
                             <p>{{challenge.distance}} km</p>
+                            {% else %}
+                            <p>Non spécifiée</p>
+                            {% endif %}
                         </div>
                         <div class="key-info-row">
                             <p class="mb-0"><span class="key-info">ETAPES:</span>
                                 <a class="journey-link" data-toggle="modal" data-target="#modalJourney">Voir les grandes étapes</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -110,7 +115,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body pre-line">
                     {{ challenge.journey}}
                 </div>
             </div>
@@ -153,13 +158,31 @@
         </div>
     {#       end of modal for journey pop-up#}
 
+    {#        modal for youtube video pop-up#}
+    <div class="modal fade" id="youtubeLinkForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">Partagez une video Youtube en lien avec cette aventure !</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    {% include 'video/_form_video.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for youtube video pop-up#}
+
     <div class="container w-75 mx-auto my-5 challenge-organisator transparent-background-dark p-3">
         <h2 class="mb-3 h5 text-uppercase text-center" style="color: {{color}}">Qui organise l'aventure ?</h2>
         <div class="row">
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
                 <a href="{{ path("profil_show", {id: challenge.creator.id}) }}" class="text-center">
                 {% if challenge.creator.profilPhoto is not null %}
-                    <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                    <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(challenge.creator, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
                 {% else %}
                     <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                 {% endif %}
@@ -169,7 +192,7 @@
             <div class="col-lg-6 col-12 mt-lg-3 text-center">
                 <h3>Biographie</h3>
                 {% if challenge.creator.biography is not null %}
-                <p> {{ challenge.creator.biography }}</p>
+                <p class="pre-line"> {{ challenge.creator.biography }}</p>
                 {% else %}
                 <p>L'organisateur.trice de l'aventure n'a pas encore rédigé de biographie.</p>
                 {% endif %}
@@ -183,7 +206,7 @@
             <div class="d-flex flex-column align-items-center m-4">
                 <a href="{{ path("profil_show", {id: participant.id}) }}">
                 {% if participant.profilPhoto is not null %}
-                    <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(participant, 'profilPhotoFile') }}" alt="profilPhoto of challenge creator">
+                    <img class="participant-photo-challenge mb-2 avatar" src="{{ vich_uploader_asset(participant, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
                 {% else %}
                     <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                 {% endif %}
@@ -195,17 +218,15 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Commentaires</h2>
-        <div class="d-flex flex-column w-100 scroll-comment">
+        <div class="d-flex flex-column-reverse w-100 scroll-comment comment-space">
             {% if challenge.messages|length >= 1 %}
                 {% for message in challenge.messages|reverse %}
                     {% if message.isPublic %}
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
                             <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
-                                <p>{{ message.content }}</p>
-                                {% if app.user %}
-                                    {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
-                                        {{ include('message/_delete_form.html.twig') }}
-                                    {% endif %}
+                                <p class="pre-line">{{ message.content }}</p>
+                                {% if app.user and is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
+                                    {{ include('message/_delete_form.html.twig') }}
                                 {% endif %}
                             </div>
                             <h4 class="mt-4"><a href="{{ path("profil_show", {id: message.author.id}) }}" class="w-25 text-center">
@@ -225,9 +246,35 @@
         </div>
         {% if app.user %}
             <h3 class="mt-3">Ajoutez un commentaire !</h3>
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
         {% endif %}
+    </div>
+    <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
+        <h2>Vidéos</h2>
+        <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#youtubeLinkForm">
+            <h2 class="mt-5 arrow-header">Ajoutez des vidéos !<br>
+                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+            </h2>
+        </a>
+        <div class="mt-3 d-flex flex-column align-items-center w-100 scroll-comment">
+            {% if challenge.videos|length >= 1 %}
+                {% for video in challenge.videos|reverse %}
+                    <div class="d-flex flex-column justify-content-center align-items-center m-3">
+                        <h4 class="text-center">
+                            {{ video.title }}
+                            {% if app.user and is_granted("ROLE_ADMIN") or app.user == video.author or app.user == challenge.creator %}
+                                {{ include('video/_delete_form.html.twig') }}
+                            {% endif %}
+                        </h4>
+                        <iframe class="youtube-embed-video" src="https://www.youtube.com/embed/{{ video.youtubeId }}?rel=0" frameborder="0" allowfullscreen></iframe>
+                        <span class="message-date">Postée le {{ video.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }} par {{ video.author.pseudo? video.author.pseudo : video.author.firstname ~' '~ video.author.lastname}}</span>
+                    </div>
+                 {% endfor %}
+            {% else %}
+                <p>Cette aventure n'a pas encore de vidéos</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -26,7 +27,7 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity=Clan::class, inversedBy="messages")
      */
-    private ?Clan $clan;
+    private ?Clan $clan = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -51,7 +52,7 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity=Challenge::class, inversedBy="messages")
      */
-    private ?Challenge $challenge;
+    private ?Challenge $challenge = null;
 
     public function getId(): ?int
     {

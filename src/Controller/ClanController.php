@@ -9,6 +9,7 @@ use App\Form\ClanType;
 use App\Form\MessageType;
 use App\Repository\ChallengeRepository;
 use App\Repository\ClanRepository;
+use App\Repository\MessageRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/clan", name="clan_")
@@ -77,15 +79,19 @@ class ClanController extends AbstractController
 
     /**
      * @Route("/{id}", name="show", methods={"GET","POST"})
+     * @param Clan $clan
+     * @param MessageRepository $messageRepository
+     * @param Request $request
+     * @return Response
      */
-    public function show(Clan $clan, Request $request): Response
+    public function show(Clan $clan, MessageRepository $messageRepository, Request $request): Response
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
         /* @phpstan-ignore-next-line */
-        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $message->setClan($clan);
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -96,7 +102,25 @@ class ClanController extends AbstractController
             $message->setIsPublic(true);
             $entityManager->persist($message);
             $entityManager->flush();
+            $data = $messageRepository->find($message->getId());
+            return $this->json($data, Response::HTTP_OK, [], [
+//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
+                ObjectNormalizer::IGNORED_ATTRIBUTES => [
+                    'clan',
+                    'challenge',
+                    'sport',
+                    'challenges',
+                    'createdChallenges',
+                    'favoriteSports',
+                    'favoriteBrands',
+                    'clans',
+                    'createdClans',
+                    'messages',
+                    'videos',
+                ],
+            ]);
         }
+
         return $this->render('clan/show.html.twig', [
             'clan' => $clan,
             'form' => $form->createView(),
@@ -106,7 +130,7 @@ class ClanController extends AbstractController
     /**
      * @Route("/{id}/mon-clan", name="my-clan", methods={"GET","POST"})
      */
-    public function myClan(Clan $clan, Request $request): Response
+    public function myClan(Clan $clan, MessageRepository $messageRepository, Request $request): Response
     {
         $membersId = [];
         foreach ($clan->getMembers() as $member) {
@@ -125,7 +149,7 @@ class ClanController extends AbstractController
         $form->handleRequest($request);
 
         /* @phpstan-ignore-next-line */
-        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $message->setClan($clan);
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -136,6 +160,23 @@ class ClanController extends AbstractController
             $message->setIsPublic(false);
             $entityManager->persist($message);
             $entityManager->flush();
+            $data = $messageRepository->find($message->getId());
+            return $this->json($data, Response::HTTP_OK, [], [
+//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
+                ObjectNormalizer::IGNORED_ATTRIBUTES => [
+                    'clan',
+                    'challenge',
+                    'sport',
+                    'challenges',
+                    'createdChallenges',
+                    'favoriteSports',
+                    'favoriteBrands',
+                    'clans',
+                    'createdClans',
+                    'messages',
+                    'videos',
+                ],
+            ]);
         }
 
         return $this->render('clan/my-clan.html.twig', [

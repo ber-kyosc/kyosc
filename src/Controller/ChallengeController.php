@@ -7,15 +7,20 @@ use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
 use App\Entity\Message;
 use App\Entity\Sport;
+use App\Entity\Video;
 use App\Form\ChallengeSearchType;
 use App\Form\ChallengeType;
 use App\Form\MessageType;
+use App\Form\VideoType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use App\Repository\MessageRepository;
 use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 use Knp\Component\Pager\PaginatorInterface;
+use mysql_xdevapi\Exception;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +29,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use DateTime;
@@ -31,7 +37,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route(
- *     "/challenge",
+ *     "/aventure",
  *     name="challenge_"
  * )
  */
@@ -63,7 +69,7 @@ class ChallengeController extends AbstractController
 
     /**
      * @Route(
-     *     "/nouveau",
+     *     "/nouvelle",
      *     name="new",
      *     methods={"GET", "POST"}
      * )
@@ -96,7 +102,7 @@ class ChallengeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Votre challenge a été correctement soumis et sera validé très prochainement !"
+                "Votre aventure a été correctement soumis et sera validée très prochainement !"
             );
 
             return $this->redirectToRoute('challenge_index');
@@ -267,7 +273,7 @@ class ChallengeController extends AbstractController
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
                 ->to($emailAddress)
-                ->subject('Invitation à un challenge Kyosc')
+                ->subject('Invitation à une aventure Kyosc')
                 ->html(
                     $this->renderView(
                         'email/challenge-invitation.html.twig',
@@ -298,14 +304,18 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function show(Challenge $challenge, Request $request): Response
+    public function show(Challenge $challenge, MessageRepository $messageRepository, Request $request): Response
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
+        $video = new Video();
+        $formVideo = $this->createForm(VideoType::class, $video);
+        $formVideo->handleRequest($request);
+
         /* @phpstan-ignore-next-line */
-        if ($form->isSubmitted() && $form->isValid() && $form->get('save-message')->isClicked()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $message->setChallenge($challenge);
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -316,11 +326,56 @@ class ChallengeController extends AbstractController
             $message->setIsPublic(true);
             $entityManager->persist($message);
             $entityManager->flush();
+            $data = $messageRepository->find($message->getId());
+            return $this->json($data, Response::HTTP_OK, [], [
+//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
+                ObjectNormalizer::IGNORED_ATTRIBUTES => [
+                    'clan',
+                    'challenge',
+                    'sport',
+                    'challenges',
+                    'createdChallenges',
+                    'favoriteSports',
+                    'favoriteBrands',
+                    'clans',
+                    'createdClans',
+                    'messages',
+                    'videos',
+                ],
+            ]);
+        }
+
+        /* @phpstan-ignore-next-line */
+        if ($formVideo->isSubmitted() && $formVideo->isValid() && $formVideo->get('save-video')->isClicked()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $video->setChallenge($challenge);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $video->setCreatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $video->setAuthor($this->getUser());
+            $url = $video->getLink();
+            if (!is_null($url)) {
+                $youtubeVideoId = [];
+                // phpcs:ignore
+                $youtubeRegex = "/^(?:https?:)?(?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]{7,15})(?:[\?&][a-zA-Z0-9\_-]+=[a-zA-Z0-9\_-]+)*$/";
+                preg_match($youtubeRegex, $url, $youtubeVideoId);
+                if (!empty($youtubeVideoId)) {
+                    $video->setYoutubeId($youtubeVideoId[1]);
+                    $entityManager->persist($video);
+                    $entityManager->flush();
+                } else {
+                    $this->addFlash(
+                        'danger',
+                        "L'URL saisit ne correspond pas à une URL Youtube valide"
+                    );
+                }
+            }
         }
 
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
             'form' => $form->createView(),
+            'formVideo' => $formVideo->createView(),
         ]);
     }
 
@@ -339,7 +394,7 @@ class ChallengeController extends AbstractController
     public function edit(Challenge $challenge, CategoryRepository $categoryRepository, Request $request): Response
     {
         if (!($this->getUser() == $challenge->getCreator())) {
-            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un challenge peut le modifier.');
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'une aventure peut la modifier.');
         }
 
         $form = $this->createForm(ChallengeType::class, $challenge);
@@ -352,7 +407,7 @@ class ChallengeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Les informations sur votre challenge ont bien été modifiées!"
+                "Les informations sur votre aventure ont bien été modifiées!"
             );
 
             return $this->redirectToRoute('profil_my_profil');
@@ -380,14 +435,14 @@ class ChallengeController extends AbstractController
     public function delete(Request $request, EntityManagerInterface $entityManager, Challenge $challenge): Response
     {
         if (!($this->getUser() == $challenge->getCreator())) {
-            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un challenge peut le supprimer.');
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'une aventure peut la supprimer.');
         }
         if ($this->isCsrfTokenValid('delete' . $challenge->getId(), $request->request->get('_token'))) {
             $entityManager->remove($challenge);
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                "Votre challenge a bien été supprimé."
+                "Votre aventure a bien été supprimée."
             );
         }
         return $this->redirectToRoute("profil_my_profil");

@@ -14,6 +14,7 @@
 @import 'about';
 @import 'clan';
 @import 'message';
+@import 'video';
 
 .cursor-pointer {
     cursor: pointer;
@@ -210,6 +211,7 @@ body {
 }
 
 .challenge-photo-container {
+    border-radius: 15px;
     max-height: 275px;
 }
 
@@ -281,4 +283,8 @@ body {
     @include md {
         max-height: 110px;
     }
+}
+
+.pre-line {
+    white-space: pre-line;
 }
