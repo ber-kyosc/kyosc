@@ -13,9 +13,9 @@ commentForm.submit((e) => {
         data: commentForm.serialize(),
         success(data) {
             $('#message_content').val('');
-            let pseudo = data.author.firstName;
-            if (data.author.profilPhoto !== null) {
-                pseudo = data.author.pseudo;
+            let pseudoAuthor = data.author.firstName;
+            if (data.author.pseudo !== null) {
+                pseudoAuthor = data.author.pseudo;
             }
             let avatar = "<img src='/uploads/profils/default-profil-picture.png' alt='default profil picture' class='avatar-testimony'>";
             if (data.author.profilPhoto !== null) {
@@ -31,7 +31,7 @@ commentForm.submit((e) => {
                         + "<a href='/profil/" + data.author.id + "' class='w-25 text-center'>"
                             + avatar
                         + '</a>'
-                        + pseudo
+                        + pseudoAuthor
                     + '</h4>'
                     + "<span class='message-date'>Posté à l'instant"
                     + '</span>'
