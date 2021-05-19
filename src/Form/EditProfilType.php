@@ -50,17 +50,17 @@ class EditProfilType extends AbstractType
                     'placeholder' => 'Pseudo',
                 ]])
             ->add('address', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
-                    'placeholder' => 'Addresse',
+                    'placeholder' => 'Adresse',
                 ]])
             ->add('city', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Ville',
                 ]])
             ->add('postalCode', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Code Postal',
                 ]])

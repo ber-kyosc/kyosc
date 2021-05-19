@@ -47,24 +47,21 @@ class User implements UserInterface, Serializable
     private ?string $pseudo = null;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     * @Assert\NotBlank(message="Veuillez renseigner une adresse valide.")
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    private string $address;
+    private ?string $address = null;
 
     /**
-     * @ORM\Column(type="string", length=5)
-     * @Assert\NotBlank(message="Veuillez renseigner un code postal.")
+     * @ORM\Column(type="string", length=5, nullable=true)
      * @Assert\Length(max="5", min="5", minMessage="Un code postal doit contenir 5 chiffres.",
      * maxMessage="Un code postal doit contenir 5 chiffres.")
      */
-    private string $postalCode;
+    private ?string $postalCode = null;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=false)
-     * @Assert\NotBlank(message="Veuillez renseigner une ville d'habitation.")
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private string $city;
+    private ?string $city = null;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
@@ -480,12 +477,12 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -592,7 +589,7 @@ class User implements UserInterface, Serializable
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -604,7 +601,7 @@ class User implements UserInterface, Serializable
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode): self
+    public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
 
