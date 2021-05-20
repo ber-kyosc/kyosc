@@ -147,7 +147,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/faq", name="faq")
+     * @Route("/aide", name="faq")
      */
     public function faq(): Response
     {

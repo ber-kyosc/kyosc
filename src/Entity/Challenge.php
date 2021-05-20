@@ -37,32 +37,24 @@ class Challenge
     private string $title;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     * @Assert\NotBlank(message="Veuillez choisir une citation pour votre challenge")
+     * @ORM\Column(type="string", length=150, nullable=true)
      * @Assert\Length(max="100", min="2", minMessage="Veuillez choisis un titre faisant plus de 2 caractères",
      * maxMessage="Un maximum de 100 caractères est autorisé")
      */
-    private string $quotation;
+    private ?string $quotation;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Veuillez choisir une descritpion pour votre challenge")
-     *
      */
     private string $description;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Veuillez entrer une localisation")
+     * @Assert\NotBlank(message="Veuillez entrer un lieu de départ")
      * TODO vérifier les caractères
      */
     private string $location;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * TODO faire la verification de locationEnd
-     */
-    private string $locationEnd;
 
     /**
      * @Vich\UploadableField(mapping="challenge_photo", fileNameProperty="challengePhoto")
@@ -95,22 +87,15 @@ class Challenge
     private ?DateTimeInterface $dateStart;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Veuillez décrire le parcours du challenge")
-     */
-    private string $journey;
-
-    /**
      * @ORM\Column(type="float", nullable=true)
      * @Assert\Positive(message="La distance doit être une valeure numérique positive")
      */
     private ?float $distance;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Veuillez remplir les informations pratiques")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private string $information;
+    private ?string $information;
 
     /**
      * @ORM\Column(type="boolean")
@@ -203,7 +188,7 @@ class Challenge
         return $this->quotation;
     }
 
-    public function setQuotation(string $quotation): self
+    public function setQuotation(?string $quotation): self
     {
         $this->quotation = $quotation;
 
@@ -280,36 +265,12 @@ class Challenge
         return $this;
     }
 
-    public function getLocationEnd(): ?string
-    {
-        return $this->locationEnd;
-    }
-
-    public function setLocationEnd(string $locationEnd): self
-    {
-        $this->locationEnd = $locationEnd;
-
-        return $this;
-    }
-
-    public function getJourney(): ?string
-    {
-        return $this->journey;
-    }
-
-    public function setJourney(string $journey): self
-    {
-        $this->journey = $journey;
-
-        return $this;
-    }
-
     public function getDistance(): ?float
     {
         return $this->distance;
     }
 
-    public function setDistance(float $distance): self
+    public function setDistance(?float $distance): self
     {
         $this->distance = $distance;
 
@@ -321,7 +282,7 @@ class Challenge
         return $this->information;
     }
 
-    public function setInformation(string $information): self
+    public function setInformation(?string $information): self
     {
         $this->information = $information;
 

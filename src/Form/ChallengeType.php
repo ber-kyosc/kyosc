@@ -68,7 +68,7 @@ class ChallengeType extends AbstractType
                 ]
             ])
             ->add('quotation', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'help' => 'Incitez les gens à participer à votre aventure en partageant une citation !',
                 'label' => 'Citation Qualifiante',
                 'attr' => [
@@ -85,12 +85,6 @@ class ChallengeType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Lieu de départ'],
             ])
-            ->add('locationEnd', TextType::class, [
-                'required' => false,
-                'help' => 'Si différent du lieu de départ',
-                'attr' => [
-                    'placeholder' => 'Lieu d\'arrivée'],
-            ])
             ->add('dateStart', DateType::class, [
                 'required' => true,
                 'widget' => 'single_text',
@@ -99,12 +93,6 @@ class ChallengeType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Date de l\'aventure'],
             ])
-            ->add('journey', TextareaType::class, [
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Parcours et grandes étapes de votre aventure',
-                    'rows' => 5],
-            ])
             ->add('distance', NumberType::class, [
                 'required' => false,
                 'help' => 'Distance approximative en km',
@@ -112,7 +100,7 @@ class ChallengeType extends AbstractType
                     'placeholder' => 'Distance du parcours'],
             ])
             ->add('information', TextareaType::class, [
-                'required' => true,
+                'required' => false,
                 'help' => 'Exemple: heure et lieu de rendez-vous',
                 'attr' => [
                     'placeholder' => 'Informations pratiques.',

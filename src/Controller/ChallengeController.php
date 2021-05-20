@@ -102,7 +102,7 @@ class ChallengeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Votre aventure a été correctement soumis et sera validée très prochainement !"
+                "Bravo, votre aventure a bien été créée !"
             );
 
             return $this->redirectToRoute('challenge_index');

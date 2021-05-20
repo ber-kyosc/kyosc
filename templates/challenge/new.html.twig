@@ -68,26 +68,25 @@
             {% endfor %}
         </div>
         <div class="background-grey big-padding">
-            <div class="form-row">
+            <div class="row">
                 <div class="form-group col-md-6 ">
                     <p class="mb-0 mandatory">*</p>
                     {{ form_errors(form.title) }}
                     {{ form_widget(form.title) }}
                 </div>
-                <div class="form-group col-md-6">
-                    <p class="mb-0 mandatory">*</p>
-                    {{ form_errors(form.quotation) }}
-                    {{ form_widget(form.quotation) }}
-                    {{ form_help(form.quotation) }}
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group col-lg-6">
                     <p class="mb-0 mandatory">*</p>
                     {{ form_errors(form.dateStart) }}
                     {{ form_widget(form.dateStart, { 'id': 'datepicker', 'attr': {'autocomplete': 'off'}}) }}
                 </div>
-                <div class="fileUpload col-lg-6 align-self-end mt-4">
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    {{ form_errors(form.quotation) }}
+                    {{ form_widget(form.quotation) }}
+                    {{ form_help(form.quotation) }}
+                </div>
+                <div class="fileUpload col-lg-6">
                     {{ form_errors(form.challengePhotoFile) }}
                     {{ form_widget(form.challengePhotoFile) }}
                     {{ form_help(form.challengePhotoFile) }}
@@ -100,48 +99,37 @@
                     {{ form_widget(form.description) }}
                     {{ form_help(form.description) }}
                 </div>
-                <div class="form-group col-lg-6 align-self-end">
-                    <p class="mb-0 mandatory">*</p>
-                    {{ form_errors(form.journey) }}
-                    {{ form_widget(form.journey) }}
-                    {{ form_help(form.journey) }}
+                <div class="form-group col-lg-6">
+                    <div class="form-group">
+                        <p class="mb-0 mandatory">*</p>
+                        {{ form_errors(form.location) }}
+                        {{ form_widget(form.location) }}
+                        {{ form_help(form.location) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_errors(form.distance) }}
+                        {{ form_widget(form.distance) }}
+                        {{ form_help(form.distance) }}
+                    </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6 col-lg-4">
-                    <p class="mb-0 mandatory">*</p>
-                    {{ form_errors(form.location) }}
-                    {{ form_widget(form.location) }}
-                    {{ form_help(form.location) }}
-                </div>
-                <div class="form-group col-md-6 col-lg-4 align-self-end">
-                    {{ form_errors(form.locationEnd) }}
-                    {{ form_widget(form.locationEnd) }}
-                    {{ form_help(form.locationEnd) }}
-                </div>
-                <div class="form-group col-md-6 col-lg-4">
-                    <p class="mb-0 mandatory">*</p>
-                    {{ form_errors(form.distance) }}
-                    {{ form_widget(form.distance) }}
-                    {{ form_help(form.distance) }}
-                </div>
-            </div>
-            <div class="form-row justify-content-between">
-                <div class="form-group col-md-8">
-                    {{ form_errors(form.clans) }}
-                    {{ form_widget(form.clans) }}
-                    {{ form_help(form.clans) }}
-                </div>
-                <div class="form-group col-md-8">
-                    <p class="mb-0 mandatory">*</p>
+            <div class="row">
+                <div class="form-group col-md-6">
                     {{ form_errors(form.information) }}
                     {{ form_widget(form.information) }}
                     {{ form_help(form.information) }}
                 </div>
-                <div class="form-group">
-                    {{ form_errors(form.isPublic) }}
-                    {{ form_widget(form.isPublic) }}
-                    {{ form_help(form.isPublic) }}
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        {{ form_errors(form.clans) }}
+                        {{ form_widget(form.clans) }}
+                        {{ form_help(form.clans) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_errors(form.isPublic) }}
+                        {{ form_widget(form.isPublic) }}
+                        {{ form_help(form.isPublic) }}
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">
