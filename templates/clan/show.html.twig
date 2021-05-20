@@ -137,7 +137,7 @@
                                     {% else %}
                                         <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                                     {% endif %}
-                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname }}</h4>
                             <span class="message-date">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
                         </div>
                     {% endif %}
