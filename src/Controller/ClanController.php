@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Clan;
+use App\Entity\Invitation;
 use App\Entity\Message;
 use App\Entity\User;
 use App\Form\ClanType;
@@ -355,6 +356,16 @@ class ClanController extends AbstractController
                     )
                 );
             $mailer->send($email);
+            $invitation = new Invitation();
+            $invitation->setClan($clan)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setRecipient($emailAddress);
+            /* @phpstan-ignore-next-line */
+            $invitation->setCreator($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($invitation);
+            $entityManager->flush();
             $this->addFlash(
                 'success',
                 'Votre invitation a bien été envoyée à l\'adresse suivante ' . $emailAddress . '.'
