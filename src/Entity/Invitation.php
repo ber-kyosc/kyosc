@@ -52,6 +52,11 @@ class Invitation
      */
     private ?Clan $clan;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isRejected = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class Invitation
     public function setClan(?Clan $clan): self
     {
         $this->clan = $clan;
+
+        return $this;
+    }
+
+    public function getIsRejected(): ?bool
+    {
+        return $this->isRejected;
+    }
+
+    public function setIsRejected(bool $isRejected): self
+    {
+        $this->isRejected = $isRejected;
 
         return $this;
     }
