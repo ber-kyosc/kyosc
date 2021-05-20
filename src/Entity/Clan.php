@@ -126,12 +126,18 @@ class Clan
      */
     private Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="clan")
+     */
+    private Collection $invitations;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->challenges = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -375,6 +381,36 @@ class Clan
             // set the owning side to null (unless already changed)
             if ($video->getClan() === $this) {
                 $video->setClan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setClan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getClan() === $this) {
+                $invitation->setClan(null);
             }
         }
 

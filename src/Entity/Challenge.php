@@ -157,6 +157,11 @@ class Challenge
      */
     private Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="challenge")
+     */
+    private Collection $invitations;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -164,6 +169,7 @@ class Challenge
         $this->clans = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -472,6 +478,36 @@ class Challenge
             // set the owning side to null (unless already changed)
             if ($video->getChallenge() === $this) {
                 $video->setChallenge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getChallenge() === $this) {
+                $invitation->setChallenge(null);
             }
         }
 

@@ -200,6 +200,11 @@ class User implements UserInterface, Serializable
      */
     private Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="creator")
+     */
+    private Collection $invitationsSent;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -210,6 +215,7 @@ class User implements UserInterface, Serializable
         $this->createdClans = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->invitationsSent = new ArrayCollection();
     }
 
     public function __toString()
@@ -779,6 +785,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($video->getAuthor() === $this) {
                 $video->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitationsSent(): Collection
+    {
+        return $this->invitationsSent;
+    }
+
+    public function addInvitationsSent(Invitation $invitationsSent): self
+    {
+        if (!$this->invitationsSent->contains($invitationsSent)) {
+            $this->invitationsSent[] = $invitationsSent;
+            $invitationsSent->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitationsSent(Invitation $invitationsSent): self
+    {
+        if ($this->invitationsSent->removeElement($invitationsSent)) {
+            // set the owning side to null (unless already changed)
+            if ($invitationsSent->getCreator() === $this) {
+                $invitationsSent->setCreator(null);
             }
         }
 

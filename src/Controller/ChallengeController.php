@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
+use App\Entity\Invitation;
 use App\Entity\Message;
 use App\Entity\Sport;
 use App\Entity\Video;
@@ -281,6 +282,16 @@ class ChallengeController extends AbstractController
                     )
                 );
             $mailer->send($email);
+            $invitation = new Invitation();
+            $invitation->setChallenge($challenge)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setRecipient($emailAddress);
+                /* @phpstan-ignore-next-line */
+            $invitation->setCreator($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($invitation);
+            $entityManager->flush();
             $this->addFlash(
                 'success',
                 'Votre invitation a bien été envoyée à l\'adresse suivante ' . $emailAddress . '.'
