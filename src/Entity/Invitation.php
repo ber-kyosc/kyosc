@@ -57,6 +57,11 @@ class Invitation
      */
     private bool $isRejected = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invitationsReceived")
+     */
+    private ?User $invitedUser;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,18 @@ class Invitation
     public function setIsRejected(bool $isRejected): self
     {
         $this->isRejected = $isRejected;
+
+        return $this;
+    }
+
+    public function getInvitedUser(): ?User
+    {
+        return $this->invitedUser;
+    }
+
+    public function setInvitedUser(?User $invitedUser): self
+    {
+        $this->invitedUser = $invitedUser;
 
         return $this;
     }

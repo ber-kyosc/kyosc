@@ -72,6 +72,10 @@ body {
     background-color: theme-color-level('kblue');
 }
 
+.bg-kred {
+    background-color: theme-color-level('kred');
+}
+
 .opacity-100 {
     opacity: 1;
 }
@@ -251,7 +255,14 @@ body {
     right: 0;
     top: 24vh;
     z-index: 500;
-    animation: hide 1s linear 3s 1 forwards;
+    animation: hide 1s linear 5s 1 forwards;
+}
+
+.invitation-popup {
+    position: absolute;
+    right: 0;
+    top: 26vh;
+    z-index: 500;
 }
 
 @keyframes hide {

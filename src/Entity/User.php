@@ -205,6 +205,11 @@ class User implements UserInterface, Serializable
      */
     private Collection $invitationsSent;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="invitedUser")
+     */
+    private Collection $invitationsReceived;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -216,6 +221,7 @@ class User implements UserInterface, Serializable
         $this->messages = new ArrayCollection();
         $this->videos = new ArrayCollection();
         $this->invitationsSent = new ArrayCollection();
+        $this->invitationsReceived = new ArrayCollection();
     }
 
     public function __toString()
@@ -815,6 +821,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($invitationsSent->getCreator() === $this) {
                 $invitationsSent->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitationsReceived(): Collection
+    {
+        return $this->invitationsReceived;
+    }
+
+    public function addInvitationsReceived(Invitation $invitationsReceived): self
+    {
+        if (!$this->invitationsReceived->contains($invitationsReceived)) {
+            $this->invitationsReceived[] = $invitationsReceived;
+            $invitationsReceived->setInvitedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitationsReceived(Invitation $invitationsReceived): self
+    {
+        if ($this->invitationsReceived->removeElement($invitationsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($invitationsReceived->getInvitedUser() === $this) {
+                $invitationsReceived->setInvitedUser(null);
             }
         }
 

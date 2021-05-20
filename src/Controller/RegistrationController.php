@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\InvitationRepository;
 use App\Security\EmailVerifier;
 use DateTimeImmutable;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -30,11 +31,13 @@ class RegistrationController extends AbstractController
      * @Route("/inscription", name="app_register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param InvitationRepository $invitationRepository
      * @return Response
      */
     public function register(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        InvitationRepository $invitationRepository
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -52,6 +55,18 @@ class RegistrationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $user->setUpdatedAt(new DateTimeImmutable('now'));
+
+            $invitationsReceived = $invitationRepository->findBy([
+                'recipient' => $user->getEmail(),
+                'isAccepted' => false,
+                'isRejected' => false,
+            ]);
+            if ($invitationsReceived) {
+                foreach ($invitationsReceived as $invitation) {
+                    $user->addInvitationsReceived($invitation);
+                }
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
 

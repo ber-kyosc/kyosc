@@ -16,6 +16,9 @@
         {% if app.user and not app.user.isVerified %}
             {{ include('component/_email-verified.html.twig') }}
         {% endif %}
+        {% if app.user and app.user.invitationsReceived is not empty %}
+            {{ include('component/_invitations.html.twig') }}
+        {% endif %}
         {{ render_esi(path('ch_cookie_consent.show_if_cookie_consent_not_set', { 'locale' : 'fr' })) }}
         {% for category, messages in app.flashes %}
             {% for message in messages %}
