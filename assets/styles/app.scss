@@ -64,6 +64,22 @@ body {
     color: theme-color-level('kblue');
 }
 
+.bg-kgreen {
+    background-color: theme-color-level('kgreen');
+}
+
+.bg-kblue {
+    background-color: theme-color-level('kblue');
+}
+
+.opacity-100 {
+    opacity: 1;
+}
+
+.opacity-50 {
+    opacity: 0.5;
+}
+
 .logo {
     height: auto;
     width: 60px;

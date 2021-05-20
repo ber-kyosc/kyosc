@@ -17,13 +17,14 @@
         <h1 class="mt-2">Créez votre aventure</h1>
     </header>
     <div>
-        <div class="form-group">
-            <p> Les champs avec * sont obligatoires.</p>
+        <div class="form-group d-flex">
+            <p class="transparent-background-dark p-2"> Les champs avec <span class="mb-0 mandatory text-kred">*</span> sont obligatoires.</p>
         </div>
         {{ form_start(form, {'attr': {'class': 'form-kyosc'} }) }}
-        {{ form_errors(form.sports) }}
-        <p class="mb-0 mandatory">*</p>
         <div class="justify-content-center list-unstyled text-center transparent-background-dark big-padding mx-4" id="sports-checkboxes">
+            <h2 class="mb-5">Choisissez un ou des sport·s <span class="mb-0 mandatory">*</span>
+            </h2>
+            {{ form_errors(form.sports) }}
             {% for category in categories %}
                 <div class="d-flex flex-column align-items-center w-100 mt-1">
                     <a class="journey-link-dark" data-toggle="modal" data-target="#category_{{ category.id }}">
@@ -52,9 +53,14 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
-                                </button>
+                                <div class="d-flex justify-content-around align-items-center mb-2">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                                    </button>
+                                    <button type="button" class="close btn bg-kgreen opacity-100 p-2" data-dismiss="modal" aria-label="Close">
+                                        OK
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
