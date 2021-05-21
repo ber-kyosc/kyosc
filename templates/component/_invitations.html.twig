@@ -1,7 +1,7 @@
 <div class="d-flex flex-column transparent-background-round-darker text-white align-items-center invitation-popup p-4" id="invit-popup">
     <h2 class="text-white text-center">Vos invitations:</h2>
     {% for invitation in app.user.invitationsReceived %}
-        <div class="d-flex flex-column justify-content-around">
+        <div class="d-flex flex-column justify-content-around mt-3">
             <h3 class="h6 mb-2">Invatation à rejoindre
                 {% if invitation.clan %}
                     le clan "{{ invitation.clan.name }}"
