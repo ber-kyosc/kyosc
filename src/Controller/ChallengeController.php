@@ -106,7 +106,9 @@ class ChallengeController extends AbstractController
                 "Bravo, votre aventure a bien été créée !"
             );
 
-            return $this->redirectToRoute('challenge_index');
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
         }
         return $this->render('challenge/new.html.twig', [
             'form' => $form->createView(),
