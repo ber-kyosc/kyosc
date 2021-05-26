@@ -277,42 +277,12 @@
                 </div>
             </div>
         </section>
-        <div class="container margin mt-4">
-            <h2 class="mb-4"> Mes clans créés - {{ user.createdClans|length }}</h2>
-            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
-                <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
-            </div>
-        </div>
-        <div class="d-flex flex-column align-items-center scroll-comment">
-            {% for clan in user.createdClans %}
-                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
-                    {% if clan.banner is not null %}
-                        <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
-                    {% else %}
-                        <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
-                    {% endif %}
-                    <div class="d-flex flex-column align-items-center">
-                        <h2 class="card-title text-center text-uppercase">{{ clan.name }}</h2>
-                        <p>Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
-                    </div>
-                    <div class="d-flex flex-md-row justify-content-between">
-                        <div class="d-flex flex-column flex-md-row">
-                            <a class="btn btn-profil m-1" href="{{ path("clan_show", {id: clan.id}) }}">Voir la page publique</a>
-                            <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Voir la page privée</a>
-                        </div>
-                        <div class="d-flex flex-column flex-md-row">
-                            <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
-                            {{ include('clan/_delete_form.html.twig') }}
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <p>Vous n'avez pas encore créé de clan</p>
-            {% endfor %}
-        </div>
         <section class="mt-5 pb-5">
             <div class="container margin">
-                <h2 class="mb-4"> Les clans dont je suis membre - {{ user.clans|length }}</h2>
+                <h2 class="mb-4"> Mes clans - {{ user.clans|length }}</h2>
+                <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                    <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+                </div>
             </div>
             <div class="d-flex flex-column align-items-center scroll-comment">
                 {% for clan in user.clans %}
@@ -331,6 +301,12 @@
                                 <a class="btn btn-profil m-1" href="{{ path("clan_show", {id: clan.id}) }}">Voir la page publique</a>
                                 <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Voir la page privée</a>
                             </div>
+                            {% if user == clan.creator %}
+                            <div class="d-flex flex-column flex-md-row">
+                                <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
+                                {{ include('clan/_delete_form.html.twig') }}
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 {% else %}
