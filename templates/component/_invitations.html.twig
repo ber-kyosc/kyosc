@@ -20,6 +20,9 @@
                             <input type="hidden" name="token" value="{{ csrf_token('clan-join') }}"/>
                             <button class="text-white btn bg-kgreen mx-2">Accepter</button>
                         </form>
+                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{path('clan_decline', {id: invitation.clan.id})}}">
+                            <button class="text-white btn bg-kred mx-2">Refuser</button>
+                        </form>
                     {% else %}
                         <div class="align-middle align-self-center mb-2 form-kyosc">
                             <a class="text-white btn bg-kblue mx-2" href="{{path('challenge_show', {id: invitation.challenge.id})}}">Voir l'aventure</a>
@@ -29,10 +32,10 @@
                             <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
                             <button class="text-white btn bg-kgreen mx-2">Accepter</button>
                         </form>
+                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{path('challenge_decline', {id: invitation.challenge.id})}}">
+                            <button class="text-white btn bg-kred mx-2">Refuser</button>
+                        </form>
                     {% endif %}
-                    <div class="align-middle align-self-center mb-2 form-kyosc">
-                        <a class="text-white btn bg-kred mx-2" href="{{path('app_send_verify_email')}}">Refuser</a>
-                    </div>
                 </div>
             </div>
         {% endif %}

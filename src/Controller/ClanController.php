@@ -341,6 +341,46 @@ class ClanController extends AbstractController
 
     /**
      * @Route(
+     *     "/{id}/refuser",
+     *     name="decline",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param EntityManagerInterface $entityManager
+     * @param Clan $clan
+     * @param InvitationRepository $invitationRepository
+     * @return Response
+     */
+    public function decline(
+        EntityManagerInterface $entityManager,
+        Clan $clan,
+        InvitationRepository $invitationRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $invitations = $invitationRepository->findBy([
+            'clan' => $clan,
+            /* @phpstan-ignore-next-line */
+            'recipient' => $user->getEmail(),
+        ]);
+        if ($invitations) {
+            foreach ($invitations as $invitation) {
+                if (!$invitation->getIsAccepted() & !$invitation->getIsRejected()) {
+                    $invitation->setIsRejected(true)
+                        ->setUpdatedAt(new DateTime());
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('clan_show', [
+            'id' => $clan->getId(),
+        ]);
+    }
+
+    /**
+     * @Route(
      *     "/{id}/invitation",
      *     name="invite",
      *     methods={"POST"},

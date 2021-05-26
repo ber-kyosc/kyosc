@@ -271,6 +271,46 @@ class ChallengeController extends AbstractController
 
     /**
      * @Route(
+     *     "/{id}/refuser",
+     *     name="decline",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param EntityManagerInterface $entityManager
+     * @param Challenge $challenge
+     * @param InvitationRepository $invitationRepository
+     * @return Response
+     */
+    public function decline(
+        EntityManagerInterface $entityManager,
+        Challenge $challenge,
+        InvitationRepository $invitationRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $invitations = $invitationRepository->findBy([
+            'challenge' => $challenge,
+            /* @phpstan-ignore-next-line */
+            'recipient' => $user->getEmail(),
+        ]);
+        if ($invitations) {
+            foreach ($invitations as $invitation) {
+                if (!$invitation->getIsAccepted() & !$invitation->getIsRejected()) {
+                    $invitation->setIsRejected(true)
+                        ->setUpdatedAt(new DateTime());
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('challenge_show', [
+            'id' => $challenge->getId(),
+        ]);
+    }
+
+    /**
+     * @Route(
      *     "/{id}/invitation",
      *     name="invite",
      *     methods={"POST"},
