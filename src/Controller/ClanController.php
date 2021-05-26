@@ -10,6 +10,7 @@ use App\Form\ClanType;
 use App\Form\MessageType;
 use App\Repository\ChallengeRepository;
 use App\Repository\ClanRepository;
+use App\Repository\InvitationRepository;
 use App\Repository\MessageRepository;
 use App\Repository\UserRepository;
 use DateTime;
@@ -257,12 +258,14 @@ class ClanController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param ClanRepository $clanRepository
+     * @param InvitationRepository $invitationRepository
      * @return Response
      */
     public function join(
         Request $request,
         EntityManagerInterface $entityManager,
-        ClanRepository $clanRepository
+        ClanRepository $clanRepository,
+        InvitationRepository $invitationRepository
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -276,6 +279,19 @@ class ClanController extends AbstractController
             if ($clan && $user) {
                 /* @phpstan-ignore-next-line */
                 $clan->addMember($user);
+                $invitations = $invitationRepository->findBy([
+                    'clan' => $clan,
+                    /* @phpstan-ignore-next-line */
+                    'recipient' => $user->getEmail(),
+                ]);
+                if ($invitations) {
+                    foreach ($invitations as $invitation) {
+                        $invitation->setIsAccepted(true)
+                            ->setUpdatedAt(new DateTime());
+                        $entityManager->persist($invitation);
+                        $entityManager->flush();
+                    }
+                }
                 $entityManager->flush();
                 return $this->redirectToRoute('clan_show', [
                     'id' => $clanId,

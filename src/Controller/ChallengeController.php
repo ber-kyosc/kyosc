@@ -214,9 +214,12 @@ class ChallengeController extends AbstractController
                 ]);
                 if ($invitations) {
                     foreach ($invitations as $invitation) {
-                        $invitation->setIsAccepted(true);
-                        $entityManager->persist($invitation);
-                        $entityManager->flush();
+                        if (!$invitation->getIsAccepted() & !$invitation->getIsRejected()) {
+                            $invitation->setIsAccepted(true)
+                                ->setUpdatedAt(new DateTime());
+                            $entityManager->persist($invitation);
+                            $entityManager->flush();
+                        }
                     }
                 }
                 $entityManager->flush();
