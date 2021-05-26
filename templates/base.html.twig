@@ -17,7 +17,15 @@
             {{ include('component/_email-verified.html.twig') }}
         {% endif %}
         {% if app.user and app.user.invitationsReceived is not empty %}
-            {{ include('component/_invitations.html.twig') }}
+            {% set isInvitationPopup = false %}
+            {% for invitation in app.user.invitationsReceived %}
+                {% if not invitation.isAccepted and not invitation.isRejected %}
+                    {% set isInvitationPopup = true %}
+                {% endif %}
+            {% endfor %}
+            {% if isInvitationPopup %}
+                {{ include('component/_invitations.html.twig') }}
+            {% endif %}
         {% endif %}
         {{ render_esi(path('ch_cookie_consent.show_if_cookie_consent_not_set', { 'locale' : 'fr' })) }}
         {% if sport is not defined and (challenge is defined) %}

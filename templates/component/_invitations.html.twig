@@ -1,39 +1,41 @@
 <div class="d-flex flex-column transparent-background-round-darker text-white align-items-center invitation-popup p-4" id="invit-popup">
     <h2 class="text-white text-center">Vos invitations:</h2>
     {% for invitation in app.user.invitationsReceived %}
-        <div class="d-flex flex-column justify-content-around mt-3">
-            <h3 class="h6 mb-2">Invatation à rejoindre
-                {% if invitation.clan %}
-                    le clan "{{ invitation.clan.name }}"
-                {% else %}
-                    l'aventure "{{ invitation.challenge.title }}"
-                {% endif %}
-                par {{ invitation.creator.firstName }}</h3>
-            <div class="d-flex justify-content-around align-items-center w-100 mt-2">
-                {% if invitation.clan %}
+        {% if not invitation.isAccepted and not invitation.isRejected %}
+            <div class="d-flex flex-column justify-content-around mt-3">
+                <h3 class="h6 mb-2">Invatation à rejoindre
+                    {% if invitation.clan %}
+                        le clan "{{ invitation.clan.name }}"
+                    {% else %}
+                        l'aventure "{{ invitation.challenge.title }}"
+                    {% endif %}
+                    par {{ invitation.creator.firstName }}</h3>
+                <div class="d-flex justify-content-around align-items-center w-100 mt-2">
+                    {% if invitation.clan %}
+                        <div class="align-middle align-self-center mb-2 form-kyosc">
+                            <a class="text-white btn bg-kblue mx-2" href="{{path('clan_show', {id: invitation.clan.id})}}">Voir le clan</a>
+                        </div>
+                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{ path('clan_join', {id: invitation.clan.id}) }}">
+                            <input type="hidden" name="clanId" value="{{ invitation.clan.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('clan-join') }}"/>
+                            <button class="text-white btn bg-kgreen mx-2">Accepter</button>
+                        </form>
+                    {% else %}
+                        <div class="align-middle align-self-center mb-2 form-kyosc">
+                            <a class="text-white btn bg-kblue mx-2" href="{{path('challenge_show', {id: invitation.challenge.id})}}">Voir l'aventure</a>
+                        </div>
+                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{ path('challenge_join', {id: invitation.challenge.id}) }}">
+                            <input type="hidden" name="challengeId" value="{{ invitation.challenge.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
+                            <button class="text-white btn bg-kgreen mx-2">Accepter</button>
+                        </form>
+                    {% endif %}
                     <div class="align-middle align-self-center mb-2 form-kyosc">
-                        <a class="text-white btn bg-kblue mx-2" href="{{path('clan_show', {id: invitation.clan.id})}}">Voir le clan</a>
+                        <a class="text-white btn bg-kred mx-2" href="{{path('app_send_verify_email')}}">Refuser</a>
                     </div>
-                    <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{ path('clan_join', {id: invitation.clan.id}) }}">
-                        <input type="hidden" name="clanId" value="{{ invitation.clan.id }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('clan-join') }}"/>
-                        <button class="text-white btn bg-kgreen mx-2">Accepter</button>
-                    </form>
-                {% else %}
-                    <div class="align-middle align-self-center mb-2 form-kyosc">
-                        <a class="text-white btn bg-kblue mx-2" href="{{path('challenge_show', {id: invitation.challenge.id})}}">Voir l'aventure</a>
-                    </div>
-                    <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{ path('challenge_join', {id: invitation.challenge.id}) }}">
-                        <input type="hidden" name="challengeId" value="{{ invitation.challenge.id }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
-                        <button class="text-white btn bg-kgreen mx-2">Accepter</button>
-                    </form>
-                {% endif %}
-                <div class="align-middle align-self-center mb-2 form-kyosc">
-                    <a class="text-white btn bg-kred mx-2" href="{{path('app_send_verify_email')}}">Refuser</a>
                 </div>
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
     <img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" id="close-cross-invit" alt="white closing cross">
 </div>
