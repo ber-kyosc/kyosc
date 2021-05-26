@@ -13,9 +13,10 @@
     </head>
 
     <body class="home-body">
-        {% if app.user and not app.user.isVerified %}
-            {{ include('component/_email-verified.html.twig') }}
-        {% endif %}
+{#  Uncomment the tree lines of code below to enable a popup message whose purpose is to warn the user if his mail isn't verified yet #}
+{#        {% if app.user and not app.user.isVerified %}#}
+{#            {{ include('component/_email-verified.html.twig') }}#}
+{#        {% endif %}#}
         {% if app.user and app.user.invitationsReceived is not empty %}
             {% set isInvitationPopup = false %}
             {% for invitation in app.user.invitationsReceived %}
