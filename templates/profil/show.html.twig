@@ -138,9 +138,19 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex align-items-center flex-wrap justify-content-center transparent-background-dark">
+            {% for sport in app.user.favoriteSports %}
+                <div class="d-flex flex-column align-items-center m-3">
+                    <img class="img-goutte" src="/uploads/goutte/{{ sport.goutte }}" alt="logo {{ sport.name }}">
+                    <p class="text-white">
+                        {{ sport.name }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
     <div class="background-grey">
-        <div class="container d-flex flex-column pt-3">
+        <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
             <a class="journey-link-dark" data-toggle="modal" data-target="#favoriteBrandsChoice">
                 <h2 class="mt-5 arrow-header">Mes marques préférées<br>
                     <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
@@ -166,7 +176,7 @@
                 </div>
             </div>
         </div>
-        <div class="container d-flex flex-column mt-3">
+        <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
             <a class="journey-link-dark mb-5" data-toggle="modal" data-target="#favoriteDestinationsChoice">
                 <h2 class="mt-5 arrow-header">Mes destinations préférées<br>
                     <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
@@ -189,127 +199,84 @@
             <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center mx-3">Enregistrer mes modifications</button>
             {{ form_end(form) }}
         </div>
-        <div class="container margin">
-            <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
-            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
-                <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+        <section class="w-75 m-auto">
+            <div class="container margin">
+                <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
+                <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                    <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+                </div>
             </div>
-        </div>
-        {% if challenges|length < 3 %}
-            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
-            {% for challenge in challenges|slice(0, 3) %}
-                <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
-                    <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                        <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                        <div class="position-relative" >
-                            {% if challenge.challengePhoto is not null %}
-                                <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                     alt="photo du challenge" class="w-100 challenge-photo-container">
-                            {% else %}
-                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                            {% endif %}
-                            <div class="white-circle-img-goutte"></div>
-                            <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
-                        </div>
-                        <div class="card-body p-2">
-                            <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                        </div>
-                    </a>
-                    <div class="d-flex justify-content-around">
-                        <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
-                        {{ include('challenge/_delete_form.html.twig') }}
+            <nav class="d-flex justify-content-center">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-challenges-tab" data-toggle="tab" data-target="#nav-challenges" type="button" role="tab" aria-controls="nav-challenges" aria-selected="true">Aventures à venir ({{ comingChallenges|length }})</button>
+                    <button class="nav-link" id="nav-past-challenges-tab" data-toggle="tab" data-target="#nav-past-challenges" type="button" role="tab" aria-controls="nav-past-challenges" aria-selected="false">Aventures passées ({{ pastChallenges|length }})</button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-challenges" role="tabpanel" aria-labelledby="nav-challenges-tab">
+                    <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                        {% for challenge in comingChallenges %}
+                            <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                                <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                    <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                    <div class="position-relative" >
+                                        {% if challenge.challengePhoto is not null %}
+                                            <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                                 alt="photo du challenge" class="w-100 challenge-photo-container">
+                                        {% else %}
+                                            <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                                 alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                        {% endif %}
+                                        <div class="white-circle-img-goutte"></div>
+                                        <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
+                                    </div>
+                                    <div class="card-body p-2">
+                                        <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                    </div>
+                                </a>
+                                <div class="d-flex justify-content-around">
+                                    <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+                                    {{ include('challenge/_delete_form.html.twig') }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-center">Pas d'aventures à venir</p>
+                        {% endfor %}
                     </div>
                 </div>
-            {% else %}
-                <p class="text-center">Vous n'avez pas encore créé d'aventure</p>
-            {% endfor %}
-            </div>
-        {% else %}
-        <div class="d-flex align-items-center justify-content-center">
-            <!--Carousel Wrapper-->
-            <div id="multi-item-example" class="carousel slide carousel-multi-item w-75" data-ride="carousel">
-                <!--Controls-->
-                <div class="controls-top">
-                    <a class="btn-floating" href="#multi-item-example" data-slide="prev">
-                        <img src="{{ asset('build/images/fleche/fgblanc.png') }}" class="left-arrow-carousel"/>
-                    </a>
-                    <a class="btn-floating" href="#multi-item-example" data-slide="next">
-                        <img src="{{ asset('build/images/fleche/fdnoir.png') }}" class="right-arrow-carousel"/>
-                    </a>
-                </div>
-                <!--/.Controls-->
-                <!--Slides-->
-                <div class="carousel-inner" role="listbox">
-                    {% for iteration in challenges %}
-                        {% if loop.first %}
-                        <!--First slide-->
-                        <div class="carousel-item active pl-md-5">
-                            {% for challenge in challenges|slice(0, 3) %}
-                                <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4" style="float:left">
-                                    <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                                        <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                                        <div class="position-relative" >
-                                            {% if challenge.challengePhoto is not null %}
-                                                <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
-                                            {% else %}
-                                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                                            {% endif %}
-                                            <div class="white-circle-img-goutte"></div>
-                                            <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
-                                        </div>
-                                        <div class="card-body p-2">
-                                            <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                                        </div>
-                                    </a>
-                                    <div class="d-flex justify-content-around">
-                                        <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
-                                        {{ include('challenge/_delete_form.html.twig') }}
+                <div class="tab-pane fade" id="nav-past-challenges" role="tabpanel" aria-labelledby="nav-past-challenges-tab">
+                    <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                        {% for challenge in pastChallenges %}
+                            <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                                <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                    <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                    <div class="position-relative" >
+                                        {% if challenge.challengePhoto is not null %}
+                                            <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                                 alt="photo du challenge" class="w-100 challenge-photo-container">
+                                        {% else %}
+                                            <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                                 alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                        {% endif %}
+                                        <div class="white-circle-img-goutte"></div>
+                                        <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <!--/.First slide-->
-                        {% elseif loop.index is divisible by(3) %}
-                        <!--#{{ loop.index }} slide-->
-                        <div class="carousel-item pl-md-5">
-                            {% for challenge in challenges|slice(loop.index, 3) %}
-                                <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4" style="float:left">
-                                    <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                                        <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                                        <div class="position-relative" >
-                                            {% if challenge.challengePhoto is not null %}
-                                                <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
-                                            {% else %}
-                                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                                            {% endif %}
-                                            <div class="white-circle-img-goutte"></div>
-                                            <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
-                                        </div>
-                                        <div class="card-body p-2">
-                                            <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                                        </div>
-                                    </a>
-                                    <div class="d-flex justify-content-around">
-                                        <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
-                                        {{ include('challenge/_delete_form.html.twig') }}
+                                    <div class="card-body p-2">
+                                        <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
                                     </div>
+                                </a>
+                                <div class="d-flex justify-content-around">
+                                    <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+                                    {{ include('challenge/_delete_form.html.twig') }}
                                 </div>
-                            {% endfor %}
-                        </div>
-                        <!--/.#{{ loop.index }} slide-->
-                        {% endif %}
-                    {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-center">Pas d'aventures passées</p>
+                        {% endfor %}
+                    </div>
                 </div>
-                <!--/.Slides-->
             </div>
-            <!--/.Carousel Wrapper-->
-        </div>
-        {% endif %}
+        </section>
         <div class="container margin mt-4">
             <h2 class="mb-4"> Mes clans créés - {{ user.createdClans|length }}</h2>
             <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">

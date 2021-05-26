@@ -9,6 +9,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
 use App\Security\EmailVerifier;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,9 +51,18 @@ class ProfilController extends AbstractController
         $user = $this->getUser();
         $challenges = $challengeRepository->findBy(
         /* @phpstan-ignore-next-line */
-            ['creator' => $user->getId()]
+            ['creator' => $user->getId()],
+            ['dateStart' => 'DESC']
         );
-        $sports = $sportRepository->findAll();
+        $comingChallenges = [];
+        $pastChallenges = [];
+        foreach ($challenges as $challenge) {
+            if ($challenge->getDateStart() < new DateTime()) {
+                $pastChallenges[] = $challenge;
+            } else {
+                array_unshift($comingChallenges, $challenge);
+            }
+        }
         $categories = $categoryRepository->findAll();
         $form = $this->createForm(EditProfilType::class, $user);
         $form->handleRequest($request);
@@ -71,7 +81,8 @@ class ProfilController extends AbstractController
             'categories' => $categories,
             'challenges' => $challenges,
             'user' => $user,
-            'sports' => $sports
+            'pastChallenges' => $pastChallenges,
+            'comingChallenges' => $comingChallenges,
         ]);
     }
 
