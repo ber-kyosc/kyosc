@@ -15,6 +15,7 @@ use App\Form\MessageType;
 use App\Form\VideoType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use App\Repository\InvitationRepository;
 use App\Repository\MessageRepository;
 use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -185,12 +186,14 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param ChallengeRepository $challengeRepository
+     * @param InvitationRepository $invitationRepository
      * @return Response
      */
     public function join(
         Request $request,
         EntityManagerInterface $entityManager,
-        ChallengeRepository $challengeRepository
+        ChallengeRepository $challengeRepository,
+        InvitationRepository $invitationRepository
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -204,6 +207,18 @@ class ChallengeController extends AbstractController
             if ($challenge && $user) {
                 /* @phpstan-ignore-next-line */
                 $challenge->addParticipant($user);
+                $invitations = $invitationRepository->findBy([
+                    'challenge' => $challenge,
+                    /* @phpstan-ignore-next-line */
+                    'recipient' => $user->getEmail(),
+                ]);
+                if ($invitations) {
+                    foreach ($invitations as $invitation) {
+                        $invitation->setIsAccepted(true);
+                        $entityManager->persist($invitation);
+                        $entityManager->flush();
+                    }
+                }
                 $entityManager->flush();
                 return $this->redirectToRoute('challenge_show', [
                     'id' => $challengeId,
