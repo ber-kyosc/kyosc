@@ -389,11 +389,16 @@ class ClanController extends AbstractController
      * @param Request $request
      * @param MailerInterface $mailer
      * @param Clan $clan
+     * @param UserRepository $userRepository
      * @return Response
      * @throws TransportExceptionInterface
      */
-    public function invite(Request $request, MailerInterface $mailer, Clan $clan): Response
-    {
+    public function invite(
+        Request $request,
+        MailerInterface $mailer,
+        Clan $clan,
+        UserRepository $userRepository
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $emailAddress = $request->request->get('email');
         $submittedToken = $request->request->get('token');
@@ -419,6 +424,10 @@ class ClanController extends AbstractController
                 ->setRecipient($emailAddress);
             /* @phpstan-ignore-next-line */
             $invitation->setCreator($this->getUser());
+            $targetUser = $userRepository->findOneBy(['email' => $emailAddress]);
+            if ($targetUser) {
+                $invitation->setInvitedUser($targetUser);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($invitation);
             $entityManager->flush();

@@ -18,6 +18,7 @@ use App\Repository\ChallengeRepository;
 use App\Repository\InvitationRepository;
 use App\Repository\MessageRepository;
 use App\Repository\SportRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
@@ -319,11 +320,16 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param MailerInterface $mailer
      * @param Challenge $challenge
+     * @param UserRepository $userRepository
      * @return Response
      * @throws TransportExceptionInterface
      */
-    public function invite(Request $request, MailerInterface $mailer, Challenge $challenge): Response
-    {
+    public function invite(
+        Request $request,
+        MailerInterface $mailer,
+        Challenge $challenge,
+        UserRepository $userRepository
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $emailAddress = $request->request->get('email');
         $submittedToken = $request->request->get('token');
@@ -349,6 +355,10 @@ class ChallengeController extends AbstractController
                 ->setRecipient($emailAddress);
                 /* @phpstan-ignore-next-line */
             $invitation->setCreator($this->getUser());
+            $targetUser = $userRepository->findOneBy(['email' => $emailAddress]);
+            if ($targetUser) {
+                $invitation->setInvitedUser($targetUser);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($invitation);
             $entityManager->flush();
