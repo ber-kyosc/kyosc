@@ -3,7 +3,7 @@
     {% for invitation in app.user.invitationsReceived %}
         {% if not invitation.isAccepted and not invitation.isRejected %}
             <div class="d-flex flex-column justify-content-around mt-3">
-                <h3 class="h6 mb-2">Invatation à rejoindre
+                <h3 class="h6 mb-2">Invitation à rejoindre
                     {% if invitation.clan %}
                         le clan "{{ invitation.clan.name }}"
                     {% else %}

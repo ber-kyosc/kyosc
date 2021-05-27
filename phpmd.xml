@@ -19,26 +19,16 @@
         <exclude name="ExcessivePublicCount" />
         <exclude name="CyclomaticComplexity" />
         <exclude name="NPathComplexity" />
-    </rule>
-    <rule ref="rulesets/codesize.xml/TooManyPublicMethods" >
-        <properties>
-            <property name="maxmethods" value="40" />
-        </properties>
+        <exclude name="TooManyMethods" />
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessivePublicCount" >
         <properties>
-            <property name="maxmethods" value="100" />
-            <property name="minimum" value="80" />
+            <property name="minimum" value="110" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyFields" >
         <properties>
             <property name="maxfields" value="40" />
-        </properties>
-    </rule>
-    <rule ref="rulesets/codesize.xml/TooManyPublicMethods" >
-        <properties>
-            <property name="maxmethods" value="40" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessivePublicCount" >

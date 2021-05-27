@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
 use App\Entity\Invitation;
+use App\Entity\JoinRequest;
 use App\Entity\Message;
 use App\Entity\Sport;
 use App\Entity\Video;
@@ -17,6 +18,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\InvitationRepository;
 use App\Repository\MessageRepository;
+use App\Repository\RequestRepository;
 use App\Repository\SportRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -228,6 +230,72 @@ class ChallengeController extends AbstractController
                     'id' => $challengeId,
                 ]);
             }
+        }
+        return $this->redirectToRoute('challenge_index');
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/demande-a-rejoindre",
+     *     name="request-to-join",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @param Challenge $challenge
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function requestToJoin(
+        Request $request,
+        MailerInterface $mailer,
+        Challenge $challenge,
+        UserRepository $userRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $challengeId = $request->request->get('challengeId');
+        $submittedToken = $request->request->get('token');
+        $requestMessage = $request->request->get('requestMessage');
+        if (
+            $this->isCsrfTokenValid('challenge-request-to-join', $submittedToken) &&
+            filter_var($challengeId, FILTER_VALIDATE_INT)
+        ) {
+            $emailAddress = $challenge->getCreator()->getEmail();
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to($emailAddress)
+                ->subject('Demande à rejoindre l\'une de vos aventure')
+                ->html(
+                    $this->renderView(
+                        'email/challenge-request.html.twig',
+                        [
+                            'challenge' => $challenge,
+                            'user' => $user,
+                            'requestMessage' => $requestMessage
+                        ]
+                    )
+                );
+            $mailer->send($email);
+            $request = new JoinRequest();
+            $request->setChallenge($challenge)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setRequestedUser($challenge->getCreator());
+            /* @phpstan-ignore-next-line */
+            $request->setCreator($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($request);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Votre demande à bien été prise en compte et envoyée à l\'organisateur.trice du challenge'
+            );
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
         }
         return $this->redirectToRoute('challenge_index');
     }

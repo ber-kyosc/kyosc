@@ -210,6 +210,16 @@ class User implements UserInterface, Serializable
      */
     private Collection $invitationsReceived;
 
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="creator")
+     */
+    private Collection $requestsSent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="requestedUser")
+     */
+    private Collection $requestsReceived;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -222,6 +232,8 @@ class User implements UserInterface, Serializable
         $this->videos = new ArrayCollection();
         $this->invitationsSent = new ArrayCollection();
         $this->invitationsReceived = new ArrayCollection();
+        $this->requestsSent = new ArrayCollection();
+        $this->requestsReceived = new ArrayCollection();
     }
 
     public function __toString()
@@ -851,6 +863,66 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($invitationsReceived->getInvitedUser() === $this) {
                 $invitationsReceived->setInvitedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequestsSent(): Collection
+    {
+        return $this->requestsSent;
+    }
+
+    public function addRequestsSent(JoinRequest $requestsSent): self
+    {
+        if (!$this->requestsSent->contains($requestsSent)) {
+            $this->requestsSent[] = $requestsSent;
+            $requestsSent->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequestsSent(JoinRequest $requestsSent): self
+    {
+        if ($this->requestsSent->removeElement($requestsSent)) {
+            // set the owning side to null (unless already changed)
+            if ($requestsSent->getCreator() === $this) {
+                $requestsSent->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequestsReceived(): Collection
+    {
+        return $this->requestsReceived;
+    }
+
+    public function addRequestsReceived(JoinRequest $requestsReceived): self
+    {
+        if (!$this->requestsReceived->contains($requestsReceived)) {
+            $this->requestsReceived[] = $requestsReceived;
+            $requestsReceived->setRequestedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequestsReceived(JoinRequest $requestsReceived): self
+    {
+        if ($this->requestsReceived->removeElement($requestsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($requestsReceived->getRequestedUser() === $this) {
+                $requestsReceived->setRequestedUser(null);
             }
         }
 

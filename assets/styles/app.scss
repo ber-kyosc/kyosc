@@ -266,6 +266,14 @@ body {
     z-index: 500;
 }
 
+.request-popup {
+    max-width: 460px;
+    position: absolute;
+    left: 0;
+    top: 26vh;
+    z-index: 600;
+}
+
 @keyframes hide {
     to {
         opacity: 0;

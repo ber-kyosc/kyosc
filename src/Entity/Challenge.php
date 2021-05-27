@@ -162,6 +162,11 @@ class Challenge
      */
     private Collection $invitations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge")
+     */
+    private Collection $requests;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -170,6 +175,7 @@ class Challenge
         $this->messages = new ArrayCollection();
         $this->videos = new ArrayCollection();
         $this->invitations = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -508,6 +514,36 @@ class Challenge
             // set the owning side to null (unless already changed)
             if ($invitation->getChallenge() === $this) {
                 $invitation->setChallenge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(JoinRequest $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(JoinRequest $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getChallenge() === $this) {
+                $request->setChallenge(null);
             }
         }
 
