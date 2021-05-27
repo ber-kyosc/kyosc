@@ -31,7 +31,7 @@
                 <input type="hidden" name="token" value="{{ csrf_token('clan-leave') }}"/>
                 <button class="btn btn-register text-uppercase">Je veux quitter ce clan</button>
             </form>
-        {% else %}
+        {% elseif app.user %}
             {% if clan.isPublic == true or app.user and app.user == clan.creator %}
                 <div class="form-kyosc">
                     <a class="btn text-uppercase btn-login"
