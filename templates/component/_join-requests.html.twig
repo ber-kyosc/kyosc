@@ -15,12 +15,12 @@
                         <div class="align-middle align-self-center mb-2 form-kyosc">
                             <a class="text-white btn bg-kblue mx-2" href="{{path('clan_show', {id: request.clan.id})}}">Voir le clan</a>
                         </div>
-                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{ path('clan_join', {id: request.clan.id}) }}">
-                            <input type="hidden" name="clanId" value="{{ request.clan.id }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('clan-join') }}"/>
+                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{ path('clan_accept-request', {id: request.clan.id}) }}">
+                            <input type="hidden" name="requestId" value="{{ request.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('clan-accept-request') }}"/>
                             <button class="text-white btn bg-kgreen mx-2">Accepter</button>
                         </form>
-                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{path('clan_decline', {id: request.clan.id})}}">
+                        <form class="align-middle align-self-center mb-2 form-kyosc" method="post" action="{{path('clan_decline-request', {id: request.clan.id})}}">
                             <button class="text-white btn bg-kred mx-2">Refuser</button>
                         </form>
                     {% else %}

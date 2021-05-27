@@ -93,8 +93,9 @@ class Clan
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="createdClans")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $creator;
+    private User $creator;
 
     /**
      * @ORM\Column(type="datetime")
@@ -261,13 +262,14 @@ class Clan
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getCreator(): User
     {
         return $this->creator;
     }
 
     public function setCreator(?User $creator): self
     {
+        /* @phpstan-ignore-next-line */
         $this->creator = $creator;
 
         return $this;

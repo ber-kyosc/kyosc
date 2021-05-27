@@ -33,11 +33,11 @@
             </form>
         {% else %}
             {% if clan.isPublic == true or app.user and app.user == clan.creator %}
-            <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('clan_join', {id: clan.id}) }}">
-                <input type="hidden" name="clanId" value="{{ clan.id }}">
-                <input type="hidden" name="token" value="{{ csrf_token('clan-join') }}"/>
-                <button class="btn text-uppercase btn-login">Je veux rejoindre ce clan</button>
-            </form>
+                <div class="form-kyosc">
+                    <a class="btn text-uppercase btn-login"
+                       data-toggle="modal" data-target="#modalJoinRequest"
+                    >Demander à rejoindre</a>
+                </div>
             {% endif %}
         {% endif %}
 
@@ -75,6 +75,31 @@
         </div>
     </div>
     {#       end of modal for journey pop-up#}
+
+    {#        modal for joining resquest pop-up#}
+    <div class="modal fade" id="modalJoinRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">Envoyez une demande à {{ clan.creator.firstname }} pour rejoindre ce clan</h2>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center bg-dark">
+                    <form class="w-100 d-flex flex-column justify-content-center align-items-center mb-4 form-kyosc" method="post" action="{{ path('clan_request-to-join', {id: clan.id}) }}">
+                        <input type="hidden" name="clanId" value="{{ clan.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('clan-request-to-join') }}"/>
+                        <textarea name="requestMessage" class="w-75" placeholder="Saluez {{ clan.creator.firstname }} et faites lui part de votre envie de rejoindre son clan" required></textarea>
+                        <button
+                                class="btn text-uppercase btn-login my-4"
+                        >Envoyer ma demande</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for joining resquest pop-up#}
 
     <div class="container w-75 mx-auto my-5 challenge-organisator transparent-background-dark p-3">
         <h2 class="mb-3 h5 text-uppercase text-center">Qui a créé ce clan ?</h2>

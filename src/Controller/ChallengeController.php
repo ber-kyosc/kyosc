@@ -245,15 +245,13 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param MailerInterface $mailer
      * @param Challenge $challenge
-     * @param UserRepository $userRepository
      * @return Response
      * @throws TransportExceptionInterface
      */
     public function requestToJoin(
         Request $request,
         MailerInterface $mailer,
-        Challenge $challenge,
-        UserRepository $userRepository
+        Challenge $challenge
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -268,7 +266,7 @@ class ChallengeController extends AbstractController
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
                 ->to($emailAddress)
-                ->subject('Demande à rejoindre l\'une de vos aventure')
+                ->subject('Demande à rejoindre l\'une de vos aventures')
                 ->html(
                     $this->renderView(
                         'email/challenge-request.html.twig',
@@ -280,15 +278,15 @@ class ChallengeController extends AbstractController
                     )
                 );
             $mailer->send($email);
-            $request = new JoinRequest();
-            $request->setChallenge($challenge)
+            $joinRequest = new JoinRequest();
+            $joinRequest->setChallenge($challenge)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
                 ->setRequestedUser($challenge->getCreator());
             /* @phpstan-ignore-next-line */
-            $request->setCreator($this->getUser());
+            $joinRequest->setCreator($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($request);
+            $entityManager->persist($joinRequest);
             $entityManager->flush();
             $this->addFlash(
                 'success',
@@ -339,11 +337,11 @@ class ChallengeController extends AbstractController
                     'creator' => $user,
                 ]);
                 if ($joinRequests) {
-                    foreach ($joinRequests as $request) {
-                        if (!$request->getIsAccepted() & !$request->getIsRejected()) {
-                            $request->setIsAccepted(true)
+                    foreach ($joinRequests as $joinRequest) {
+                        if (!$joinRequest->getIsAccepted() & !$joinRequest->getIsRejected()) {
+                            $joinRequest->setIsAccepted(true)
                                 ->setUpdatedAt(new DateTime());
-                            $entityManager->persist($request);
+                            $entityManager->persist($joinRequest);
                             $entityManager->flush();
                         }
                     }
@@ -454,17 +452,17 @@ class ChallengeController extends AbstractController
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $creator = $this->getUser();
-        $requests = $joinRequestRepository->findBy([
+        $joinRequests = $joinRequestRepository->findBy([
             'challenge' => $challenge,
             /* @phpstan-ignore-next-line */
             'requestedUser' => $creator,
         ]);
-        if ($requests) {
-            foreach ($requests as $request) {
-                if (!$request->getIsAccepted() & !$request->getIsRejected()) {
-                    $request->setIsRejected(true)
+        if ($joinRequests) {
+            foreach ($joinRequests as $joinRequest) {
+                if (!$joinRequest->getIsAccepted() & !$joinRequest->getIsRejected()) {
+                    $joinRequest->setIsRejected(true)
                         ->setUpdatedAt(new DateTime());
-                    $entityManager->persist($request);
+                    $entityManager->persist($joinRequest);
                     $entityManager->flush();
                 }
             }
