@@ -15,107 +15,274 @@
         <header class="arrow-header my-3 text-uppercase">
             <h1 class="mt-2">Mes informations</h1>
         </header>
-        <div class="row">
-            <div class="col-12 col-lg-6">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <div class="m-3">
                 <a href="{{ path("profil_show", {id: app.user.id}) }}" class="btn-login btn btn-lg">Voir mon profil public</a>
-                <p class="font-weight-bold">{{ app.user.email }}</p>
             </div>
-            <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
-                <button type="submit" class="btn-login btn btn-lg">Enregistrer mes modifications</button>
-            </div>
-        </div>
-
-    </div>
-    <div class="container d-flex margin-bottom">
-        <div class="row">
-            <div class="container col-lg-6 col-12 profil-container">
-                <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
-                    {% if app.user.profilPhoto is not null%}
-                        <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer w-75">
-                    {% else %}
-                        <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
-                    {% endif %}
-                </label>
-            </div>
-            <div class="container col-lg-6 col-12">
-                <div class="row">
-                    <div class="form-group col-md-6 col-12 col-lg-6">
-                        <a type="submit" class="btn btn-profil width-margin mt-0" href="{{ path("profil_edit_email") }}">Modifier mon mail</a>
-                    </div>
-                    <div class="form-group col-md-6 col-lg-6">
-                        <a type="submit" href="{{ path("app_forgot_password_request") }}" class="width-margin btn btn-profil">Modifier mon mot de passe</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-6">
-                        {{ form_widget(form.firstName) }}
-                        {{ form_errors(form.firstName) }}
-                    </div>
-                    <div class="form-group col-6">
-                        {{ form_widget(form.lastName) }}
-                        {{ form_errors(form.lastName) }}
-                    </div>
-                    <div class="form-group col-lg-8">
-                        {{ form_widget(form.pseudo) }}
-                        {{ form_errors(form.pseudo) }}
-                    </div>
-                    <div class="form-group col-lg-4">
-                        {{ form_widget(form.age) }}
-                        {{ form_errors(form.age) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12 col-sm-12">
-                        {{ form_widget(form.address) }}
-                        {{ form_errors(form.address) }}
-                    </div>
-                    <div class="form-group col-md-6 col-sm-6">
-                        {{ form_widget(form.city) }}
-                        {{ form_errors(form.city) }}
-                    </div>
-                    <div class="form-group col-md-6 col-sm-6">
-                        {{ form_widget(form.postalCode) }}
-                        {{ form_errors(form.postalCode) }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    {{ form_widget(form.biography) }}
-                    {{ form_help(form.biography) }}
-                    {{ form_errors(form.biography) }}
-                </div>
-                <div class="form-group">
-                    {{ form_widget(form.testimony) }}
-                    {{ form_errors(form.testimony) }}
-                </div>
-                <div class="fileUpload">
-                    {{ form_widget(form.profilPhotoFile) }}
-                    {{ form_errors(form.profilPhotoFile) }}
-                </div>
+            <div class="form-kyosc m-3 d-flex flex-column flex-md-row justify-content-around align-items-center w-100">
+                <a class="btn btn-profil text-uppercase text-white m-2"
+                   data-toggle="modal" data-target="#profileEditionModal"
+                >Modifier mes informations personnelles</a>
+                <a class="btn btn-profil text-uppercase text-white m-2"
+                   data-toggle="modal" data-target="#favoriteSportChoice"
+                >Modifier mes sports préférés</a>
+                <a class="btn btn-profil text-uppercase text-white m-2"
+                   data-toggle="modal" data-target="#favoriteBrandsChoice"
+                >Modifier mes marques préférées</a>
+                <a class="btn btn-profil text-uppercase text-white m-2"
+                   data-toggle="modal" data-target="#favoriteDestinationsChoice"
+                >Modifier mes destinations préférées</a>
             </div>
         </div>
     </div>
-    <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
-        <a class="journey-link-dark" data-toggle="modal" data-target="#favoriteSportChoice">
-            <h2 class="mt-5 arrow-header">{{ form_label(form.favoriteSports) }}
-                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
-            </h2>
-        </a>
-        <div class="modal fade" id="favoriteSportChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="exampleModalLongTitle">Choix de mes sports préférés</h2>
-                        <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
-                        </button>
+    <div class="d-flex flex-column flex-md-row">
+        <div>
+            <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
+                {% if app.user.profilPhoto is not null%}
+                    <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer w-75">
+                {% else %}
+                    <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
+                {% endif %}
+            </label>
+        </div>
+        <div class="transparent-background-dark text-white p-4 m-3">
+            <h3>Nom : {{ app.user.firstName }} {{ app.user.lastName }}</h3>
+            <h4>Pseudo : {{ (app.user.pseudo) ? app.user.pseudo : 'non renseigné' }}</h4>
+            <p class="text-white">Biographie : {{ (app.user.biography) ? app.user.biography : 'non renseignée' }}</p>
+            <div class="d-flex flex-wrap align-items-center">
+                <h4>Sports préférés :</h4>
+                {% for sport in app.user.favoriteSports %}
+                    <div class="d-flex flex-column align-items-center m-3">
+                        <img class="img-goutte" src="/uploads/goutte/{{ sport.goutte }}" alt="logo {{ sport.name }}">
+                        <p class="text-white">
+                            {{ sport.name }}
+                        </p>
                     </div>
-                    <div class="modal-body form-check d-flex align-items-center mt-0 py-5 flex-row flex-wrap justify-content-center background-grey w-100 scroll-comment">
-                        <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
-                            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <section class="w-75 m-auto form-kyosc">
+        <div class="container margin">
+            <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
+            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+            </div>
+        </div>
+        <nav class="d-flex justify-content-center">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-challenges-tab" data-toggle="tab" data-target="#nav-challenges" type="button" role="tab" aria-controls="nav-challenges" aria-selected="true">Aventures à venir ({{ comingChallenges|length }})</button>
+                <button class="nav-link" id="nav-past-challenges-tab" data-toggle="tab" data-target="#nav-past-challenges" type="button" role="tab" aria-controls="nav-past-challenges" aria-selected="false">Aventures passées ({{ pastChallenges|length }})</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-challenges" role="tabpanel" aria-labelledby="nav-challenges-tab">
+                <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                    {% for challenge in comingChallenges %}
+                        <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                <div class="position-relative" >
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                             alt="photo du challenge" class="w-100 challenge-photo-container">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                    {% endif %}
+                                    <div class="white-circle-img-goutte"></div>
+                                    <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
+                                </div>
+                                <div class="card-body p-2">
+                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                </div>
+                            </a>
+                            <div class="d-flex justify-content-around">
+                                <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+                                {{ include('challenge/_delete_form.html.twig') }}
+                            </div>
                         </div>
+                    {% else %}
+                        <p class="text-center">Pas d'aventures à venir</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-past-challenges" role="tabpanel" aria-labelledby="nav-past-challenges-tab">
+                <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                    {% for challenge in pastChallenges %}
+                        <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                <div class="position-relative" >
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                             alt="photo du challenge" class="w-100 challenge-photo-container">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                    {% endif %}
+                                    <div class="white-circle-img-goutte"></div>
+                                    <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
+                                </div>
+                                <div class="card-body p-2">
+                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                </div>
+                            </a>
+                            <div class="d-flex justify-content-around">
+                                <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+                                {{ include('challenge/_delete_form.html.twig') }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-center">Pas d'aventures passées</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="mt-5 pb-5 form-kyosc">
+        <div class="container margin">
+            <h2 class="mb-4"> Mes clans - {{ user.clans|length }}</h2>
+            <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
+                <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center scroll-comment">
+            {% for clan in user.clans %}
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
+                    {% if clan.banner is not null %}
+                        <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
+                    {% else %}
+                        <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
+                    {% endif %}
+                    <div class="d-flex flex-column align-items-center">
+                        <h2 class="card-title text-center text-uppercase">{{ clan.name }}</h2>
+                        <p>Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+                    </div>
+                    <div class="d-flex flex-md-row justify-content-between">
+                        <div class="d-flex flex-column flex-md-row">
+                            <a class="btn btn-profil m-1" href="{{ path("clan_show", {id: clan.id}) }}">Voir la page publique</a>
+                            <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Voir la page privée</a>
+                        </div>
+                        {% if user == clan.creator %}
+                            <div class="d-flex flex-column flex-md-row">
+                                <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
+                                {{ include('clan/_delete_form.html.twig') }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <p>Vous ne faites parti d'aucun clan</p>
+            {% endfor %}
+        </div>
+    </section>
+    <div class="mt-5 pb-5 d-flex flex-column align-items-center form-kyosc">
+        {% include('user/_delete_form.html.twig') %}
+    </div>
+{#    Start of profile edition modal #}
+    <div class="modal fade" id="profileEditionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">Modifier mes informations personnelles</h2>
+                    <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                    </button>
+                </div>
+                <div class="bg-dark modal-body d-flex flex-column justify-content-center align-items-center p-5 form-kyosc">
+                    <div class="mb-3">
+                        <button type="submit" class="btn-login btn btn-lg">Enregistrer mes modifications</button>
+                    </div>
+                    <div class="scroll-modal">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-12 col-lg-6">
+                                <a type="submit" class="btn btn-profil width-margin mt-0" href="{{ path("profil_edit_email") }}">Modifier mon mail</a>
+                            </div>
+                            <div class="form-group col-md-6 col-lg-6">
+                                <a type="submit" href="{{ path("app_forgot_password_request") }}" class="width-margin btn btn-profil">Modifier mon mot de passe</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <h3 class="text-white h6">Prénom</h3>
+                                {{ form_widget(form.firstName) }}
+                                {{ form_errors(form.firstName) }}
+                            </div>
+                            <div class="form-group col-6">
+                                <h3 class="text-white h6">Nom</h3>
+                                {{ form_widget(form.lastName) }}
+                                {{ form_errors(form.lastName) }}
+                            </div>
+                            <div class="form-group col-lg-8">
+                                <h3 class="text-white h6">Pseudo</h3>
+                                {{ form_widget(form.pseudo) }}
+                                {{ form_errors(form.pseudo) }}
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <h3 class="text-white h6">Age</h3>
+                                {{ form_widget(form.age) }}
+                                {{ form_errors(form.age) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 col-sm-12">
+                                <h3 class="text-white h6">Adresse</h3>
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                            <div class="form-group col-md-6 col-sm-6">
+                                <h3 class="text-white h6">Ville</h3>
+                                {{ form_widget(form.city) }}
+                                {{ form_errors(form.city) }}
+                            </div>
+                            <div class="form-group col-md-6 col-sm-6">
+                                <h3 class="text-white h6">Code postal</h3>
+                                {{ form_widget(form.postalCode) }}
+                                {{ form_errors(form.postalCode) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h3 class="text-white h6">Biographie</h3>
+                            {{ form_widget(form.biography) }}
+                            {{ form_help(form.biography) }}
+                            {{ form_errors(form.biography) }}
+                        </div>
+                        <div class="form-group">
+                            <h3 class="text-white h6">Témoignage</h3>
+                            {{ form_widget(form.testimony) }}
+                            {{ form_errors(form.testimony) }}
+                        </div>
+                        <div class="fileUpload">
+                            <h3 class="text-white h6">Photo de profil</h3>
+                            <div class="pl-4">
+                                {{ form_widget(form.profilPhotoFile) }}
+                                {{ form_errors(form.profilPhotoFile) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{#    end of profile edition modal #}
+{#    start of favorite sports modal #}
+    <div class="modal fade" id="favoriteSportChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">Choix de mes sports préférés</h2>
+                    <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                    </button>
+                </div>
+                <div class="bg-dark modal-body d-flex flex-column justify-content-center align-items-center p-3 form-kyosc">
+                    <div class="col-12 col-lg-6 p-2 d-flex justify-content-center">
+                        <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                    </div>
+                    <div class="scroll-modal">
                         {% for category in categories %}
-                            <div class="d-flex flex-column align-items-center w-100 mt-2 mx-5 pt-2 transparent-background-dark">
+                            <div class="d-flex flex-column align-items-center w-100 mt-2 pt-2 transparent-background-dark">
                                 <h3 class="text-center" style="color: {{ category.color }}"><img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo"> Univers {{ category.name }}</h3>
                                 <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
                                     {% for sport in form.favoriteSports.children %}
@@ -137,209 +304,66 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        <div class="col-12 col-lg-6 p-3 d-flex justify-content-center">
-                            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-flex align-items-center flex-wrap justify-content-center transparent-background-dark">
-            {% for sport in app.user.favoriteSports %}
-                <div class="d-flex flex-column align-items-center m-3">
-                    <img class="img-goutte" src="/uploads/goutte/{{ sport.goutte }}" alt="logo {{ sport.name }}">
-                    <p class="text-white">
-                        {{ sport.name }}
-                    </p>
-                </div>
-            {% endfor %}
         </div>
     </div>
-    <div class="background-grey">
-        <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
-            <a class="journey-link-dark" data-toggle="modal" data-target="#favoriteBrandsChoice">
-                <h2 class="mt-5 arrow-header">Mes marques préférées<br>
-                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
-                </h2>
-            </a>
-            <div class="modal fade" id="favoriteBrandsChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLongTitle">Choix de mes marques préférées</h2>
-                            <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
-                            </button>
-                        </div>
-                        <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
-                                {{ form_help(form.favoriteBrands) }}
-                                {{ form_widget(form.favoriteBrands) }}
-                                {{ form_errors(form.favoriteBrands) }}
-                            </div>
-                            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
-                                {{ form_help(form.brandSuggestion) }}
-                                {{ form_widget(form.brandSuggestion) }}
-                                {{ form_errors(form.brandSuggestion) }}
-                            </div>
-                            <div class="col-12 col-lg-6 p-3 d-flex justify-content-center align-self-center">
-                                <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
-                            </div>
-                        </div>
+{#    end of favorite sports modal #}
+{#    start of favorite brands modal #}
+    <div class="modal fade" id="favoriteBrandsChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">Choix de mes marques préférées</h2>
+                    <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center form-kyosc bg-dark">
+                    <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                        {{ form_help(form.favoriteBrands) }}
+                        {{ form_widget(form.favoriteBrands) }}
+                        {{ form_errors(form.favoriteBrands) }}
+                    </div>
+                    <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                        {{ form_help(form.brandSuggestion) }}
+                        {{ form_widget(form.brandSuggestion) }}
+                        {{ form_errors(form.brandSuggestion) }}
+                    </div>
+                    <div class="col-12 col-lg-6 p-3 d-flex justify-content-center align-self-center">
+                        <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-flex align-items-center justify-content-center flex-column mt-5 w-100">
-            <a class="journey-link-dark mb-5" data-toggle="modal" data-target="#favoriteDestinationsChoice">
-                <h2 class="mt-5 arrow-header">Mes destinations préférées<br>
-                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
-                </h2>
-            </a>
-            <div class="modal fade" id="favoriteDestinationsChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLongTitle">Choix de mes marques préférées</h2>
-                            <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
-                            </button>
-                        </div>
-                        <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                            <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
-                                {{ form_help(form.favoriteDestination) }}
-                                {{ form_widget(form.favoriteDestination) }}
-                                {{ form_errors(form.favoriteDestination) }}
-                            </div>
-                            <div class="col-12 col-lg-6 p-3 d-flex justify-content-center align-self-center">
-                                <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn-login btn btn-lg col-6 col-lg-4 mb-4 align-self-center mx-3">Enregistrer mes modifications</button>
-            {{ form_end(form) }}
-        </div>
-        <section class="w-75 m-auto">
-            <div class="container margin">
-                <h2 class="mb-4"> Mes aventures - {{ challenges|length }}</h2>
-                <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
-                    <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
-                </div>
-            </div>
-            <nav class="d-flex justify-content-center">
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-challenges-tab" data-toggle="tab" data-target="#nav-challenges" type="button" role="tab" aria-controls="nav-challenges" aria-selected="true">Aventures à venir ({{ comingChallenges|length }})</button>
-                    <button class="nav-link" id="nav-past-challenges-tab" data-toggle="tab" data-target="#nav-past-challenges" type="button" role="tab" aria-controls="nav-past-challenges" aria-selected="false">Aventures passées ({{ pastChallenges|length }})</button>
-                </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-challenges" role="tabpanel" aria-labelledby="nav-challenges-tab">
-                    <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
-                        {% for challenge in comingChallenges %}
-                            <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
-                                <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                                    <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                                    <div class="position-relative" >
-                                        {% if challenge.challengePhoto is not null %}
-                                            <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                 alt="photo du challenge" class="w-100 challenge-photo-container">
-                                        {% else %}
-                                            <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                 alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                                        {% endif %}
-                                        <div class="white-circle-img-goutte"></div>
-                                        <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
-                                    </div>
-                                    <div class="card-body p-2">
-                                        <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                                    </div>
-                                </a>
-                                <div class="d-flex justify-content-around">
-                                    <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
-                                    {{ include('challenge/_delete_form.html.twig') }}
-                                </div>
-                            </div>
-                        {% else %}
-                            <p class="text-center">Pas d'aventures à venir</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="nav-past-challenges" role="tabpanel" aria-labelledby="nav-past-challenges-tab">
-                    <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
-                        {% for challenge in pastChallenges %}
-                            <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
-                                <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                                    <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                                    <div class="position-relative" >
-                                        {% if challenge.challengePhoto is not null %}
-                                            <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                 alt="photo du challenge" class="w-100 challenge-photo-container">
-                                        {% else %}
-                                            <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                 alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                                        {% endif %}
-                                        <div class="white-circle-img-goutte"></div>
-                                        <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
-                                    </div>
-                                    <div class="card-body p-2">
-                                        <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                                    </div>
-                                </a>
-                                <div class="d-flex justify-content-around">
-                                    <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
-                                    {{ include('challenge/_delete_form.html.twig') }}
-                                </div>
-                            </div>
-                        {% else %}
-                            <p class="text-center">Pas d'aventures passées</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="mt-5 pb-5">
-            <div class="container margin">
-                <h2 class="mb-4"> Mes clans - {{ user.clans|length }}</h2>
-                <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
-                    <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
-                </div>
-            </div>
-            <div class="d-flex flex-column align-items-center scroll-comment">
-                {% for clan in user.clans %}
-                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between w-75 p-2">
-                        {% if clan.banner is not null %}
-                            <img class="avatar-testimony" src={{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('square_logo_thumb') }}>
-                        {% else %}
-                            <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
-                        {% endif %}
-                        <div class="d-flex flex-column align-items-center">
-                            <h2 class="card-title text-center text-uppercase">{{ clan.name }}</h2>
-                            <p>Créé le {{ clan.createdAt |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
-                        </div>
-                        <div class="d-flex flex-md-row justify-content-between">
-                            <div class="d-flex flex-column flex-md-row">
-                                <a class="btn btn-profil m-1" href="{{ path("clan_show", {id: clan.id}) }}">Voir la page publique</a>
-                                <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Voir la page privée</a>
-                            </div>
-                            {% if user == clan.creator %}
-                            <div class="d-flex flex-column flex-md-row">
-                                <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
-                                {{ include('clan/_delete_form.html.twig') }}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% else %}
-                    <p>Vous ne faites parti d'aucun clan</p>
-                {% endfor %}
-            </div>
-        </section>
-        <div class="mt-5 pb-5 d-flex flex-column align-items-center">
-            {% include('user/_delete_form.html.twig') %}
         </div>
     </div>
+{#    end of favorite sports modal #}
+{#    start of favorite destinations modal #}
+    <div class="modal fade" id="favoriteDestinationsChoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">Choix de mes marques préférées</h2>
+                    <button type="button" class="close bg-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center form-kyosc bg-dark">
+                    <div class="form-group col-lg-8 col-md-6 col-sm-12 col-12 align-self-center">
+                        {{ form_help(form.favoriteDestination) }}
+                        {{ form_widget(form.favoriteDestination) }}
+                        {{ form_errors(form.favoriteDestination) }}
+                    </div>
+                    <div class="col-12 col-lg-6 p-3 d-flex justify-content-center align-self-center">
+                        <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{#    end of favorite destinations modal #}
+    {{ form_end(form) }}
 {% endblock body %}
 
 {% block javascripts %}

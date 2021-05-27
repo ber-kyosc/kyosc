@@ -302,6 +302,18 @@ body {
     transform: translateY(0em);
 }
 
+.scroll-comment {
+    max-height: 600px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+.scroll-modal {
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
 .close-picto {
     cursor: pointer;
 }
