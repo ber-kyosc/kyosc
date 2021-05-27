@@ -75,21 +75,6 @@ class RegistrationFormType extends AbstractType
                     ])
                 ]
             ])
-            ->add('address', TextType::class, [
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Adresse',
-                ]])
-            ->add('city', TextType::class, [
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Ville',
-                ]])
-            ->add('postalCode', TextType::class, [
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Code Postal',
-                ]])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'Accepter les mentions légales',
                 'mapped' => false,

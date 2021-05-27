@@ -26,14 +26,6 @@
             </div>
         </div>
     </section>
-
-    <div class="mt-2 mb-4 container d-flex justify-content-center">
-        <div class="col-10 title-info-event transparent-background-dark p-3">
-            <h3>Informations sur l'évènement:</h3>
-            <p class="pre-line">{{ challenge.information}}</p>
-        </div>
-    </div>
-
     <section class="container d-flex flex-row">
         <div class="container arrow-container col-lg-8 col-sm-12">
             <h2 class="text-center transparent-background-dark p-3" style="color: {{color}}">LES INFORMATIONS CLEFS</h2>
@@ -55,11 +47,6 @@
                             {% else %}
                             <p>Non spécifiée</p>
                             {% endif %}
-                        </div>
-                        <div class="key-info-row">
-                            <p class="mb-0"><span class="key-info">ETAPES:</span>
-                                <a class="journey-link" data-toggle="modal" data-target="#modalJourney">Voir les grandes étapes</a>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -83,14 +70,12 @@
                     {% endif %}
                 {% endfor %}
                 {% if challenge.isPublic == true or isClanMember == true %}
-                <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_join', {id: challenge.id}) }}">
-                    <input type="hidden" name="challengeId" value="{{ challenge.id }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('challenge-join') }}"/>
-                    <button
-                            class="btn btn-participation btn-lg text-uppercase text-white"
-                            style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
-                    >JE PARTICIPE</button>
-                </form>
+                    <div class="form-kyosc">
+                        <a class="btn btn-participation text-uppercase text-white"
+                           data-toggle="modal" data-target="#modalParticipationRequest"
+                           style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                        >Demander à rejoindre</a>
+                    </div>
                 {% endif %}
             {% endif %}
             {% if app.user and app.user == challenge.creator %}
@@ -103,43 +88,14 @@
             {% endif %}
         </div>
     </section>
-
-    {#        modal for journey pop-up#}
-    {% if challenge.journey %}
-    <div class="modal fade" id="modalJourney" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">ETAPES:</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body pre-line">
-                    {{ challenge.journey}}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="modal fade" id="modalJourney" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header align-self-center">
-                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">ETAPES:</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {% include 'challenge/_form_challenge-invitation.html.twig' %}
-                </div>
-            </div>
+    {% if challenge.information %}
+    <div class="mt-2 mb-4 container d-flex justify-content-center">
+        <div class="col-10 title-info-event transparent-background-dark p-3">
+            <h3>Informations complémentaires sur cette aventure:</h3>
+            <p class="pre-line">{{ challenge.information }}</p>
         </div>
     </div>
     {% endif %}
-    {#       end of modal for journey pop-up#}
-
     {#        modal for challenge invitation pop-up#}
         <div class="modal fade" id="modalInvitation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -156,7 +112,33 @@
                 </div>
             </div>
         </div>
-    {#       end of modal for journey pop-up#}
+    {#       end of modal for challenge invitation pop-up#}
+
+    {#        modal for participation resquest pop-up#}
+    <div class="modal fade" id="modalParticipationRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">Envoyez une demande à {{ challenge.creator.firstname }} pour rejoindre cette aventure</h2>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center bg-dark">
+                    <form class="w-100 d-flex flex-column justify-content-center align-items-center mb-4 form-kyosc" method="post" action="{{ path('challenge_request-to-join', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-request-to-join') }}"/>
+                        <textarea name="requestMessage" class="w-75" placeholder="Saluez {{ challenge.creator.firstname }} et faites lui part de votre envie de rejoindre son aventure" required></textarea>
+                        <button
+                                class="btn btn-participation btn-lg text-uppercase text-white my-4"
+                                style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                        >Envoyer ma demande</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for participation resquest pop-up#}
 
     {#        modal for youtube video pop-up#}
     <div class="modal fade" id="youtubeLinkForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -235,7 +217,7 @@
                                     {% else %}
                                         <img src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture " class="avatar-testimony">
                                     {% endif %}
-                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname ~' '~ message.author.lastname}}</h4>
+                                </a>{{ message.author.pseudo? message.author.pseudo : message.author.firstname }}</h4>
                             <span class="message-date">Posté le {{ message.createdAt |format_datetime(pattern="dd MMMM Y à HH'h'mm",locale='fr') }}</span>
                         </div>
                     {% endif %}

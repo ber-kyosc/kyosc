@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\InvitationRepository;
 use App\Security\EmailVerifier;
+use App\Security\LoginFormAuthenticator;
 use DateTimeImmutable;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -30,11 +33,17 @@ class RegistrationController extends AbstractController
      * @Route("/inscription", name="app_register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param InvitationRepository $invitationRepository
+     * @param LoginFormAuthenticator $login
+     * @param GuardAuthenticatorHandler $guard
      * @return Response
      */
     public function register(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        InvitationRepository $invitationRepository,
+        LoginFormAuthenticator $login,
+        GuardAuthenticatorHandler $guard
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -52,6 +61,18 @@ class RegistrationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $user->setUpdatedAt(new DateTimeImmutable('now'));
+
+            $invitationsReceived = $invitationRepository->findBy([
+                'recipient' => $user->getEmail(),
+                'isAccepted' => false,
+                'isRejected' => false,
+            ]);
+            if ($invitationsReceived) {
+                foreach ($invitationsReceived as $invitation) {
+                    $user->addInvitationsReceived($invitation);
+                }
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -68,8 +89,9 @@ class RegistrationController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Un mail de confirmation vous a été envoyé à l'adresse " . $user->getEmail()
+                "Un mail contenant un lien de vérification vous a été envoyé à l'adresse " . $user->getEmail()
             );
+            $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
             return $this->redirectToRoute('home');
         }
 
@@ -98,7 +120,7 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Votre mail a bien été vérifié !');
+        $this->addFlash('success', 'Merci, votre mail a bien été vérifié !');
 
         return $this->redirectToRoute('home');
     }

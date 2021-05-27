@@ -37,32 +37,24 @@ class Challenge
     private string $title;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     * @Assert\NotBlank(message="Veuillez choisir une citation pour votre challenge")
+     * @ORM\Column(type="string", length=150, nullable=true)
      * @Assert\Length(max="100", min="2", minMessage="Veuillez choisis un titre faisant plus de 2 caractères",
      * maxMessage="Un maximum de 100 caractères est autorisé")
      */
-    private string $quotation;
+    private ?string $quotation;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Veuillez choisir une descritpion pour votre challenge")
-     *
      */
     private string $description;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Veuillez entrer une localisation")
+     * @Assert\NotBlank(message="Veuillez entrer un lieu de départ")
      * TODO vérifier les caractères
      */
     private string $location;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * TODO faire la verification de locationEnd
-     */
-    private string $locationEnd;
 
     /**
      * @Vich\UploadableField(mapping="challenge_photo", fileNameProperty="challengePhoto")
@@ -95,22 +87,15 @@ class Challenge
     private ?DateTimeInterface $dateStart;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Veuillez décrire le parcours du challenge")
-     */
-    private string $journey;
-
-    /**
      * @ORM\Column(type="float", nullable=true)
      * @Assert\Positive(message="La distance doit être une valeure numérique positive")
      */
     private ?float $distance;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Veuillez remplir les informations pratiques")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private string $information;
+    private ?string $information;
 
     /**
      * @ORM\Column(type="boolean")
@@ -172,6 +157,16 @@ class Challenge
      */
     private Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="challenge")
+     */
+    private Collection $invitations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge")
+     */
+    private Collection $requests;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -179,6 +174,8 @@ class Challenge
         $this->clans = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,7 +200,7 @@ class Challenge
         return $this->quotation;
     }
 
-    public function setQuotation(string $quotation): self
+    public function setQuotation(?string $quotation): self
     {
         $this->quotation = $quotation;
 
@@ -280,36 +277,12 @@ class Challenge
         return $this;
     }
 
-    public function getLocationEnd(): ?string
-    {
-        return $this->locationEnd;
-    }
-
-    public function setLocationEnd(string $locationEnd): self
-    {
-        $this->locationEnd = $locationEnd;
-
-        return $this;
-    }
-
-    public function getJourney(): ?string
-    {
-        return $this->journey;
-    }
-
-    public function setJourney(string $journey): self
-    {
-        $this->journey = $journey;
-
-        return $this;
-    }
-
     public function getDistance(): ?float
     {
         return $this->distance;
     }
 
-    public function setDistance(float $distance): self
+    public function setDistance(?float $distance): self
     {
         $this->distance = $distance;
 
@@ -321,7 +294,7 @@ class Challenge
         return $this->information;
     }
 
-    public function setInformation(string $information): self
+    public function setInformation(?string $information): self
     {
         $this->information = $information;
 
@@ -511,6 +484,66 @@ class Challenge
             // set the owning side to null (unless already changed)
             if ($video->getChallenge() === $this) {
                 $video->setChallenge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getChallenge() === $this) {
+                $invitation->setChallenge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(JoinRequest $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(JoinRequest $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getChallenge() === $this) {
+                $request->setChallenge(null);
             }
         }
 

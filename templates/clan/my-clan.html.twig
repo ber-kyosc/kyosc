@@ -74,7 +74,7 @@
                             <img class="participant-photo-challenge mb-2 avatar" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="photo de profil par défaut">
                         {% endif %}
                     </a>
-                    <p>{{ member.pseudo? member.pseudo : member.firstname ~' '~ member.lastname}}</p>
+                    <p>{{ member.pseudo? member.pseudo : member.firstname }}</p>
                 </div>
             {% endfor %}
         </div>

@@ -38,6 +38,10 @@ services:
                 event: 'preUpdate'
                 entity: 'App\Entity\User'
 
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+
 
 
     # add more service definitions when explicit configuration is needed

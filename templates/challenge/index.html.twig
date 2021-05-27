@@ -64,12 +64,18 @@
                             {% if challenge.isPublic %}
                                 <span class="is-public-text open-text">Ouverte</span>
                             {% else %}
-                                <span class="is-public-text close-text">Fermée</span>
+                                <span class="is-public-text close-text">Privée</span>
                             {% endif %}
                         </div>
                         <div class="card-body p-2">
                             <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title }}</h3>
-                            <p class="card-text">"{{ challenge.quotation }}"</p>
+                            {% if challenge.quotation %}
+                                <p class="card-text">"{{ challenge.quotation }}"</p>
+                            {% elseif challenge.isPublic %}
+                                <p class="card-text">N'hésitez pas à rejoindre cette aventure !</p>
+                            {% else %}
+                                <p class="card-text">Désolé, cette aventure est privée.</p>
+                            {% endif %}
                         </div>
                     </a>
                 </div>

@@ -64,6 +64,26 @@ body {
     color: theme-color-level('kblue');
 }
 
+.bg-kgreen {
+    background-color: theme-color-level('kgreen');
+}
+
+.bg-kblue {
+    background-color: theme-color-level('kblue');
+}
+
+.bg-kred {
+    background-color: theme-color-level('kred');
+}
+
+.opacity-100 {
+    opacity: 1;
+}
+
+.opacity-50 {
+    opacity: 0.5;
+}
+
 .logo {
     height: auto;
     width: 60px;
@@ -235,7 +255,23 @@ body {
     right: 0;
     top: 24vh;
     z-index: 500;
-    animation: hide 1s linear 3s 1 forwards;
+    animation: hide 1s linear 5s 1 forwards;
+}
+
+.invitation-popup {
+    max-width: 460px;
+    position: absolute;
+    right: 0;
+    top: 26vh;
+    z-index: 500;
+}
+
+.request-popup {
+    max-width: 460px;
+    position: absolute;
+    left: 0;
+    top: 26vh;
+    z-index: 600;
 }
 
 @keyframes hide {

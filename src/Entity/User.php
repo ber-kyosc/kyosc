@@ -47,24 +47,21 @@ class User implements UserInterface, Serializable
     private ?string $pseudo = null;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     * @Assert\NotBlank(message="Veuillez renseigner une adresse valide.")
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    private string $address;
+    private ?string $address = null;
 
     /**
-     * @ORM\Column(type="string", length=5)
-     * @Assert\NotBlank(message="Veuillez renseigner un code postal.")
+     * @ORM\Column(type="string", length=5, nullable=true)
      * @Assert\Length(max="5", min="5", minMessage="Un code postal doit contenir 5 chiffres.",
      * maxMessage="Un code postal doit contenir 5 chiffres.")
      */
-    private string $postalCode;
+    private ?string $postalCode = null;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=false)
-     * @Assert\NotBlank(message="Veuillez renseigner une ville d'habitation.")
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private string $city;
+    private ?string $city = null;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
@@ -203,6 +200,26 @@ class User implements UserInterface, Serializable
      */
     private Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="creator")
+     */
+    private Collection $invitationsSent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="invitedUser")
+     */
+    private Collection $invitationsReceived;
+
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="creator")
+     */
+    private Collection $requestsSent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="requestedUser")
+     */
+    private Collection $requestsReceived;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -213,6 +230,10 @@ class User implements UserInterface, Serializable
         $this->createdClans = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->invitationsSent = new ArrayCollection();
+        $this->invitationsReceived = new ArrayCollection();
+        $this->requestsSent = new ArrayCollection();
+        $this->requestsReceived = new ArrayCollection();
     }
 
     public function __toString()
@@ -480,12 +501,12 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -592,7 +613,7 @@ class User implements UserInterface, Serializable
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -604,7 +625,7 @@ class User implements UserInterface, Serializable
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode): self
+    public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
 
@@ -782,6 +803,126 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($video->getAuthor() === $this) {
                 $video->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitationsSent(): Collection
+    {
+        return $this->invitationsSent;
+    }
+
+    public function addInvitationsSent(Invitation $invitationsSent): self
+    {
+        if (!$this->invitationsSent->contains($invitationsSent)) {
+            $this->invitationsSent[] = $invitationsSent;
+            $invitationsSent->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitationsSent(Invitation $invitationsSent): self
+    {
+        if ($this->invitationsSent->removeElement($invitationsSent)) {
+            // set the owning side to null (unless already changed)
+            if ($invitationsSent->getCreator() === $this) {
+                $invitationsSent->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitationsReceived(): Collection
+    {
+        return $this->invitationsReceived;
+    }
+
+    public function addInvitationsReceived(Invitation $invitationsReceived): self
+    {
+        if (!$this->invitationsReceived->contains($invitationsReceived)) {
+            $this->invitationsReceived[] = $invitationsReceived;
+            $invitationsReceived->setInvitedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitationsReceived(Invitation $invitationsReceived): self
+    {
+        if ($this->invitationsReceived->removeElement($invitationsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($invitationsReceived->getInvitedUser() === $this) {
+                $invitationsReceived->setInvitedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequestsSent(): Collection
+    {
+        return $this->requestsSent;
+    }
+
+    public function addRequestsSent(JoinRequest $requestsSent): self
+    {
+        if (!$this->requestsSent->contains($requestsSent)) {
+            $this->requestsSent[] = $requestsSent;
+            $requestsSent->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequestsSent(JoinRequest $requestsSent): self
+    {
+        if ($this->requestsSent->removeElement($requestsSent)) {
+            // set the owning side to null (unless already changed)
+            if ($requestsSent->getCreator() === $this) {
+                $requestsSent->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequestsReceived(): Collection
+    {
+        return $this->requestsReceived;
+    }
+
+    public function addRequestsReceived(JoinRequest $requestsReceived): self
+    {
+        if (!$this->requestsReceived->contains($requestsReceived)) {
+            $this->requestsReceived[] = $requestsReceived;
+            $requestsReceived->setRequestedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequestsReceived(JoinRequest $requestsReceived): self
+    {
+        if ($this->requestsReceived->removeElement($requestsReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($requestsReceived->getRequestedUser() === $this) {
+                $requestsReceived->setRequestedUser(null);
             }
         }
 

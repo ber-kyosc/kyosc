@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Invitation à une aventure</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Demande à rejoindre une aventure</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
     <body class="w-75">
-        <h1 class="text-center mb-4">Vous avez été invité à rejoindre une aventure KYOSC !</h1>
-        <p>Hello, vous avez été convié·e·s par {{ user.firstName }} {{ user.lastName }} à rejoindre l'aventure "{{ challenge.title }}".</p>
-        <p>Afin d'accepter ou refuser cette invitation, il vous faut vous connecter ou créer un compte sur la plateforme KYOSC :</p>
+        <h1 class="text-center mb-4">Un membre KYOSC souhaite rejoindre l'une de vos aventures !</h1>
+        <p>Hello, {{ user.firstName }} {{ user.lastName }} a fait une demande afin de rejoindre votre aventure "{{ challenge.title }}".</p>
+        <p>Voici son message : {{ requestMessage }}</p>
+        <p>Afin d'accepter ou refuser cette demande, il vous faut vous connecter sur la plateforme KYOSC :</p>
         <div class="m-3">
             <a href="{{url('app_login') }}" class="btn btn-success text-uppercase text-white mx-2">Se connecter</a>
-            <a href="{{url('app_register') }}" class="btn btn-warning text-uppercase text-white mx-2">Créer un compte</a>
         </div>
         <p>Pour voir les détails de cette aventure:</p>
         <div class="m-3">
