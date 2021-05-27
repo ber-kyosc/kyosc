@@ -93,8 +93,9 @@ class Clan
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="createdClans")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $creator;
+    private User $creator;
 
     /**
      * @ORM\Column(type="datetime")
@@ -126,12 +127,24 @@ class Clan
      */
     private Collection $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="clan")
+     */
+    private Collection $invitations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="clan")
+     */
+    private Collection $requests;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->challenges = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -249,13 +262,14 @@ class Clan
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getCreator(): User
     {
         return $this->creator;
     }
 
     public function setCreator(?User $creator): self
     {
+        /* @phpstan-ignore-next-line */
         $this->creator = $creator;
 
         return $this;
@@ -375,6 +389,66 @@ class Clan
             // set the owning side to null (unless already changed)
             if ($video->getClan() === $this) {
                 $video->setClan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setClan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getClan() === $this) {
+                $invitation->setClan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinRequest[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(JoinRequest $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setClan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(JoinRequest $request): self
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getClan() === $this) {
+                $request->setClan(null);
             }
         }
 

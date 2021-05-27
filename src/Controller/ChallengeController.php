@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
+use App\Entity\Invitation;
+use App\Entity\JoinRequest;
 use App\Entity\Message;
 use App\Entity\Sport;
 use App\Entity\Video;
@@ -14,8 +16,12 @@ use App\Form\MessageType;
 use App\Form\VideoType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use App\Repository\InvitationRepository;
+use App\Repository\JoinRequestRepository;
 use App\Repository\MessageRepository;
+use App\Repository\RequestRepository;
 use App\Repository\SportRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
@@ -102,10 +108,12 @@ class ChallengeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Votre aventure a été correctement soumis et sera validée très prochainement !"
+                "Bravo, votre aventure a bien été créée !"
             );
 
-            return $this->redirectToRoute('challenge_index');
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
         }
         return $this->render('challenge/new.html.twig', [
             'form' => $form->createView(),
@@ -182,12 +190,14 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param ChallengeRepository $challengeRepository
+     * @param InvitationRepository $invitationRepository
      * @return Response
      */
     public function join(
         Request $request,
         EntityManagerInterface $entityManager,
-        ChallengeRepository $challengeRepository
+        ChallengeRepository $challengeRepository,
+        InvitationRepository $invitationRepository
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -201,9 +211,144 @@ class ChallengeController extends AbstractController
             if ($challenge && $user) {
                 /* @phpstan-ignore-next-line */
                 $challenge->addParticipant($user);
+                $invitations = $invitationRepository->findBy([
+                    'challenge' => $challenge,
+                    /* @phpstan-ignore-next-line */
+                    'recipient' => $user->getEmail(),
+                ]);
+                if ($invitations) {
+                    foreach ($invitations as $invitation) {
+                        if (!$invitation->getIsAccepted() & !$invitation->getIsRejected()) {
+                            $invitation->setIsAccepted(true)
+                                ->setUpdatedAt(new DateTime());
+                            $entityManager->persist($invitation);
+                            $entityManager->flush();
+                        }
+                    }
+                }
                 $entityManager->flush();
                 return $this->redirectToRoute('challenge_show', [
                     'id' => $challengeId,
+                ]);
+            }
+        }
+        return $this->redirectToRoute('challenge_index');
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/demande-a-rejoindre",
+     *     name="request-to-join",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @param Challenge $challenge
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function requestToJoin(
+        Request $request,
+        MailerInterface $mailer,
+        Challenge $challenge
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $challengeId = $request->request->get('challengeId');
+        $submittedToken = $request->request->get('token');
+        $requestMessage = $request->request->get('requestMessage');
+        if (
+            $this->isCsrfTokenValid('challenge-request-to-join', $submittedToken) &&
+            filter_var($challengeId, FILTER_VALIDATE_INT)
+        ) {
+            $emailAddress = $challenge->getCreator()->getEmail();
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to($emailAddress)
+                ->subject('Demande à rejoindre l\'une de vos aventures')
+                ->html(
+                    $this->renderView(
+                        'email/challenge-request.html.twig',
+                        [
+                            'challenge' => $challenge,
+                            'user' => $user,
+                            'requestMessage' => $requestMessage
+                        ]
+                    )
+                );
+            $mailer->send($email);
+            $joinRequest = new JoinRequest();
+            $joinRequest->setChallenge($challenge)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setRequestedUser($challenge->getCreator());
+            /* @phpstan-ignore-next-line */
+            $joinRequest->setCreator($this->getUser());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($joinRequest);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Votre demande à bien été prise en compte et envoyée à l\'organisateur.trice du challenge'
+            );
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
+        }
+        return $this->redirectToRoute('challenge_index');
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/accepter-demande",
+     *     name="accept-request",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Challenge $challenge
+     * @param JoinRequestRepository $joinRequestRepository
+     * @return Response
+     */
+    public function acceptRequest(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Challenge $challenge,
+        JoinRequestRepository $joinRequestRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $creator = $this->getUser();
+        $joinRequestId = $request->request->get('requestId');
+        $submittedToken = $request->request->get('token');
+        if (
+            $this->isCsrfTokenValid('challenge-accept-request', $submittedToken) &&
+            filter_var($joinRequestId, FILTER_VALIDATE_INT)
+        ) {
+            $joinRequest = $joinRequestRepository->find($joinRequestId);
+            if ($joinRequest && $creator) {
+                $user = $joinRequest->getCreator();
+                /* @phpstan-ignore-next-line */
+                $challenge->addParticipant($user);
+                $joinRequests = $joinRequestRepository->findBy([
+                    'challenge' => $challenge,
+                    /* @phpstan-ignore-next-line */
+                    'creator' => $user,
+                ]);
+                if ($joinRequests) {
+                    foreach ($joinRequests as $joinRequest) {
+                        if (!$joinRequest->getIsAccepted() & !$joinRequest->getIsRejected()) {
+                            $joinRequest->setIsAccepted(true)
+                                ->setUpdatedAt(new DateTime());
+                            $entityManager->persist($joinRequest);
+                            $entityManager->flush();
+                        }
+                    }
+                }
+                $entityManager->flush();
+                return $this->redirectToRoute('challenge_show', [
+                    'id' => $challenge->getId(),
                 ]);
             }
         }
@@ -250,6 +395,86 @@ class ChallengeController extends AbstractController
 
     /**
      * @Route(
+     *     "/{id}/refuser",
+     *     name="decline",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param EntityManagerInterface $entityManager
+     * @param Challenge $challenge
+     * @param InvitationRepository $invitationRepository
+     * @return Response
+     */
+    public function decline(
+        EntityManagerInterface $entityManager,
+        Challenge $challenge,
+        InvitationRepository $invitationRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $invitations = $invitationRepository->findBy([
+            'challenge' => $challenge,
+            /* @phpstan-ignore-next-line */
+            'recipient' => $user->getEmail(),
+        ]);
+        if ($invitations) {
+            foreach ($invitations as $invitation) {
+                if (!$invitation->getIsAccepted() & !$invitation->getIsRejected()) {
+                    $invitation->setIsRejected(true)
+                        ->setUpdatedAt(new DateTime());
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('challenge_show', [
+            'id' => $challenge->getId(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/refuser-demande",
+     *     name="decline-request",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param EntityManagerInterface $entityManager
+     * @param Challenge $challenge
+     * @param JoinRequestRepository $joinRequestRepository
+     * @return Response
+     */
+    public function declineRequest(
+        EntityManagerInterface $entityManager,
+        Challenge $challenge,
+        JoinRequestRepository $joinRequestRepository
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $creator = $this->getUser();
+        $joinRequests = $joinRequestRepository->findBy([
+            'challenge' => $challenge,
+            /* @phpstan-ignore-next-line */
+            'requestedUser' => $creator,
+        ]);
+        if ($joinRequests) {
+            foreach ($joinRequests as $joinRequest) {
+                if (!$joinRequest->getIsAccepted() & !$joinRequest->getIsRejected()) {
+                    $joinRequest->setIsRejected(true)
+                        ->setUpdatedAt(new DateTime());
+                    $entityManager->persist($joinRequest);
+                    $entityManager->flush();
+                }
+            }
+        }
+
+        return $this->redirectToRoute('challenge_show', [
+            'id' => $challenge->getId(),
+        ]);
+    }
+
+    /**
+     * @Route(
      *     "/{id}/invitation",
      *     name="invite",
      *     methods={"POST"},
@@ -258,11 +483,16 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param MailerInterface $mailer
      * @param Challenge $challenge
+     * @param UserRepository $userRepository
      * @return Response
      * @throws TransportExceptionInterface
      */
-    public function invite(Request $request, MailerInterface $mailer, Challenge $challenge): Response
-    {
+    public function invite(
+        Request $request,
+        MailerInterface $mailer,
+        Challenge $challenge,
+        UserRepository $userRepository
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $emailAddress = $request->request->get('email');
         $submittedToken = $request->request->get('token');
@@ -281,6 +511,20 @@ class ChallengeController extends AbstractController
                     )
                 );
             $mailer->send($email);
+            $invitation = new Invitation();
+            $invitation->setChallenge($challenge)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setRecipient($emailAddress);
+                /* @phpstan-ignore-next-line */
+            $invitation->setCreator($this->getUser());
+            $targetUser = $userRepository->findOneBy(['email' => $emailAddress]);
+            if ($targetUser) {
+                $invitation->setInvitedUser($targetUser);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($invitation);
+            $entityManager->flush();
             $this->addFlash(
                 'success',
                 'Votre invitation a bien été envoyée à l\'adresse suivante ' . $emailAddress . '.'

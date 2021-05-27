@@ -11,16 +11,19 @@
                 {% endif %}
             {% endif %}
             <li> <a href="{{ path("home") }}">Accueil</a> </li>
-            <li> <a href="{{ path("challenge_index") }}">Les aventures</a> </li>
-            <li> <a href="{{ path("clan_index") }}">Les clans</a> </li>
             {% if app.user %}
                 <li> <a href="{{ path("profil_my_profil") }}">Mon espace</a> </li>
+                <li> <a href="{{ path("challenge_index") }}">Les aventures</a> </li>
                 <li> <a href="{{ path("challenge_new") }}">Nouvelle aventure</a> </li>
+                <li> <a href="{{ path("clan_index") }}">Les clans</a> </li>
                 <li> <a href="{{ path("clan_new") }}">Nouveau clan</a> </li>
                 <li> <a href="{{ path("app_logout") }}">Déconnexion</a> </li>
             {% else %}
+                <li> <a href="{{ path("challenge_index") }}">Les aventures</a> </li>
+                <li> <a href="{{ path("clan_index") }}">Les clans</a> </li>
                 <li> <a href="{{ path("app_login") }}">Se connecter</a> </li>
             {% endif %}
+            <li> <a href="{{ path("faq") }}">Aide</a> </li>
         </ul>
         <button class="navbar-toggler home-logo" type="button">
             <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
@@ -32,10 +35,11 @@
                     <a class="home-button dark-button" href="{{ path("profil_my_profil") }}">Mon Espace</a>
                     <a class="home-button dark-button d-flex align-items-center justify-content-center" href="{{ path("app_logout") }}">Déconnexion</a>
                 </div>
+                <a href="{{ path('faq') }}" class="home-button light-button text-uppercase">Bien démarrer sur KYOSC</a>
             {% else %}
-                <a href="{{ path('app_login') }}" class="home-button dark-button">Se connecter</a>
+                <a href="{{ path('app_login') }}" class="home-button dark-button text-uppercase">Se connecter</a>
+                <a href="{{ path('app_register') }}" class="home-button light-button text-uppercase">Créez votre compte</a>
             {% endif %}
-            <a href="{{ path('challenge_new') }}" class="home-button light-button text-uppercase">Créez vos aventures</a>
         </div>
     </div>
     <div class="main-carousel-home-page">

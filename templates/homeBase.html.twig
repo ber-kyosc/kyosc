@@ -13,8 +13,31 @@
     </head>
 
     <body class="home-body">
-        {% if app.user and not app.user.isVerified %}
-            {{ include('component/_email-verified.html.twig') }}
+{#  Uncomment the tree lines of code below to enable a popup message whose purpose is to warn the user if his mail isn't verified yet #}
+{#        {% if app.user and not app.user.isVerified %}#}
+{#            {{ include('component/_email-verified.html.twig') }}#}
+{#        {% endif %}#}
+        {% if app.user and app.user.invitationsReceived is not empty %}
+            {% set isInvitationPopup = false %}
+            {% for invitation in app.user.invitationsReceived %}
+                {% if not invitation.isAccepted and not invitation.isRejected %}
+                    {% set isInvitationPopup = true %}
+                {% endif %}
+            {% endfor %}
+            {% if isInvitationPopup %}
+                {{ include('component/_invitations.html.twig') }}
+            {% endif %}
+        {% endif %}
+        {% if app.user and app.user.requestsReceived is not empty %}
+            {% set isRequestPopup = false %}
+            {% for request in app.user.requestsReceived %}
+                {% if not request.isAccepted and not request.isRejected %}
+                    {% set isRequestPopup = true %}
+                {% endif %}
+            {% endfor %}
+            {% if isRequestPopup %}
+                {{ include('component/_join-requests.html.twig') }}
+            {% endif %}
         {% endif %}
         {{ render_esi(path('ch_cookie_consent.show_if_cookie_consent_not_set', { 'locale' : 'fr' })) }}
         {% for category, messages in app.flashes %}

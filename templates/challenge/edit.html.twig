@@ -13,6 +13,9 @@
 {% endblock %}
 
 {% block body %}
+    <header class="arrow-header my-3 text-uppercase">
+        <h1 class="mt-2">Modifiez votre aventure "{{ challenge.title }}"</h1>
+    </header>
   {% include ('challenge/_form.html.twig') %}
 {% endblock body %}
 

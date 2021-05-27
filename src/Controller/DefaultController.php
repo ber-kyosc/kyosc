@@ -147,11 +147,10 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/faq", name="faq")
+     * @Route("/aide", name="faq")
      */
     public function faq(): Response
     {
-//        return $this->render('about/faq.html.twig');
-        return $this->render('about/workInProgress.html.twig');
+        return $this->render('about/faq.html.twig');
     }
 }
