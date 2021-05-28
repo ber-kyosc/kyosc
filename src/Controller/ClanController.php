@@ -330,9 +330,16 @@ class ClanController extends AbstractController
         ) {
             $clan = $clanRepository->find($clanId);
             if ($clan && $user) {
-                /* @phpstan-ignore-next-line */
-                $clan->removeMember($user);
-                $entityManager->flush();
+                if ($user != $clan->getCreator()) {
+                    /* @phpstan-ignore-next-line */
+                    $clan->removeMember($user);
+                    $entityManager->flush();
+                } else {
+                    $this->addFlash(
+                        'danger',
+                        'Désolé, vous ne pouvez pas quitter un clan dont vous êtes le.la créateur.trice'
+                    );
+                }
                 return $this->redirectToRoute('clan_show', [
                     'id' => $clanId,
                 ]);
