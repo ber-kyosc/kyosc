@@ -183,7 +183,7 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2 class="h5 text-uppercase text-center mb-4" style="color: {{color}}">{{ challenge.participants|length}} participant{{ challenge.participants|length>1?'s':''}}</h2>
-        <div class=" container d-flex justify-content-center">
+        <div class=" container d-flex flex-wrap justify-content-center scroll-comment">
         {% for participant in challenge.participants %}
             <div class="d-flex flex-column align-items-center m-4">
                 <a href="{{ path("profil_show", {id: participant.id}) }}">
