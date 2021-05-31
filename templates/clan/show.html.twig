@@ -25,15 +25,15 @@
         </div>
     </section>
     <section class="container d-flex flex-column flex-md-row align-items-center justify-content-around">
-        {% if app.user in clan.members %}
-            <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('clan_leave', {id: clan.id}) }}">
+        {% if app.user in clan.members and app.user != clan.creator %}
+            <form class="align-middle align-self-center mb-3 mb-md-0 form-kyosc" method="post" action="{{ path('clan_leave', {id: clan.id}) }}">
                 <input type="hidden" name="clanId" value="{{ clan.id }}">
                 <input type="hidden" name="token" value="{{ csrf_token('clan-leave') }}"/>
                 <button class="btn btn-register text-uppercase">Je veux quitter ce clan</button>
             </form>
-        {% elseif app.user %}
+        {% elseif app.user and app.user != clan.creator %}
             {% if clan.isPublic == true or app.user and app.user == clan.creator %}
-                <div class="form-kyosc">
+                <div class="form-kyosc mb-3 mb-md-0">
                     <a class="btn text-uppercase btn-login"
                        data-toggle="modal" data-target="#modalJoinRequest"
                     >Demander à rejoindre</a>
@@ -42,7 +42,7 @@
         {% endif %}
 
         {% if app.user and app.user in clan.members or app.user == clan.creator %}
-            <div class="form-kyosc">
+            <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn text-uppercase btn-login"
                    href="{{ path("clan_my-clan", {id: clan.id}) }}"
                 >Entrer dans l'espace privé</a>
@@ -50,10 +50,13 @@
         {% endif %}
 
         {% if app.user and app.user == clan.creator %}
-            <div class="form-kyosc">
+            <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn text-uppercase btn-profil"
                    data-toggle="modal" data-target="#modalInvitation"
                 >J'invite des nouveaux membres</a>
+            </div>
+            <div class="form-kyosc mb-3 mb-md-0">
+                <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
             </div>
         {% endif %}
     </section>
