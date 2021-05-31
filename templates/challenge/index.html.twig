@@ -64,8 +64,16 @@
                             {% if challenge.isPublic %}
                                 <span class="is-public-text open-text">Ouverte</span>
                             {% else %}
-                                <span class="is-public-text close-text">Privée</span>
+                                <span class="is-public-text close-text">Fermée</span>
                             {% endif %}
+                            <div class="comment-counter p-2 position-absolute">
+                                <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
+                                <span class="transparent-background-dark p-1">{{ challenge.messages|length }}</span>
+                            </div>
+                            <div class="user-counter p-2 position-absolute">
+                                <img class="delete-icon rounded" src="{{ asset('build/images/picto/group.png') }}">
+                                <span class="transparent-background-dark p-1">{{ challenge.participants|length }}</span>
+                            </div>
                         </div>
                         <div class="card-body p-2">
                             <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title }}</h3>
@@ -74,7 +82,7 @@
                             {% elseif challenge.isPublic %}
                                 <p class="card-text">N'hésitez pas à rejoindre cette aventure !</p>
                             {% else %}
-                                <p class="card-text">Désolé, cette aventure est privée.</p>
+                                <p class="card-text">Désolé, vous ne pouvez pas demander à rejoindre cette aventure</p>
                             {% endif %}
                         </div>
                     </a>

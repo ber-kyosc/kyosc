@@ -76,6 +76,10 @@ body {
     background-color: theme-color-level('kred');
 }
 
+.bg-korange {
+    background-color: theme-color-level('korange');
+}
+
 .opacity-100 {
     opacity: 1;
 }
@@ -302,12 +306,38 @@ body {
     transform: translateY(0em);
 }
 
+.scroll-comment {
+    max-height: 600px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+.scroll-modal {
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
 .close-picto {
     cursor: pointer;
 }
 
 .index-card-max-width {
     max-width: 400px;
+}
+
+.comment-counter {
+    bottom: 1px;
+    left: 0;
+}
+
+.user-counter {
+    bottom: 1px;
+    left: 65px;
+}
+
+.max-width-800 {
+    max-width: 800px;
 }
 
 .profil-container {
