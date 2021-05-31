@@ -238,11 +238,13 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Vidéos</h2>
+        {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
         <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#youtubeLinkForm">
             <h2 class="mt-5 arrow-header">Ajoutez des vidéos !<br>
                 <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
             </h2>
         </a>
+        {% endif %}
         <div class="mt-3 d-flex flex-column align-items-center w-100 scroll-comment">
             {% if challenge.videos|length >= 1 %}
                 {% for video in challenge.videos|reverse %}
