@@ -25,15 +25,15 @@
         </div>
     </section>
     <section class="container d-flex flex-column flex-md-row align-items-center justify-content-around">
-        {% if app.user in clan.members %}
-            <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('clan_leave', {id: clan.id}) }}">
+        {% if app.user in clan.members and app.user != clan.creator %}
+            <form class="align-middle align-self-center mb-3 mb-md-0 form-kyosc" method="post" action="{{ path('clan_leave', {id: clan.id}) }}">
                 <input type="hidden" name="clanId" value="{{ clan.id }}">
                 <input type="hidden" name="token" value="{{ csrf_token('clan-leave') }}"/>
                 <button class="btn btn-register text-uppercase">Je veux quitter ce clan</button>
             </form>
-        {% elseif app.user %}
+        {% elseif app.user and app.user != clan.creator %}
             {% if clan.isPublic == true or app.user and app.user == clan.creator %}
-                <div class="form-kyosc">
+                <div class="form-kyosc mb-3 mb-md-0">
                     <a class="btn text-uppercase btn-login"
                        data-toggle="modal" data-target="#modalJoinRequest"
                     >Demander à rejoindre</a>
@@ -42,18 +42,30 @@
         {% endif %}
 
         {% if app.user and app.user in clan.members or app.user == clan.creator %}
-            <div class="form-kyosc">
+            <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn text-uppercase btn-login"
                    href="{{ path("clan_my-clan", {id: clan.id}) }}"
-                >Entrer dans l'espace privé</a>
+                >Entrer dans l'espace privé
+                    <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
+                    {% set notPublicMessageCount = 0 %}
+                    {% for message in clan.messages %}
+                        {% if message.isPublic == false %}
+                            {% set notPublicMessageCount = notPublicMessageCount + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <span class="transparent-background-dark p-1">{{ notPublicMessageCount }}</span>
+                </a>
             </div>
         {% endif %}
 
         {% if app.user and app.user == clan.creator %}
-            <div class="form-kyosc">
+            <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn text-uppercase btn-profil"
                    data-toggle="modal" data-target="#modalInvitation"
                 >J'invite des nouveaux membres</a>
+            </div>
+            <div class="form-kyosc mb-3 mb-md-0">
+                <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
             </div>
         {% endif %}
     </section>
@@ -126,7 +138,7 @@
     </div>
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2 class="h5 text-uppercase text-center mb-4">{{ clan.members|length}} membre{{ clan.members|length>1?'s':''}}</h2>
-        <div class=" container d-flex justify-content-center">
+        <div class=" container d-flex flex-wrap justify-content-center scroll-comment">
             {% for member in clan.members %}
                 <div class="d-flex flex-column align-items-center m-4">
                     <a href="{{ path("profil_show", {id: member.id}) }}">

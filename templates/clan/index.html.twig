@@ -31,6 +31,20 @@
                             {% else %}
                                 <span class="is-public-text close-text">Fermé</span>
                             {% endif %}
+                            <div class="comment-counter p-2 position-absolute">
+                                <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
+                                {% set publicMessageCount = 0 %}
+                                {% for message in clan.messages %}
+                                    {% if message.isPublic %}
+                                        {% set publicMessageCount = publicMessageCount + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="transparent-background-dark p-1">{{ publicMessageCount }}</span>
+                            </div>
+                            <div class="user-counter p-2 position-absolute">
+                                <img class="delete-icon rounded" src="{{ asset('build/images/picto/group.png') }}">
+                                <span class="transparent-background-dark p-1">{{ clan.members|length }}</span>
+                            </div>
                         </div>
                     </a>
                     <div class="card-body p-2 text-center">
