@@ -108,20 +108,7 @@ class ClanController extends AbstractController
             $entityManager->flush();
             $data = $messageRepository->find($message->getId());
             return $this->json($data, Response::HTTP_OK, [], [
-//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
-                ObjectNormalizer::IGNORED_ATTRIBUTES => [
-                    'clan',
-                    'challenge',
-                    'sport',
-                    'challenges',
-                    'createdChallenges',
-                    'favoriteSports',
-                    'favoriteBrands',
-                    'clans',
-                    'createdClans',
-                    'messages',
-                    'videos',
-                ],
+                'groups' => ['message', 'message_author']
             ]);
         }
 
