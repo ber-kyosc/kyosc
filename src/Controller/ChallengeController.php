@@ -81,12 +81,15 @@ class ChallengeController extends AbstractController
      * )
      * @param SportRepository $sportRepository
      * @param CategoryRepository $categoryRepository
+     * @param MailerInterface $mailer
      * @param Request $request
      * @return Response
+     * @throws TransportExceptionInterface
      */
     public function new(
         SportRepository $sportRepository,
         CategoryRepository $categoryRepository,
+        MailerInterface $mailer,
         Request $request
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -96,15 +99,48 @@ class ChallengeController extends AbstractController
         $form = $this->createForm(ChallengeType::class, $challenge);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
             $entityManager = $this->getDoctrine()->getManager();
             $challenge->setCreatedAt(new DateTime());
             $challenge->setUpdatedAt(new DateTime());
             /* @phpstan-ignore-next-line */
-            $challenge->setCreator($this->getUser());
+            $challenge->setCreator($user);
             /* @phpstan-ignore-next-line */
-            $challenge->addParticipant($this->getUser());
+            $challenge->addParticipant($user);
             $entityManager->persist($challenge);
             $entityManager->flush();
+            if (!empty($challenge->getClans())) {
+                foreach ($challenge->getClans() as $clan) {
+                    foreach ($clan->getMembers() as $member) {
+                        if ($member != $user) {
+                            /* @phpstan-ignore-next-line */
+                            $emailAddress = $member->getEmail();
+                            $email = (new Email())
+                                ->from($this->getParameter('mailer_from'))
+                                ->to($emailAddress)
+                                ->subject('Invitation à une aventure Kyosc')
+                                ->html(
+                                    $this->renderView(
+                                        'email/challenge-invitation.html.twig',
+                                        ['challenge' => $challenge, 'user' => $user]
+                                    )
+                                );
+                            $mailer->send($email);
+                            $invitation = new Invitation();
+                            $invitation->setChallenge($challenge)
+                                ->setCreatedAt(new DateTime())
+                                ->setUpdatedAt(new DateTime())
+                                ->setRecipient($emailAddress);
+                            /* @phpstan-ignore-next-line */
+                            $invitation->setCreator($user);
+                            $invitation->setInvitedUser($member);
+                            $entityManager = $this->getDoctrine()->getManager();
+                            $entityManager->persist($invitation);
+                            $entityManager->flush();
+                        }
+                    }
+                }
+            }
 
             $this->addFlash(
                 'success',
