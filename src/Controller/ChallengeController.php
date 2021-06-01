@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
+use App\Entity\Clan;
 use App\Entity\Invitation;
 use App\Entity\JoinRequest;
 use App\Entity\Message;
@@ -81,12 +82,15 @@ class ChallengeController extends AbstractController
      * )
      * @param SportRepository $sportRepository
      * @param CategoryRepository $categoryRepository
+     * @param MailerInterface $mailer
      * @param Request $request
      * @return Response
+     * @throws TransportExceptionInterface
      */
     public function new(
         SportRepository $sportRepository,
         CategoryRepository $categoryRepository,
+        MailerInterface $mailer,
         Request $request
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -96,15 +100,48 @@ class ChallengeController extends AbstractController
         $form = $this->createForm(ChallengeType::class, $challenge);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
             $entityManager = $this->getDoctrine()->getManager();
             $challenge->setCreatedAt(new DateTime());
             $challenge->setUpdatedAt(new DateTime());
             /* @phpstan-ignore-next-line */
-            $challenge->setCreator($this->getUser());
+            $challenge->setCreator($user);
             /* @phpstan-ignore-next-line */
-            $challenge->addParticipant($this->getUser());
+            $challenge->addParticipant($user);
             $entityManager->persist($challenge);
             $entityManager->flush();
+            if (!empty($challenge->getClans())) {
+                foreach ($challenge->getClans() as $clan) {
+                    foreach ($clan->getMembers() as $member) {
+                        if ($member != $user) {
+                            /* @phpstan-ignore-next-line */
+                            $emailAddress = $member->getEmail();
+                            $email = (new Email())
+                                ->from($this->getParameter('mailer_from'))
+                                ->to($emailAddress)
+                                ->subject('Invitation à une aventure Kyosc')
+                                ->html(
+                                    $this->renderView(
+                                        'email/challenge-invitation.html.twig',
+                                        ['challenge' => $challenge, 'user' => $user]
+                                    )
+                                );
+                            $mailer->send($email);
+                            $invitation = new Invitation();
+                            $invitation->setChallenge($challenge)
+                                ->setCreatedAt(new DateTime())
+                                ->setUpdatedAt(new DateTime())
+                                ->setRecipient($emailAddress);
+                            /* @phpstan-ignore-next-line */
+                            $invitation->setCreator($user);
+                            $invitation->setInvitedUser($member);
+                            $entityManager = $this->getDoctrine()->getManager();
+                            $entityManager->persist($invitation);
+                            $entityManager->flush();
+                        }
+                    }
+                }
+            }
 
             $this->addFlash(
                 'success',
@@ -120,6 +157,92 @@ class ChallengeController extends AbstractController
             'sports' => $sports,
             'categories' => $categories
             ]);
+    }
+
+    /**
+     * @Route(
+     *     "/nouvelle/{id}",
+     *     name="new-from-clan",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Clan $clan
+     * @param SportRepository $sportRepository
+     * @param CategoryRepository $categoryRepository
+     * @param MailerInterface $mailer
+     * @param Request $request
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function newFromClan(
+        Clan $clan,
+        SportRepository $sportRepository,
+        CategoryRepository $categoryRepository,
+        MailerInterface $mailer,
+        Request $request
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $sports = $sportRepository->findAll();
+        $categories = $categoryRepository->findAll();
+        $challenge = new Challenge();
+        $form = $this->createForm(ChallengeType::class, $challenge);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $entityManager = $this->getDoctrine()->getManager();
+            $challenge->setCreatedAt(new DateTime());
+            $challenge->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $challenge->setCreator($user);
+            /* @phpstan-ignore-next-line */
+            $challenge->addParticipant($user);
+            $challenge->addClan($clan);
+            $entityManager->persist($challenge);
+            $entityManager->flush();
+            foreach ($clan->getMembers() as $member) {
+                if ($member != $user) {
+                    /* @phpstan-ignore-next-line */
+                    $emailAddress = $member->getEmail();
+                    $email = (new Email())
+                        ->from($this->getParameter('mailer_from'))
+                        ->to($emailAddress)
+                        ->subject('Invitation à une aventure Kyosc')
+                        ->html(
+                            $this->renderView(
+                                'email/challenge-invitation.html.twig',
+                                ['challenge' => $challenge, 'user' => $user]
+                            )
+                        );
+                    $mailer->send($email);
+                    $invitation = new Invitation();
+                    $invitation->setChallenge($challenge)
+                        ->setCreatedAt(new DateTime())
+                        ->setUpdatedAt(new DateTime())
+                        ->setRecipient($emailAddress);
+                    /* @phpstan-ignore-next-line */
+                    $invitation->setCreator($user);
+                    $invitation->setInvitedUser($member);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                }
+            }
+
+            $this->addFlash(
+                'success',
+                "Bravo, votre aventure a bien été créée !"
+            );
+
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
+        }
+        return $this->render('challenge/new.html.twig', [
+            'form' => $form->createView(),
+            'fromClan' => $clan,
+            'sports' => $sports,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -309,17 +432,20 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param Challenge $challenge
+     * @param MailerInterface $mailer
      * @param JoinRequestRepository $joinRequestRepository
      * @return Response
+     * @throws TransportExceptionInterface
      */
     public function acceptRequest(
         Request $request,
         EntityManagerInterface $entityManager,
         Challenge $challenge,
+        MailerInterface $mailer,
         JoinRequestRepository $joinRequestRepository
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $creator = $this->getUser();
+        $challengeCreator = $this->getUser();
         $joinRequestId = $request->request->get('requestId');
         $submittedToken = $request->request->get('token');
         if (
@@ -327,14 +453,15 @@ class ChallengeController extends AbstractController
             filter_var($joinRequestId, FILTER_VALIDATE_INT)
         ) {
             $joinRequest = $joinRequestRepository->find($joinRequestId);
-            if ($joinRequest && $creator) {
-                $user = $joinRequest->getCreator();
+            if ($joinRequest && $challengeCreator) {
                 /* @phpstan-ignore-next-line */
-                $challenge->addParticipant($user);
+                $requestCreator = $joinRequest->getCreator();
+                /* @phpstan-ignore-next-line */
+                $challenge->addParticipant($requestCreator);
                 $joinRequests = $joinRequestRepository->findBy([
                     'challenge' => $challenge,
                     /* @phpstan-ignore-next-line */
-                    'creator' => $user,
+                    'creator' => $requestCreator,
                 ]);
                 if ($joinRequests) {
                     foreach ($joinRequests as $joinRequest) {
@@ -347,6 +474,23 @@ class ChallengeController extends AbstractController
                     }
                 }
                 $entityManager->flush();
+                /* @phpstan-ignore-next-line */
+                $emailAddress = $requestCreator->getEmail();
+                $email = (new Email())
+                    ->from($this->getParameter('mailer_from'))
+                    ->to($emailAddress)
+                    ->subject('Demande acceptée !')
+                    ->html(
+                        $this->renderView(
+                            'email/challenge-joining-confirmation.html.twig',
+                            [
+                                'challenge' => $challenge,
+                                'user' => $requestCreator
+                            ]
+                        )
+                    );
+                $mailer->send($email);
+
                 return $this->redirectToRoute('challenge_show', [
                     'id' => $challenge->getId(),
                 ]);
@@ -572,20 +716,7 @@ class ChallengeController extends AbstractController
             $entityManager->flush();
             $data = $messageRepository->find($message->getId());
             return $this->json($data, Response::HTTP_OK, [], [
-//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
-                ObjectNormalizer::IGNORED_ATTRIBUTES => [
-                    'clan',
-                    'challenge',
-                    'sport',
-                    'challenges',
-                    'createdChallenges',
-                    'favoriteSports',
-                    'favoriteBrands',
-                    'clans',
-                    'createdClans',
-                    'messages',
-                    'videos',
-                ],
+                'groups' => ['message', 'message_author']
             ]);
         }
 

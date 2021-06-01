@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -16,41 +16,49 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"message"})
      */
     private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @Groups({"message_author"})
      */
     private ?User $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Clan::class, inversedBy="messages")
+     * @Groups({"message_clan"})
      */
     private ?Clan $clan = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"message"})
      */
     private ?string $content;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message"})
      */
     private DateTimeInterface $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message"})
      */
     private DateTimeInterface $updatedAt;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"message"})
      */
     private ?bool $isPublic;
 
     /**
      * @ORM\ManyToOne(targetEntity=Challenge::class, inversedBy="messages")
+     * @Groups({"message_challenge"})
      */
     private ?Challenge $challenge = null;
 

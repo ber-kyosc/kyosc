@@ -1,0 +1,17 @@
+{% extends 'email/base.html.twig' %}
+
+{% block title %}
+    Ta demande est acceptée !
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Félicitations {{ user.firstName }}, ta demande est acceptée !</h1>
+    <p>Hello, ta demande afin de rejoindre l'aventure "{{ challenge.title }}" a été acceptée.</p>
+    <p>Sur KYOSC, un seul espace où tout est consultable, connecte toi pour retrouver le descriptif complet et toutes les informations nécessaires pour vivre une magnifique expérience.<br>
+        Tu pourras si tu le souhaites, converser en privé avec les participants, ainsi que partager des photos et des vidéos en lien avec votre aventure.<br>
+        Profitez ensemble au maximum de cette expérience unique !</p>
+    <p>Pour voir les détails de cette aventure:</p>
+    <div class="m-3">
+        <a href="{{url('challenge_show', {id: challenge.id}) }}" class="btn btn-info">Voir l'aventure</a>
+    </div>
+{% endblock %}

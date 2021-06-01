@@ -1,0 +1,17 @@
+{% extends 'email/base.html.twig' %}
+
+{% block title %}
+    Ta demande est acceptée !
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Félicitations {{ user.firstName }}, ta demande est acceptée !</h1>
+    <p>Hello, ta demande afin de rejoindre le clan "{{ clan.name }}" a été acceptée.</p>
+    <p>Sur KYOSC, un seul espace où tout est consultable, connecte toi pour retrouver les informations essentielles du clan, notamment tous les membres et l’ensemble des aventures passées et à venir.<br>
+        Tu pourras si tu le souhaites, converser en privé avec les membres.<br>
+        Tu pourras aussi créer des aventures depuis le clan et inviter en un clic, l’ensemble de ces membres à ta propre aventure.</p>
+    <p>Pour voir les détails du clan:</p>
+    <div class="m-3">
+        <a href="{{url('clan_show', {id: clan.id}) }}" class="btn btn-info">Voir le clan</a>
+    </div>
+{% endblock %}
