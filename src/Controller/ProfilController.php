@@ -35,14 +35,12 @@ class ProfilController extends AbstractController
 
     /**
      * @Route("/", name="my_profil")
-     * @param SportRepository $sportRepository
      * @param CategoryRepository $categoryRepository
      * @param ChallengeRepository $challengeRepository
      * @param Request $request
      * @return Response
      */
-    public function index(
-        SportRepository $sportRepository,
+    public function show(
         CategoryRepository $categoryRepository,
         ChallengeRepository $challengeRepository,
         Request $request
@@ -63,6 +61,19 @@ class ProfilController extends AbstractController
                 array_unshift($comingChallenges, $challenge);
             }
         }
+        $otherChallenges = [];
+        $pastOtherChallenges = [];
+        /* @phpstan-ignore-next-line */
+        foreach ($user->getChallenges() as $challenge) {
+            if ($challenge->getCreator() != $user) {
+                if ($challenge->getDateStart() < new DateTime()) {
+                    $pastOtherChallenges[] = $challenge;
+                } else {
+                    array_unshift($otherChallenges, $challenge);
+                }
+            }
+        }
+
         $categories = $categoryRepository->findAll();
         $form = $this->createForm(EditProfilType::class, $user);
         $form->handleRequest($request);
@@ -83,6 +94,8 @@ class ProfilController extends AbstractController
             'user' => $user,
             'pastChallenges' => $pastChallenges,
             'comingChallenges' => $comingChallenges,
+            'otherChallenges' => $otherChallenges,
+            'pastOtherChallenges' => $pastOtherChallenges,
         ]);
     }
 
@@ -92,7 +105,7 @@ class ProfilController extends AbstractController
      * @param ChallengeRepository $challengeRepository
      * @return Response
      */
-    public function show(
+    public function user(
         User $user,
         ChallengeRepository $challengeRepository
     ): Response {

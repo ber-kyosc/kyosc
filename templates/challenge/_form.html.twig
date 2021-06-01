@@ -104,11 +104,22 @@
                 {{ form_help(form.information) }}
             </div>
             <div class="form-group col-md-6">
-                <div class="form-group">
-                    {{ form_errors(form.clans) }}
-                    {{ form_widget(form.clans) }}
-                    {{ form_help(form.clans) }}
-                </div>
+                {% if fromClan is defined %}
+                    <div class="form-group">
+                        Cette aventure sera partagée avec le clan "{{ fromClan.name }}" et tout ses membres.
+                        <div style="display: none;">
+                            {{ form_errors(form.clans) }}
+                            {{ form_widget(form.clans) }}
+                            {{ form_help(form.clans) }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        {{ form_errors(form.clans) }}
+                        {{ form_widget(form.clans) }}
+                        {{ form_help(form.clans) }}
+                    </div>
+                {% endif %}
                 <div class="form-group">
                     {{ form_errors(form.isPublic) }}
                     {{ form_widget(form.isPublic) }}

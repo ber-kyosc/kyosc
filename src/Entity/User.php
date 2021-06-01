@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -26,23 +27,27 @@ class User implements UserInterface, Serializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"message_author"})
      */
     private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Veuillez renseigner un prénom.")
+     * @Groups({"message_author"})
      */
     private string $firstName;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Veuillez renseigner un nom de famille.")
+     * @Groups({"message_author"})
      */
     private string $lastName;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"message_author"})
      */
     private ?string $pseudo = null;
 
@@ -101,6 +106,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
+     * @Groups({"message_author"})
      */
     private ?string $profilPhoto;
 
@@ -120,6 +126,7 @@ class User implements UserInterface, Serializable
      *      },
      *     mimeTypesMessage="Seuls les formats png, jpeg, jpg sont acceptés."
      * )
+     * @Groups({"message_author"})
      */
     private $profilPhotoFile;
 

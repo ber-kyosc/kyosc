@@ -82,7 +82,7 @@
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Aventures du clan</h2>
         <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
-            <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
+            <a href="{{ path('challenge_new-from-clan', {id: clan.id}) }}" class="btn-login btn btn-lg">Créer une aventure avec ce clan !</a>
         </div>
         <div class="container form-kyosc mb-4">
             <div class="row justify-content-center scroll-comment">
