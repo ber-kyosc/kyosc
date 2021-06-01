@@ -309,17 +309,20 @@ class ChallengeController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param Challenge $challenge
+     * @param MailerInterface $mailer
      * @param JoinRequestRepository $joinRequestRepository
      * @return Response
+     * @throws TransportExceptionInterface
      */
     public function acceptRequest(
         Request $request,
         EntityManagerInterface $entityManager,
         Challenge $challenge,
+        MailerInterface $mailer,
         JoinRequestRepository $joinRequestRepository
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $creator = $this->getUser();
+        $challengeCreator = $this->getUser();
         $joinRequestId = $request->request->get('requestId');
         $submittedToken = $request->request->get('token');
         if (
@@ -327,14 +330,15 @@ class ChallengeController extends AbstractController
             filter_var($joinRequestId, FILTER_VALIDATE_INT)
         ) {
             $joinRequest = $joinRequestRepository->find($joinRequestId);
-            if ($joinRequest && $creator) {
-                $user = $joinRequest->getCreator();
+            if ($joinRequest && $challengeCreator) {
                 /* @phpstan-ignore-next-line */
-                $challenge->addParticipant($user);
+                $requestCreator = $joinRequest->getCreator();
+                /* @phpstan-ignore-next-line */
+                $challenge->addParticipant($requestCreator);
                 $joinRequests = $joinRequestRepository->findBy([
                     'challenge' => $challenge,
                     /* @phpstan-ignore-next-line */
-                    'creator' => $user,
+                    'creator' => $requestCreator,
                 ]);
                 if ($joinRequests) {
                     foreach ($joinRequests as $joinRequest) {
@@ -347,6 +351,23 @@ class ChallengeController extends AbstractController
                     }
                 }
                 $entityManager->flush();
+                /* @phpstan-ignore-next-line */
+                $emailAddress = $requestCreator->getEmail();
+                $email = (new Email())
+                    ->from($this->getParameter('mailer_from'))
+                    ->to($emailAddress)
+                    ->subject('Demande acceptée !')
+                    ->html(
+                        $this->renderView(
+                            'email/challenge-joining-confirmation.html.twig',
+                            [
+                                'challenge' => $challenge,
+                                'user' => $requestCreator
+                            ]
+                        )
+                    );
+                $mailer->send($email);
+
                 return $this->redirectToRoute('challenge_show', [
                     'id' => $challenge->getId(),
                 ]);

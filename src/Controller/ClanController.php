@@ -513,17 +513,20 @@ class ClanController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param Clan $clan
+     * @param MailerInterface $mailer
      * @param JoinRequestRepository $joinRequestRepository
      * @return Response
+     * @throws TransportExceptionInterface
      */
     public function acceptRequest(
         Request $request,
         EntityManagerInterface $entityManager,
         Clan $clan,
+        MailerInterface $mailer,
         JoinRequestRepository $joinRequestRepository
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $creator = $this->getUser();
+        $clanCreator = $this->getUser();
         $joinRequestId = $request->request->get('requestId');
         $submittedToken = $request->request->get('token');
         if (
@@ -531,14 +534,15 @@ class ClanController extends AbstractController
             filter_var($joinRequestId, FILTER_VALIDATE_INT)
         ) {
             $joinRequest = $joinRequestRepository->find($joinRequestId);
-            if ($joinRequest && $creator) {
-                $user = $joinRequest->getCreator();
+            if ($joinRequest && $clanCreator) {
                 /* @phpstan-ignore-next-line */
-                $clan->addMember($user);
+                $requestCreator = $joinRequest->getCreator();
+                /* @phpstan-ignore-next-line */
+                $clan->addMember($requestCreator);
                 $joinRequests = $joinRequestRepository->findBy([
                     'clan' => $clan,
                     /* @phpstan-ignore-next-line */
-                    'creator' => $user,
+                    'creator' => $requestCreator,
                 ]);
                 if ($joinRequests) {
                     foreach ($joinRequests as $joinRequest) {
@@ -551,6 +555,22 @@ class ClanController extends AbstractController
                     }
                 }
                 $entityManager->flush();
+                /* @phpstan-ignore-next-line */
+                $emailAddress = $requestCreator->getEmail();
+                $email = (new Email())
+                    ->from($this->getParameter('mailer_from'))
+                    ->to($emailAddress)
+                    ->subject('Demande acceptée !')
+                    ->html(
+                        $this->renderView(
+                            'email/clan-joining-confirmation.html.twig',
+                            [
+                                'clan' => $clan,
+                                'user' => $requestCreator
+                            ]
+                        )
+                    );
+                $mailer->send($email);
                 return $this->redirectToRoute('clan_show', [
                     'id' => $clan->getId(),
                 ]);
