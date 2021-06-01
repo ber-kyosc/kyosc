@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\ChallengeSearch;
+use App\Entity\Clan;
 use App\Entity\Invitation;
 use App\Entity\JoinRequest;
 use App\Entity\Message;
@@ -156,6 +157,92 @@ class ChallengeController extends AbstractController
             'sports' => $sports,
             'categories' => $categories
             ]);
+    }
+
+    /**
+     * @Route(
+     *     "/nouvelle/{id}",
+     *     name="new-from-clan",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Clan $clan
+     * @param SportRepository $sportRepository
+     * @param CategoryRepository $categoryRepository
+     * @param MailerInterface $mailer
+     * @param Request $request
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function newFromClan(
+        Clan $clan,
+        SportRepository $sportRepository,
+        CategoryRepository $categoryRepository,
+        MailerInterface $mailer,
+        Request $request
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $sports = $sportRepository->findAll();
+        $categories = $categoryRepository->findAll();
+        $challenge = new Challenge();
+        $form = $this->createForm(ChallengeType::class, $challenge);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $entityManager = $this->getDoctrine()->getManager();
+            $challenge->setCreatedAt(new DateTime());
+            $challenge->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $challenge->setCreator($user);
+            /* @phpstan-ignore-next-line */
+            $challenge->addParticipant($user);
+            $challenge->addClan($clan);
+            $entityManager->persist($challenge);
+            $entityManager->flush();
+            foreach ($clan->getMembers() as $member) {
+                if ($member != $user) {
+                    /* @phpstan-ignore-next-line */
+                    $emailAddress = $member->getEmail();
+                    $email = (new Email())
+                        ->from($this->getParameter('mailer_from'))
+                        ->to($emailAddress)
+                        ->subject('Invitation à une aventure Kyosc')
+                        ->html(
+                            $this->renderView(
+                                'email/challenge-invitation.html.twig',
+                                ['challenge' => $challenge, 'user' => $user]
+                            )
+                        );
+                    $mailer->send($email);
+                    $invitation = new Invitation();
+                    $invitation->setChallenge($challenge)
+                        ->setCreatedAt(new DateTime())
+                        ->setUpdatedAt(new DateTime())
+                        ->setRecipient($emailAddress);
+                    /* @phpstan-ignore-next-line */
+                    $invitation->setCreator($user);
+                    $invitation->setInvitedUser($member);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                }
+            }
+
+            $this->addFlash(
+                'success',
+                "Bravo, votre aventure a bien été créée !"
+            );
+
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
+        }
+        return $this->render('challenge/new.html.twig', [
+            'form' => $form->createView(),
+            'fromClan' => $clan,
+            'sports' => $sports,
+            'categories' => $categories
+        ]);
     }
 
     /**
