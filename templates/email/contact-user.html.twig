@@ -1,0 +1,15 @@
+{% extends 'email/base.html.twig' %}
+
+{% block title %}
+    Message de la part d'un membre KYOSC
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">{{ sender.firstname }} vous a envoyé un message !</h1>
+    <p>Hello {{ user.pseudo? : user.firstname }}, {{ sender.firstName }} {{ sender.lastName }} a souhaité vous contacter.</p>
+    <p>Voici son message : {{ contactMessage }}</p>
+    <p>Vous pouvez lui répondre en envoyant votre propre message via le bouton "contacter" dans son profil :</p>
+    <div class="m-3">
+        <a href="{{url('profil_show', {id: sender.id}) }}" class="btn btn-info">Voir le profil de {{ sender.firstname }}</a>
+    </div>
+{% endblock %}
