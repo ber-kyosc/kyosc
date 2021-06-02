@@ -57,7 +57,7 @@ class ProfilController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function show(
+    public function myProfil(
         CategoryRepository $categoryRepository,
         ChallengeRepository $challengeRepository,
         Request $request
@@ -122,19 +122,31 @@ class ProfilController extends AbstractController
      * @param ChallengeRepository $challengeRepository
      * @return Response
      */
-    public function user(
+    public function show(
         User $user,
         ChallengeRepository $challengeRepository
     ): Response {
         $challenges = $challengeRepository->findBy(
-            ['creator' => $user->getId()]
+            ['creator' => $user->getId()],
+            ['dateStart' => 'DESC']
         );
+        $comingChallenges = [];
+        $pastChallenges = [];
+        foreach ($challenges as $challenge) {
+            if ($challenge->getDateStart() < new DateTime()) {
+                $pastChallenges[] = $challenge;
+            } else {
+                array_unshift($comingChallenges, $challenge);
+            }
+        }
         $sports = $user->getFavoriteSports();
 
         return $this->render('profil/user.html.twig', [
-            'challenges' => $challenges,
             'user' => $user,
-            'sports' => $sports
+            'sports' => $sports,
+            'comingChallenges' => $comingChallenges,
+            'pastChallenges' => $pastChallenges,
+
         ]);
     }
 
