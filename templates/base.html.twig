@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
-        <title>{% block title %}Bienvenue!{% endblock %}</title>
+        <title>{% block title %}Bienvenue chez KYOSC!{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="En recherche d’activités de plein air, faites pour vous, vos amis ou vos clans ?
             KYOSC est la plateforme pour organiser et partager des moments forts dans une ambiance conviviale.">
+        {% block meta %}{% endblock %}
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         {{ encore_entry_link_tags('app') }}

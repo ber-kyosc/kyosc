@@ -1,5 +1,30 @@
 {% extends 'base.html.twig' %}
 
+{% block meta %}
+    <meta property="og:url"           content="{{ app.request.uri }}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="{{ challenge.title }}" />
+    <meta property="og:description"   content="{{ challenge.description }}" />
+    <meta property="og:image"
+          content="
+                {% if challenge.challengePhoto is not null %}
+                    kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}
+                {% else %}
+                    kyosc.com/uploads/challenge/challenge-default.jpeg
+                {% endif %}" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="{{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
+    <meta name="twitter:site" content="{{ app.request.uri }}">
+    <meta name="twitter:title" content="{{ challenge.title }} par {{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
+    <meta name="twitter:description" content="{{ challenge.description }}">
+    <meta name="twitter:image" content="
+                {% if challenge.challengePhoto is not null %}
+                    kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}
+                {% else %}
+                    kyosc.com/uploads/challenge/challenge-default.jpeg
+                {% endif %}">
+{% endblock %}
+
 {% block title %}Aventure #{{ challenge.id }}{% endblock %}
 
 {% block background %}
@@ -17,6 +42,16 @@
     <header class="arrow-header my-3 text-uppercase" style="background-color: {{color}};">
         <h1>{{ challenge.title }} #{{ challenge.id }}</h1>
         <p class="m-0 text-white">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+        <div class="d-flex align-items-center mt-2">
+            <div class="fb-share-button mr-2" data-href="{{ app.request.uri }}" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Faventure%2F411&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Partager</a></div>
+            <a class="twitter-share-button"
+               href="https://twitter.com/intent/tweet"
+               data-size="large"
+               data-text="{{ challenge.title }}"
+               data-hashtags="KYOSC,{{ challenge.sports[0].name|lower|replace({' ': ''}) }}"
+               data-via="{{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
+                Tweet</a>
+        </div>
     </header>
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
@@ -264,4 +299,25 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v10.0" nonce="nXAc6YEt"></script>
+    <script>window.twttr = (function(d, s, id) {
+            let js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function(f) {
+                t._e.push(f);
+            };
+
+            return t;
+        }(document, "script", "twitter-wjs"));</script>
 {% endblock %}
