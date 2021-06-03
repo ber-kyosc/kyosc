@@ -15,72 +15,207 @@
             <h1>{{ user.firstName}} {{ user.lastName}}</h1>
         {% endif %}
         </header>
-        {% if user.profilPhoto is not null%}
-            <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo mt-4 w-75">
-        {% else %}
-            <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="mt-4">
-        {% endif %}
-        <div class="my-5 p-4 w-75 transparent-background-dark">
-            {% if user.biography %}
-                <p class="biography-text pre-line">"{{ user.biography }}"</p>
-            {% else %}
-                <p>{% if user.pseudo %}
-                        {{ user.pseudo }}
-                    {% else %}
-                        {{ user.firstName}} {{ user.lastName}}
-                    {% endif %} n'a pas encore renseigné de biographie.</p>
-            {% endif %}
-        </div>
     </div>
-    <div class="container mb-4">
-        <h2 class="mb-4">Les sports préférés de {% if user.pseudo %}
-                {{ user.pseudo }}
-            {% else %}
-                {{ user.firstName}} {{ user.lastName}}
-            {% endif %} - {{ sports|length }}</h2>
-        <div class="d-flex align-items-center flex-wrap justify-content-center">
-            {% for sport in sports %}
-                <div class="d-flex flex-column align-items-center mx-3">
-                    <img class="img-goutte" src="/uploads/goutte/{{ sport.goutte }}" alt="logo {{ sport.name }}">
-                    <p>
-                        {{ sport.name }}
-                    </p>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="container">
-        <div class="container margin">
-            <h2 class="mb-4"> Les aventures de
-                {% if user.pseudo %}
-                    {{ user.pseudo }}
+    <div class="d-flex flex-column flex-md-row justify-content-center">
+        <div>
+            <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
+                {% if user.profilPhoto is not null%}
+                    <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ user.profilPhoto }}" class="profil-photo cursor-pointer w-75">
                 {% else %}
-                    {{ user.firstName}} {{ user.lastName}}
-                {% endif %} - {{ challenges|length }}</h2>
+                    <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
+                {% endif %}
+            </label>
         </div>
-        <div class="container form-kyosc mb-4">
-            <div class="row justify-content-center scroll-comment">
-                {% for challenge in challenges %}
-                    <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4 index-card-max-width">
-                        <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
-                            <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
-                            <div class="position-relative" >
-                                {% if challenge.challengePhoto is not null %}
-                                    <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                         alt="photo du challenge" class="w-100 challenge-photo-container-profil">
-                                {% else %}
-                                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                         alt="photo par défaut du challenge" class="w-100">
-                                {% endif %}
-                                <img class="img-picto" style="border-color:  {{ challenge.sports['0'].color }};" src="{{ asset('/uploads/picto/'~challenge.sports['0'].picto) }}" alt="picto">
-                            </div>
-                            <div class="card-body p-2">
-                                <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
+        <div class="transparent-background-dark text-white p-4 m-3 max-width-800">
+            <h3>Nom : {{ user.firstName }} {{ user.lastName }}</h3>
+            <h4>Pseudo : {{ (user.pseudo) ? user.pseudo : 'non renseigné' }}</h4>
+            <p class="text-white">Biographie : {{ (user.biography) ? user.biography : 'non renseignée' }}</p>
+            <div class="d-flex flex-column">
+                <h4>Sports préférés :</h4>
+                <div class="d-flex flex-wrap align-items-center">
+                    {% for sport in user.favoriteSports %}
+                        <div class="d-flex flex-column align-items-center m-3">
+                            <img class="img-goutte" src="/uploads/goutte/{{ sport.goutte }}" alt="logo {{ sport.name }}">
+                            <p class="text-white">
+                                {{ sport.name }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="form-kyosc my-3 mx-auto">
+                    <a class="btn text-uppercase btn-profil"
+                       data-toggle="modal" data-target="#modalContact{{ user.id }}"
+                    >Contacter</a>
+                </div>
             </div>
         </div>
     </div>
+    {#        modal for contact pop-up#}
+    <div class="modal fade" id="modalContact{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="exampleModalLongTitle">Contactez {{ user.firstname }}</h2>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center bg-dark">
+                    <form class="w-100 d-flex flex-column justify-content-center align-items-center mb-4 form-kyosc" method="post" action="{{ path('profil_contact-user', {id: user.id}) }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('contact-user') }}"/>
+                        <textarea name="contactMessage" class="w-75" placeholder="Entrez votre message pour {{ user.firstname }} ici" required></textarea>
+                        <button
+                                class="btn text-uppercase btn-login my-4"
+                        >Envoyer</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for contact pop-up#}
+    <section class="w-75 m-auto form-kyosc transparent-background-dark">
+        <h2 class="m-4">Les aventures et clans de {{ user.firstname }}</h2>
+        <nav class="d-flex justify-content-center">
+            <div class="nav nav-tabs d-flex flex-column flex-md-row justify-content-center" id="nav-tab" role="tablist">
+                <button class="nav-link border-right border-top active" id="nav-challenges-tab" data-toggle="tab" data-target="#nav-challenges" type="button" role="tab" aria-controls="nav-challenges" aria-selected="true">Ses aventures à venir ({{ comingChallenges|length }})</button>
+                <button class="nav-link border-right border-top" id="nav-past-challenges-tab" data-toggle="tab" data-target="#nav-past-challenges" type="button" role="tab" aria-controls="nav-past-challenges" aria-selected="false">Ses aventures passées ({{ pastChallenges|length }})</button>
+                <button class="nav-link border-right border-top" id="nav-created-clans-tab" data-toggle="tab" data-target="#nav-created-clans" type="button" role="tab" aria-controls="nav-created-clans" aria-selected="false">Ses clans ({{ user.createdClans|length }})</button>
+            </div>
+        </nav>
+        {#        Start of tab-content #}
+        <div class="tab-content" id="nav-tabContent">
+            {#            First tab coming challenges #}
+            <div class="tab-pane fade show active" id="nav-challenges" role="tabpanel" aria-labelledby="nav-challenges-tab">
+                <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                    {% for challenge in comingChallenges %}
+                        <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                <div class="position-relative" >
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                             alt="photo du challenge" class="w-100 challenge-photo-container">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                    {% endif %}
+                                    <div class="white-circle-img-goutte"></div>
+                                    <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
+                                    {% if challenge.isPublic %}
+                                        <span class="is-public-text open-text">Ouverte</span>
+                                    {% else %}
+                                        <span class="is-public-text close-text">Fermée</span>
+                                    {% endif %}
+                                    <div class="comment-counter p-2 position-absolute">
+                                        <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
+                                        <span class="transparent-background-dark p-1">{{ challenge.messages|length }}</span>
+                                    </div>
+                                    <div class="user-counter p-2 position-absolute">
+                                        <img class="delete-icon rounded" src="{{ asset('build/images/picto/group.png') }}">
+                                        <span class="transparent-background-dark p-1">{{ challenge.participants|length }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-body p-2">
+                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <p class="text-center text-white">{{ user.firstname }} n'a pas encore d'aventures à venir</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {#            Second tab other challenges #}
+            <div class="tab-pane fade" id="nav-past-challenges" role="tabpanel" aria-labelledby="nav-past-challenges-tab">
+                <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                    {% for challenge in pastChallenges %}
+                        <div class="index-card-max-width card col-12 col-sm-6 col-md-4 col-xl-3 p-3 position-relative m-4">
+                            <a class=" text-decoration-none text-dark h-100"  href="{{ path("challenge_show", {id: challenge.id}) }}">
+                                <p class="title-date-card text-center bg-dark text-white m-0">{{ challenge.dateStart|format_datetime(pattern="dd MMMM Y",locale='fr')  }}</p>
+                                <div class="position-relative" >
+                                    {% if challenge.challengePhoto is not null %}
+                                        <img src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                             alt="photo du challenge" class="w-100 challenge-photo-container">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                    {% endif %}
+                                    <div class="white-circle-img-goutte"></div>
+                                    <img class="img-goutte-index" src="{{ asset('/uploads/goutte/'~challenge.sports['0'].goutte) }}" alt="logo goutte">
+                                    {% if challenge.isPublic %}
+                                        <span class="is-public-text open-text">Ouverte</span>
+                                    {% else %}
+                                        <span class="is-public-text close-text">Fermée</span>
+                                    {% endif %}
+                                    <div class="comment-counter p-2 position-absolute">
+                                        <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
+                                        <span class="transparent-background-dark p-1">{{ challenge.messages|length }}</span>
+                                    </div>
+                                    <div class="user-counter p-2 position-absolute">
+                                        <img class="delete-icon rounded" src="{{ asset('build/images/picto/group.png') }}">
+                                        <span class="transparent-background-dark p-1">{{ challenge.participants|length }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-body p-2">
+                                    <h3 class="card-title h6 text-center text-uppercase">{{ challenge.title | capitalize }}</h3>
+                                </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <p class="text-center text-white">{{ user.firstname }} n'a pas encore d'aventures passées</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {#            Third tab created clans #}
+            <div class="tab-pane fade" id="nav-created-clans" role="tabpanel" aria-labelledby="nav-created-clans-tab">
+                <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
+                    {% for clan in user.createdClans %}
+                        <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-2 m-3 position-relative index-card-max-width">
+                            <a class="card text-decoration-none text-dark no-bg-border"
+                               href="{{ path("clan_show", {id: clan.id}) }}">
+                                <div class="position-relative">
+                                    {% if clan.banner is not null %}
+                                        <img src="{{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
+                                             alt="photo du clan" class="w-100 challenge-photo-container">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                             alt="photo par défaut du clan" class="w-100 challenge-photo-container">
+                                    {% endif %}
+                                    {% if clan.isPublic %}
+                                        <span class="is-public-text open-text">Ouvert</span>
+                                    {% else %}
+                                        <span class="is-public-text close-text">Fermé</span>
+                                    {% endif %}
+                                    <div class="comment-counter p-2 position-absolute">
+                                        <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
+                                        {% set publicMessageCount = 0 %}
+                                        {% for message in clan.messages %}
+                                            {% if message.isPublic %}
+                                                {% set publicMessageCount = publicMessageCount + 1 %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="transparent-background-dark p-1">{{ publicMessageCount }}</span>
+                                    </div>
+                                    <div class="user-counter p-2 position-absolute">
+                                        <img class="delete-icon rounded" src="{{ asset('build/images/picto/group.png') }}">
+                                        <span class="transparent-background-dark p-1">{{ clan.members|length }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-body p-2 text-center">
+                                <h2 class="card-title text-center text-uppercase text-dark">{{ clan.name }}</h2>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <p class="text-center text-white">{{ user.firstname }} n'a pas encore créé de clan</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {#        End of tab-content #}
+    </section>
 {% endblock %}

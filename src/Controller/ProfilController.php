@@ -8,12 +8,16 @@ use App\Form\EditProfilType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\SportRepository;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -34,13 +38,26 @@ class ProfilController extends AbstractController
     }
 
     /**
-     * @Route("/", name="my_profil")
+     * @Route ("/", name="index")
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function index(UserRepository $userRepository)
+    {
+        $users = $userRepository->findBy([], ['firstName' => 'ASC']);
+        return $this->render('user/index.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * @Route("/mon-profil", name="my_profil")
      * @param CategoryRepository $categoryRepository
      * @param ChallengeRepository $challengeRepository
      * @param Request $request
      * @return Response
      */
-    public function show(
+    public function myProfil(
         CategoryRepository $categoryRepository,
         ChallengeRepository $challengeRepository,
         Request $request
@@ -105,19 +122,31 @@ class ProfilController extends AbstractController
      * @param ChallengeRepository $challengeRepository
      * @return Response
      */
-    public function user(
+    public function show(
         User $user,
         ChallengeRepository $challengeRepository
     ): Response {
         $challenges = $challengeRepository->findBy(
-            ['creator' => $user->getId()]
+            ['creator' => $user->getId()],
+            ['dateStart' => 'DESC']
         );
+        $comingChallenges = [];
+        $pastChallenges = [];
+        foreach ($challenges as $challenge) {
+            if ($challenge->getDateStart() < new DateTime()) {
+                $pastChallenges[] = $challenge;
+            } else {
+                array_unshift($comingChallenges, $challenge);
+            }
+        }
         $sports = $user->getFavoriteSports();
 
         return $this->render('profil/user.html.twig', [
-            'challenges' => $challenges,
             'user' => $user,
-            'sports' => $sports
+            'sports' => $sports,
+            'comingChallenges' => $comingChallenges,
+            'pastChallenges' => $pastChallenges,
+
         ]);
     }
 
@@ -151,6 +180,56 @@ class ProfilController extends AbstractController
             }
         }
         return $this->render('profil/editEmail.html.twig', ['form' => $form->createView(), 'error' => $error]);
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/contacter",
+     *     name="contact-user",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @param User $user
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function requestToJoin(
+        Request $request,
+        MailerInterface $mailer,
+        User $user
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $sender = $this->getUser();
+        $submittedToken = $request->request->get('token');
+        $contactMessage = $request->request->get('contactMessage');
+        if ($this->isCsrfTokenValid('contact-user', $submittedToken)) {
+            $emailAddress = $user->getEmail();
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to($emailAddress)
+                ->subject('Message de la part d\'un membre KYOSC')
+                ->html(
+                    $this->renderView(
+                        'email/contact-user.html.twig',
+                        [
+                            'sender' => $sender,
+                            'user' => $user,
+                            'contactMessage' => $contactMessage
+                        ]
+                    )
+                );
+            $mailer->send($email);
+            $this->addFlash(
+                'success',
+                'Votre message à bien été envoyé à ' . $user->getFirstName()
+            );
+            return $this->redirectToRoute('profil_show', [
+                'id' => $user->getId(),
+            ]);
+        }
+        return $this->redirectToRoute('profil_index');
     }
 
     /**
