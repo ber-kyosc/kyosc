@@ -14,6 +14,8 @@
         "doctrine/orm": "^2.7",
         "easycorp/easyadmin-bundle": "^3.2",
         "knplabs/knp-paginator-bundle": "^5.4",
+        "knpuniversity/oauth2-client-bundle": "^2.8",
+        "league/oauth2-facebook": "^2.0",
         "liip/imagine-bundle": "^2.5",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
