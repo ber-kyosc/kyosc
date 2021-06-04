@@ -153,4 +153,12 @@ class DefaultController extends AbstractController
     {
         return $this->render('about/faq.html.twig');
     }
+
+    /**
+     * @Route("/bien-commencer", name="get-started")
+     */
+    public function getStarted(): Response
+    {
+        return $this->render('about/getStarted.html.twig');
+    }
 }
