@@ -121,6 +121,11 @@
                     </div>
                 {% endif %}
                 <div class="form-group">
+                    {{ form_errors(form.gpxTrackFile) }}
+                    {{ form_widget(form.gpxTrackFile) }}
+                    {{ form_help(form.gpxTrackFile) }}
+                </div>
+                <div class="form-group">
                     {{ form_errors(form.isPublic) }}
                     {{ form_widget(form.isPublic) }}
                     {{ form_help(form.isPublic) }}

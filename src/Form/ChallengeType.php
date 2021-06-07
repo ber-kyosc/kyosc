@@ -61,6 +61,17 @@ class ChallengeType extends AbstractType
                 'download_uri' => true, // not mandatory, default is true
                 'asset_helper' => true,
             ])
+            ->add('gpxTrackFile', VichFileType::class, [
+                'required' => false,
+                'download_label' => false,
+                'attr' => [
+                    'placeholder' => 'Choisir un fichier',
+                ],
+                'help' => 'Vous pouvez ajouter une trace au format gpx, qui sera téléchargeable par les participants',
+                'allow_delete'  => true, // not mandatory, default is true
+                'download_uri' => true, // not mandatory, default is true
+                'asset_helper' => true,
+            ])
             ->add('title', TextType::class, [
                 'required' => true,
                 'attr' => [

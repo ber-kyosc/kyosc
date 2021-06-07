@@ -167,6 +167,24 @@ class Challenge
      */
     private Collection $requests;
 
+    /**
+     * @Vich\UploadableField(mapping="gpx_track", fileNameProperty="gpxTrack")
+     * @var File|null
+     * @Assert\File(
+     *     uploadErrorMessage="Une erreur est survenue lors du téléchargement.",
+     *     maxSize="20000000",
+     *     maxSizeMessage="Votre fichier est trop grand. Veuillez selectionner en sélectionner un de moins de 20Mo.",
+     *     mimeTypes =  {"text/xml"},
+     *     mimeTypesMessage="Seuls les fichiers gpx sont acceptés."
+     * )
+     */
+    private ?File $gpxTrackFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $gpxTrack = null;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -548,5 +566,36 @@ class Challenge
         }
 
         return $this;
+    }
+
+    public function getGpxTrack(): ?string
+    {
+        return $this->gpxTrack;
+    }
+
+    public function setGpxTrack(?string $gpxTrack): self
+    {
+        $this->gpxTrack = $gpxTrack;
+
+        return $this;
+    }
+
+    /**
+     * @param File|UploadedFile|null $file
+     * @param File|null $file
+     * @return $this
+     */
+    public function setGpxTrackFile(File $file = null): Challenge
+    {
+        $this->gpxTrackFile = $file;
+        if (null !== $file) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+        return $this;
+    }
+
+    public function getGpxTrackFile(): ?File
+    {
+        return $this->gpxTrackFile;
     }
 }

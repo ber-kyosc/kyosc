@@ -30,3 +30,10 @@ vich_uploader:
             inject_on_load: false
             delete_on_update: true
             delete_on_remove: true
+        gpx_track:
+            uri_prefix: /uploads/challenge/gpx
+            upload_destination: '%kernel.project_dir%/public/uploads/challenge/gpx'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
