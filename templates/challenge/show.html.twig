@@ -241,6 +241,7 @@
         {% endfor %}
         </div>
     </div>
+    {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Commentaires</h2>
         <div class="d-flex flex-column-reverse w-100 scroll-comment comment-space">
@@ -276,6 +277,7 @@
             {{ form_end(form) }}
         {% endif %}
     </div>
+    {% endif %}
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Vidéos</h2>
         {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
