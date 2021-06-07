@@ -20,7 +20,7 @@
         <div class="row justify-content-center justify-content-md-around">
             <div class="col-lg-6 transparent-background-dark p-3">
                 <h2 class="challenge-quotation mb-4">Description du clan</h2>
-                <p class="challenge-description pre-line">{{ clan.description }}</p>
+                <p class="challenge-description pre-line">{{ clan.description|auto_link|raw }}</p>
             </div>
         </div>
     </section>
@@ -45,7 +45,7 @@
             <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn text-uppercase btn-login"
                    href="{{ path("clan_my-clan", {id: clan.id}) }}"
-                >Entrer dans l'espace privé
+                >Entrer dans la messagerie privée du clan
                     <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
                     {% set notPublicMessageCount = 0 %}
                     {% for message in clan.messages %}
@@ -161,7 +161,7 @@
                     {% if message.isPublic %}
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
                             <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
-                                <p class="pre-line">{{ message.content }}</p>
+                                <p class="pre-line">{{ message.content|auto_link|raw }}</p>
                                 {% if app.user %}
                                     {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}
                                         {{ include('message/_delete_form.html.twig') }}

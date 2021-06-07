@@ -509,10 +509,7 @@
                                 <h2 class="card-title text-center text-uppercase text-dark">{{ clan.name }}</h2>
                             </div>
                             <div class="d-flex flex-column">
-                                <div class="d-flex">
-                                    <a class="btn btn-profil m-1" href="{{ path("clan_show", {id: clan.id}) }}">Voir la page publique</a>
-                                    <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Voir la page privée</a>
-                                </div>
+                                <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Messagerie privée du clan</a>
                                 <div class="d-flex">
                                     <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
                                     {{ include('clan/_delete_form.html.twig') }}
@@ -570,10 +567,7 @@
                                     <h2 class="card-title text-center text-uppercase text-dark">{{ clan.name }}</h2>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <div class="d-flex">
-                                        <a class="btn btn-profil m-1" href="{{ path("clan_show", {id: clan.id}) }}">Voir la page publique</a>
-                                        <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Voir la page privée</a>
-                                    </div>
+                                    <a class="btn btn-login m-1" href="{{ path("clan_my-clan", {id: clan.id}) }}">Messagerie privée du clan</a>
                                 </div>
                             </div>
                         {% endif %}
