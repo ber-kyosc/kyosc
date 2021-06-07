@@ -785,7 +785,9 @@ class ChallengeController extends AbstractController
                 "Les informations sur votre aventure ont bien été modifiées!"
             );
 
-            return $this->redirectToRoute('profil_my_profil');
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
         }
 
         return $this->render('challenge/edit.html.twig', [

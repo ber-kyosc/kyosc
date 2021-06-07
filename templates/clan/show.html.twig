@@ -41,23 +41,6 @@
             {% endif %}
         {% endif %}
 
-        {% if app.user and app.user in clan.members or app.user == clan.creator %}
-            <div class="form-kyosc mb-3 mb-md-0">
-                <a class="btn text-uppercase btn-login"
-                   href="{{ path("clan_my-clan", {id: clan.id}) }}"
-                >Entrer dans la messagerie privée du clan
-                    <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
-                    {% set notPublicMessageCount = 0 %}
-                    {% for message in clan.messages %}
-                        {% if message.isPublic == false %}
-                            {% set notPublicMessageCount = notPublicMessageCount + 1 %}
-                        {% endif %}
-                    {% endfor %}
-                    <span class="transparent-background-dark p-1">{{ notPublicMessageCount }}</span>
-                </a>
-            </div>
-        {% endif %}
-
         {% if app.user and app.user == clan.creator %}
             <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn text-uppercase btn-profil"

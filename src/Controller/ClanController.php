@@ -119,64 +119,6 @@ class ClanController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/mon-clan", name="my-clan", methods={"GET","POST"})
-     */
-    public function myClan(Clan $clan, MessageRepository $messageRepository, Request $request): Response
-    {
-        $membersId = [];
-        foreach ($clan->getMembers() as $member) {
-            $membersId[] = $member->getId();
-        }
-
-        /* @phpstan-ignore-next-line */
-        if (!($this->getUser() == $clan->getCreator() || in_array($this->getUser()->getId(), $membersId))) {
-            throw new AccessDeniedException('Seul un membre du clan "'
-                . $clan->getName()
-                . '" peut acceder à cet espace');
-        }
-
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
-
-        /* @phpstan-ignore-next-line */
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $message->setClan($clan);
-            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-            $message->setCreatedAt(new DateTime());
-            $message->setUpdatedAt(new DateTime());
-            /* @phpstan-ignore-next-line */
-            $message->setAuthor($this->getUser());
-            $message->setIsPublic(false);
-            $entityManager->persist($message);
-            $entityManager->flush();
-            $data = $messageRepository->find($message->getId());
-            return $this->json($data, Response::HTTP_OK, [], [
-//                TODO -> replace the Ignored_attributes by [groups => ['group1']]
-                ObjectNormalizer::IGNORED_ATTRIBUTES => [
-                    'clan',
-                    'challenge',
-                    'sport',
-                    'challenges',
-                    'createdChallenges',
-                    'favoriteSports',
-                    'favoriteBrands',
-                    'clans',
-                    'createdClans',
-                    'messages',
-                    'videos',
-                ],
-            ]);
-        }
-
-        return $this->render('clan/my-clan.html.twig', [
-            'clan' => $clan,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route(
      *     "/{id}/edition",
      *     name="edit",
