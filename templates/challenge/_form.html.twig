@@ -52,45 +52,62 @@
         </div>
     </div>
     <div class="background-grey big-padding">
-        <div class="row">
-            <div class="form-group col-md-6 ">
-                <p class="mb-0 mandatory">*</p>
-                {{ form_errors(form.title) }}
-                {{ form_widget(form.title) }}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <p class="mb-0"><span class="mandatory">*</span> Titre de votre aventure:</p>
+                    {{ form_errors(form.title) }}
+                    {{ form_widget(form.title) }}
+                </div>
+                <div class="form-group">
+                    <p class="mb-0"><span class="mandatory">*</span> Date de votre aventure:</p>
+                    {{ form_errors(form.dateStart) }}
+                    {{ form_widget(form.dateStart, { 'id': 'datepicker', 'attr': {'autocomplete': 'off'}}) }}
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">Phrase d'accroche (citation qualifiante):</p>
+                    {{ form_errors(form.quotation) }}
+                    {{ form_widget(form.quotation) }}
+                    {{ form_help(form.quotation) }}
+                </div>
+                <div class="fileUpload">
+                    <p class="mb-0">Image d'illustration:</p>
+                    {{ form_errors(form.challengePhotoFile) }}
+                    {{ form_widget(form.challengePhotoFile) }}
+                    {{ form_help(form.challengePhotoFile) }}
+                </div>
             </div>
-            <div class="form-group col-lg-6">
-                <p class="mb-0 mandatory">*</p>
-                {{ form_errors(form.dateStart) }}
-                {{ form_widget(form.dateStart, { 'id': 'datepicker', 'attr': {'autocomplete': 'off'}}) }}
+            <div class="col-lg-6">
+                <div>
+                    <p class="mb-0">Aperçu de l'image d'illustration:</p>
+                    <label for="challenge_challengePhotoFile_file" class="form-group img-display">
+                        {% if challenge and challenge.challengePhoto is not null%}
+                            <img id="output" src="{{ vich_uploader_asset(challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                 alt="photo du challenge" class="challenge-photo-container mw-100">
+                        {% else %}
+                            <img id="output" src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                 alt="photo par défaut du challenge" class="challenge-photo-container mw-100">
+                        {% endif %}
+                    </label>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-lg-6">
-                {{ form_errors(form.quotation) }}
-                {{ form_widget(form.quotation) }}
-                {{ form_help(form.quotation) }}
-            </div>
-            <div class="fileUpload col-lg-6">
-                {{ form_errors(form.challengePhotoFile) }}
-                {{ form_widget(form.challengePhotoFile) }}
-                {{ form_help(form.challengePhotoFile) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-lg-6">
-                <p class="mb-0 mandatory">*</p>
+                <p class="mb-0"><span class="mandatory">*</span> Description de votre aventure:</p>
                 {{ form_errors(form.description, {'attr': {'size': 8} }) }}
                 {{ form_widget(form.description) }}
                 {{ form_help(form.description) }}
             </div>
             <div class="form-group col-lg-6">
                 <div class="form-group">
-                    <p class="mb-0 mandatory">*</p>
+                    <p class="mb-0"><span class="mandatory">*</span> Point de départ de votre aventure:</p>
                     {{ form_errors(form.location) }}
                     {{ form_widget(form.location) }}
                     {{ form_help(form.location) }}
                 </div>
                 <div class="form-group">
+                    <p class="mb-0">Distance parcourue:</p>
                     {{ form_errors(form.distance) }}
                     {{ form_widget(form.distance) }}
                     {{ form_help(form.distance) }}
@@ -99,11 +116,13 @@
         </div>
         <div class="row">
             <div class="form-group col-md-6">
+                <p class="mb-0">Informations complémentaires:</p>
                 {{ form_errors(form.information) }}
                 {{ form_widget(form.information) }}
                 {{ form_help(form.information) }}
             </div>
             <div class="form-group col-md-6">
+                <p class="mb-0">Clan(s):</p>
                 {% if fromClan is defined %}
                     <div class="form-group">
                         Cette aventure sera partagée avec le clan "{{ fromClan.name }}" et tout ses membres.
@@ -121,11 +140,13 @@
                     </div>
                 {% endif %}
                 <div class="form-group">
+                    <p class="mb-0">Ajout d'une trace gpx:</p>
                     {{ form_errors(form.gpxTrackFile) }}
                     {{ form_widget(form.gpxTrackFile) }}
                     {{ form_help(form.gpxTrackFile) }}
                 </div>
                 <div class="form-group">
+                    <p class="mb-0">Ouverture au public de votre aventure:</p>
                     {{ form_errors(form.isPublic) }}
                     {{ form_widget(form.isPublic) }}
                     {{ form_help(form.isPublic) }}

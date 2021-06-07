@@ -155,7 +155,8 @@ class ChallengeController extends AbstractController
         return $this->render('challenge/new.html.twig', [
             'form' => $form->createView(),
             'sports' => $sports,
-            'categories' => $categories
+            'categories' => $categories,
+            'challenge' => null,
             ]);
     }
 

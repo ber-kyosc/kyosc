@@ -55,6 +55,7 @@ class ChallengeType extends AbstractType
                 'download_label' => false,
                 'attr' => [
                     'placeholder' => 'Choisir une image',
+                    'onchange' => 'loadFile()',
                 ],
                 'help' => 'Illustrer votre aventure en sélectionnant une photo',
                 'allow_delete'  => true, // not mandatory, default is true
@@ -136,8 +137,9 @@ class ChallengeType extends AbstractType
                 ],
             ])
             ->add('isPublic', CheckboxType::class, [
-                'help' => 'possibilité de rejoindre votre aventure',
-                'label' => 'ouvert à tous',
+                'help' => 'si vous sélectionnez « ouverte » n’importe quel membre de KYOSC pourra vous 
+                faire une demande par mail de participation pour cette aventure (par défaut elle restera privée)',
+                'label' => 'ouverte',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ]);
