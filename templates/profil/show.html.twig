@@ -33,6 +33,15 @@
                    data-toggle="modal" data-target="#favoriteDestinationsChoice"
                 >Modifier mes destinations préférées</a>
             </div>
+            {% if not form.vars.valid %}
+                <div class="transparent-background-dark p-2 d-flex flex-column justify-content-center align-items-center">
+                    {% for child in form.children %}
+                        {%for error in child.vars.errors%}
+                            <span class="text-kred font-weight-bold">! {{error.message}}</span>
+                        {%endfor%}
+                    {%endfor%}
+                </div>
+            {%endif%}
         </div>
     </div>
     <div class="d-flex flex-column flex-md-row justify-content-center">
