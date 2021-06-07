@@ -505,13 +505,7 @@
                                     {% endif %}
                                     <div class="comment-counter p-2 position-absolute">
                                         <img class="delete-icon rounded" src="{{ asset('build/images/picto/comment.png') }}">
-                                        {% set publicMessageCount = 0 %}
-                                        {% for message in clan.messages %}
-                                            {% if message.isPublic %}
-                                                {% set publicMessageCount = publicMessageCount + 1 %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        <span class="transparent-background-dark p-1">{{ publicMessageCount }}</span>
+                                        <span class="transparent-background-dark p-1">{{ clan.messages|length }}</span>
                                     </div>
                                     <div class="user-counter p-2 position-absolute">
                                         <img class="delete-icon rounded" src="{{ asset('build/images/picto/group.png') }}">
