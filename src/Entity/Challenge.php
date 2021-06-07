@@ -194,6 +194,11 @@ class Challenge
      */
     private ?string $slug;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $recommendation;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -616,6 +621,18 @@ class Challenge
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getRecommendation(): ?string
+    {
+        return $this->recommendation;
+    }
+
+    public function setRecommendation(?string $recommendation): self
+    {
+        $this->recommendation = $recommendation;
 
         return $this;
     }

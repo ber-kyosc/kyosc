@@ -1,5 +1,5 @@
 <div>
-    <div class="form-group d-flex">
+    <div class="form-group d-flex ml-4">
         <p class="transparent-background-dark p-2"> Les champs avec <span class="mb-0 mandatory text-kred">*</span> sont obligatoires.</p>
     </div>
     {{ form_start(form, {'attr': {'class': 'form-kyosc'} }) }}
@@ -139,6 +139,16 @@
                         {{ form_help(form.clans) }}
                     </div>
                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <p class="mb-0">Vos bons plans:</p>
+                {{ form_errors(form.recommendation) }}
+                {{ form_widget(form.recommendation) }}
+                {{ form_help(form.recommendation) }}
+            </div>
+            <div class="form-group col-lg-6">
                 <div class="form-group">
                     <p class="mb-0">Ajout d'une trace gpx:</p>
                     {{ form_errors(form.gpxTrackFile) }}

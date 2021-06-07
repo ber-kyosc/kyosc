@@ -118,6 +118,14 @@ class ChallengeType extends AbstractType
                     'placeholder' => 'Informations pratiques.',
                     'rows' => 3],
             ])
+            ->add('recommendation', TextareaType::class, [
+                'required' => false,
+                'help' => 'Partagez des bons plans en lien avec cette aventure ! 
+                (restaurants, lieux touristiques et autres sites d\'intérêt)',
+                'attr' => [
+                    'placeholder' => 'Bons plans',
+                    'rows' => 3],
+            ])
             ->add('clans', EntityType::class, [
                 'required' => false,
                 'label' => 'Partager avec mes clans',
