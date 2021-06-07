@@ -83,6 +83,11 @@
                             <p>Non spécifiée</p>
                             {% endif %}
                         </div>
+                        {% if challenge.gpxTrack %}
+                        <div class="form-kyosc">
+                            <a class="btn bg-white" href="{{ vich_uploader_asset(challenge, 'gpxTrackFile')}}" download="trace-de-{{ challenge.slug }}.gpx">Téléchargez la trace gpx</a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

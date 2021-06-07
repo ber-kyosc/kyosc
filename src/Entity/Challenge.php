@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -178,12 +179,18 @@ class Challenge
      *     mimeTypesMessage="Seuls les fichiers gpx sont acceptés."
      * )
      */
-    private ?File $gpxTrackFile;
+    private $gpxTrackFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $gpxTrack = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Slug(fields={"title"})
+     */
+    private ?string $slug;
 
     public function __construct()
     {
@@ -597,5 +604,17 @@ class Challenge
     public function getGpxTrackFile(): ?File
     {
         return $this->gpxTrackFile;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }
