@@ -241,9 +241,9 @@
         {% endfor %}
         </div>
     </div>
-    {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
+    {% if app.user and app.user == challenge.creator or app.user in challenge.participants or is_granted("ROLE_ADMIN") %}
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
-        <h2>Commentaires</h2>
+        <h2>Messagerie privée de l'aventure</h2>
         <div class="d-flex flex-column-reverse w-100 scroll-comment comment-space">
             {% if challenge.messages|length >= 1 %}
                 {% for message in challenge.messages|reverse %}
@@ -271,8 +271,8 @@
             {% endif %}
         </div>
         {% if app.user %}
-            <h3 class="mt-3">Ajoutez un commentaire !</h3>
-            <h4>Les commentaires ne sont visibles que par les participants à cette aventure</h4>
+            <h3 class="mt-3">Ajoutez un message !</h3>
+            <h4>Les messages ne sont visibles que par les participants à cette aventure</h4>
             {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
