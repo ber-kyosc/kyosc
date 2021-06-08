@@ -18,7 +18,7 @@ class Invitation
     private ?int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="InvitationsSended")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="invitationsSent")
      */
     private ?User $creator;
 
