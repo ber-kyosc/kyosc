@@ -127,6 +127,10 @@ body {
     padding: 45px;
 }
 
+.border-20px {
+    border-radius: 20px;
+}
+
 .challenge-index-title {
     flex: auto;
 
@@ -216,6 +220,26 @@ body {
     max-width: 100px;
     max-height: 100px;
     border-radius: 50%;
+}
+
+.width-100px {
+    width: 100px;
+}
+
+.get-started-card {
+    border: solid $black 5px;
+    margin-left: initial;
+    max-width: 75%;
+
+    @include md {
+        margin-left: -10px;
+        max-width: 280px;
+        min-height: 440px;
+    }
+}
+
+.flex-basis {
+    flex: 0 1 300px;
 }
 
 .biography-text {

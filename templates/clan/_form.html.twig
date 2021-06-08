@@ -1,43 +1,55 @@
-<div class="container top-20-vh">
-    <div class="form-group">
-        <p> Les champs avec * sont obligatoires.</p>
+<div class="top-20-vh w-100">
+    <div class="form-group d-flex ml-4">
+        <p class="transparent-background-dark p-2"> Les champs avec <span class="mb-0 mandatory text-kred">*</span> sont obligatoires.</p>
     </div>
-    {{ form_start(form, {'attr': {'class': 'form-kyosc'} }) }}
-    <div class="form-row">
-        <div class="form-group col-md-12 ">
-            <p class="mb-0 mandatory">*</p>
-            {{ form_errors(form.name) }}
-            {{ form_widget(form.name) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-lg-12">
-            <p class="mb-0 mandatory">*</p>
-            {{ form_errors(form.description, {'attr': {'size': 8} }) }}
-            {{ form_widget(form.description) }}
-            {{ form_help(form.description) }}
-        </div>
-    </div>
-    <div class="row mb-4">
-        <div class="fileUpload col-lg-8 align-self-end">
-            {{ form_errors(form.bannerFile) }}
-            {{ form_widget(form.bannerFile) }}
-            <div class="transparent-background-light py-1 px-3">
-                {{ form_help(form.bannerFile) }}
+    <div class="background-grey big-padding">
+        {{ form_start(form, {'attr': {'class': 'form-kyosc'} }) }}
+        <div class="form-row">
+            <div class="form-group col-md-12 ">
+                <p class="mb-0"><span class="mandatory">*</span> Nom de votre clan:</p>
+                {{ form_errors(form.name) }}
+                {{ form_widget(form.name) }}
             </div>
         </div>
-    </div>
-    <div class="form-row justify-content-between">
-        <div class="form-group ">
-            {{ form_errors(form.isPublic) }}
-            {{ form_widget(form.isPublic) }}
-            <div class="transparent-background-light py-1 px-3">
-                {{ form_help(form.isPublic) }}
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <div class="form-group">
+                    <p class="mb-0"><span class="mandatory">*</span> Description de votre clan:</p>
+                    {{ form_errors(form.description, {'attr': {'size': 8} }) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_help(form.description) }}
+                </div>
+                <div class="fileUpload">
+                    <p class="mb-0">Image d'illustration:</p>
+                    {{ form_errors(form.bannerFile) }}
+                    {{ form_widget(form.bannerFile) }}
+                    {{ form_help(form.bannerFile) }}
+                </div>
+                <div class="form-group mt-2">
+                    <p class="mb-0">Ouverture au public de votre clan:</p>
+                    {{ form_errors(form.isPublic) }}
+                    {{ form_widget(form.isPublic) }}
+                    {{ form_help(form.isPublic) }}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <p class="mb-0">Aperçu de l'image d'illustration:</p>
+                    <label for="clan_bannerFile_file" class="form-group img-display">
+                        {% if clan and clan.banner is not null%}
+                            <img id="output" src="{{ vich_uploader_asset(clan, 'bannerFile') | imagine_filter('challenge_thumb')  }}"
+                                 alt="photo du clan" class="challenge-photo-container mw-100">
+                        {% else %}
+                            <img id="output" src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                 alt="photo par défaut du clan" class="challenge-photo-container mw-100">
+                        {% endif %}
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-center mt-4">
-        <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
-        {{ form_end(form) }}
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn-login btn btn-lg">Enregistrer</button>
+            {{ form_end(form) }}
+        </div>
     </div>
 </div>

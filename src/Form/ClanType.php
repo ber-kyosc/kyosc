@@ -27,6 +27,7 @@ class ClanType extends AbstractType
                 'download_label' => false,
                 'attr' => [
                     'placeholder' => 'Choisir une image',
+                    'onchange' => 'loadFile()',
                 ],
                 'help' => 'Illustrez votre clan en sélectionnant une image',
                 'allow_delete'  => true, // not mandatory, default is true
@@ -40,7 +41,8 @@ class ClanType extends AbstractType
                     'rows' => 5],
             ])
             ->add('isPublic', CheckboxType::class, [
-                'help' => 'Visibilité de votre clan',
+                'help' => 'Si vous sélectionnez « ouvert » n’importe quel membre de KYOSC pourra vous
+                 faire une demande par mail d’intégration à votre clan (par défaut il restera privé)',
                 'label' => 'Ouvert',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
