@@ -1,0 +1,15 @@
+{% extends 'email/base.html.twig' %}
+
+{% block title %}
+    Demande de co-organisation d'une aventure
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Un membre KYOSC souhaite une co-organisation !</h1>
+    <p>Hello, {{ user.firstName }} {{ user.lastName }} souhaite que son aventure "{{ challenge.title }}" soit co-organisée avec KYOSC.</p>
+    <p>Voici le mail du membre en question : {{ user.email }}</p>
+    <p>Pour voir les détails de l'aventure:</p>
+    <div class="m-3">
+        <a href="{{url('challenge_show', {id: challenge.id}) }}" class="btn btn-info">Voir l'aventure</a>
+    </div>
+{% endblock %}

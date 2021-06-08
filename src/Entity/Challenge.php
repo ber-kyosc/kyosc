@@ -8,6 +8,8 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,6 +19,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ChallengeRepository::class)
+ * @UniqueEntity(fields={"title"}, message="Ce nom est déjà utilisé")
  * @Vich\Uploadable
  */
 class Challenge
@@ -166,6 +169,35 @@ class Challenge
      * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge")
      */
     private Collection $requests;
+
+    /**
+     * @Vich\UploadableField(mapping="gpx_track", fileNameProperty="gpxTrack")
+     * @var File|null
+     * @Assert\File(
+     *     uploadErrorMessage="Une erreur est survenue lors du téléchargement.",
+     *     maxSize="20000000",
+     *     maxSizeMessage="Votre fichier est trop grand. Veuillez selectionner en sélectionner un de moins de 20Mo.",
+     *     mimeTypes =  {"text/xml"},
+     *     mimeTypesMessage="Seuls les fichiers gpx sont acceptés."
+     * )
+     */
+    private $gpxTrackFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $gpxTrack = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Slug(fields={"title"})
+     */
+    private ?string $slug;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $recommendation;
 
     public function __construct()
     {
@@ -546,6 +578,61 @@ class Challenge
                 $request->setChallenge(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGpxTrack(): ?string
+    {
+        return $this->gpxTrack;
+    }
+
+    public function setGpxTrack(?string $gpxTrack): self
+    {
+        $this->gpxTrack = $gpxTrack;
+
+        return $this;
+    }
+
+    /**
+     * @param File|UploadedFile|null $file
+     * @param File|null $file
+     * @return $this
+     */
+    public function setGpxTrackFile(File $file = null): Challenge
+    {
+        $this->gpxTrackFile = $file;
+        if (null !== $file) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+        return $this;
+    }
+
+    public function getGpxTrackFile(): ?File
+    {
+        return $this->gpxTrackFile;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getRecommendation(): ?string
+    {
+        return $this->recommendation;
+    }
+
+    public function setRecommendation(?string $recommendation): self
+    {
+        $this->recommendation = $recommendation;
 
         return $this;
     }

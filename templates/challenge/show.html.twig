@@ -1,5 +1,30 @@
 {% extends 'base.html.twig' %}
 
+{% block meta %}
+    <meta property="og:url"           content="{{ app.request.uri }}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="{{ challenge.title }}" />
+    <meta property="og:description"   content="{{ challenge.description }}" />
+    <meta property="og:image"
+          content="
+                {% if challenge.challengePhoto is not null %}
+                    kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}
+                {% else %}
+                    kyosc.com/uploads/challenge/challenge-default.jpeg
+                {% endif %}" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="{{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
+    <meta name="twitter:site" content="{{ app.request.uri }}">
+    <meta name="twitter:title" content="{{ challenge.title }} par {{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
+    <meta name="twitter:description" content="{{ challenge.description }}">
+    <meta name="twitter:image" content="
+                {% if challenge.challengePhoto is not null %}
+                    kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}
+                {% else %}
+                    kyosc.com/uploads/challenge/challenge-default.jpeg
+                {% endif %}">
+{% endblock %}
+
 {% block title %}Aventure #{{ challenge.id }}{% endblock %}
 
 {% block background %}
@@ -17,12 +42,22 @@
     <header class="arrow-header my-3 text-uppercase" style="background-color: {{color}};">
         <h1>{{ challenge.title }} #{{ challenge.id }}</h1>
         <p class="m-0 text-white">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+        <div class="d-flex align-items-center mt-2">
+            <div class="fb-share-button mr-2" data-href="{{ app.request.uri }}" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Faventure%2F411&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Partager</a></div>
+            <a class="twitter-share-button"
+               href="https://twitter.com/intent/tweet"
+               data-size="large"
+               data-text="{{ challenge.title }}"
+               data-hashtags="KYOSC,{{ challenge.sports[0].name|lower|replace({' ': ''}) }}"
+               data-via="{{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
+                Tweet</a>
+        </div>
     </header>
     <section class="container px-5 my-2 my-md-5">
         <div class="row justify-content-center justify-content-md-around">
             <div class="col-lg-6 transparent-background-dark p-3">
                 <h3 class="challenge-quotation mb-4 pre-line">{{ challenge.quotation }}</h3>
-                <p class="challenge-description pre-line">{{ challenge.description }}</p>
+                <p class="challenge-description pre-line">{{ challenge.description|auto_link|raw }}</p>
             </div>
         </div>
     </section>
@@ -48,6 +83,11 @@
                             <p>Non spécifiée</p>
                             {% endif %}
                         </div>
+                        {% if challenge.gpxTrack %}
+                        <div class="form-kyosc">
+                            <a class="btn bg-white" href="{{ vich_uploader_asset(challenge, 'gpxTrackFile')}}" download="trace-de-{{ challenge.slug }}.gpx">Téléchargez la trace gpx</a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -79,14 +119,20 @@
                 {% endif %}
             {% endif %}
             {% if app.user and app.user == challenge.creator %}
-            <div class="form-kyosc mb-4">
+            <div class="form-kyosc my-2">
                 <a class="btn btn-participation text-uppercase text-white"
                    data-toggle="modal" data-target="#modalInvitation"
                    style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
                 >J'invite des amis</a>
             </div>
-            <div class="form-kyosc">
+            <div class="form-kyosc my-2">
                 <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+            </div>
+            <div class="form-kyosc my-2">
+                <a class="btn btn-participation text-uppercase text-white"
+                   data-toggle="modal" data-target="#modalHelpOrganise"
+                   style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                ><span class="h6">Demande de co-organisation par KYOSC</span></a>
             </div>
             {% endif %}
         </div>
@@ -95,7 +141,7 @@
     <div class="mt-2 mb-4 container d-flex justify-content-center">
         <div class="col-10 title-info-event transparent-background-dark p-3">
             <h3>Informations complémentaires sur cette aventure:</h3>
-            <p class="pre-line">{{ challenge.information }}</p>
+            <p class="pre-line">{{ challenge.information|auto_link|raw }}</p>
         </div>
     </div>
     {% endif %}
@@ -116,6 +162,30 @@
             </div>
         </div>
     {#       end of modal for challenge invitation pop-up#}
+
+    {#        modal for help organise pop-up#}
+    <div class="modal fade" id="modalHelpOrganise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex flex-column">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">Demande de co-organisation de l'aventure par KYOSC</h2>
+                    <p class="pre-line">En séléctionnant cette option vous serez mis en contact avec un collaborateur KYOSC pour vous aider à organiser votre aventure
+                        (% sur le PU de chaque participant)</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <form method="post" class="form-kyosc" action="{{ path('challenge_help-organise', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-help-organise') }}"/>
+                        <button class="btn btn-profil" style="background-color: {{color}};">Demander</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for help organise pop-up#}
 
     {#        modal for participation resquest pop-up#}
     <div class="modal fade" id="modalParticipationRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -201,15 +271,16 @@
         {% endfor %}
         </div>
     </div>
+    {% if app.user and app.user == challenge.creator or app.user in challenge.participants or is_granted("ROLE_ADMIN") %}
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
-        <h2>Commentaires</h2>
+        <h2>Messagerie privée de l'aventure</h2>
         <div class="d-flex flex-column-reverse w-100 scroll-comment comment-space">
             {% if challenge.messages|length >= 1 %}
                 {% for message in challenge.messages|reverse %}
                     {% if message.isPublic %}
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
                             <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
-                                <p class="pre-line">{{ message.content }}</p>
+                                <p class="pre-line">{{ message.content|auto_link }}</p>
                                 {% if app.user and is_granted("ROLE_ADMIN") or app.user == message.author or app.user == challenge.creator %}
                                     {{ include('message/_delete_form.html.twig') }}
                                 {% endif %}
@@ -226,16 +297,18 @@
                     {% endif %}
                 {% endfor %}
             {% else %}
-                <p>Cette aventure n'a pas encore de commentaire</p>
+                <p>Cette aventure n'a pas encore de message</p>
             {% endif %}
         </div>
         {% if app.user %}
-            <h3 class="mt-3">Ajoutez un commentaire !</h3>
+            <h3 class="mt-3">Ajoutez un message !</h3>
+            <h4>Les messages ne sont visibles que par les participants à cette aventure</h4>
             {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
         {% endif %}
     </div>
+    {% endif %}
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Vidéos</h2>
         {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
@@ -264,4 +337,25 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v10.0" nonce="nXAc6YEt"></script>
+    <script>window.twttr = (function(d, s, id) {
+            let js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function(f) {
+                t._e.push(f);
+            };
+
+            return t;
+        }(document, "script", "twitter-wjs"));</script>
 {% endblock %}

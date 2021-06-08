@@ -55,8 +55,20 @@ class ChallengeType extends AbstractType
                 'download_label' => false,
                 'attr' => [
                     'placeholder' => 'Choisir une image',
+                    'onchange' => 'loadFile()',
                 ],
                 'help' => 'Illustrer votre aventure en sélectionnant une photo',
+                'allow_delete'  => true, // not mandatory, default is true
+                'download_uri' => true, // not mandatory, default is true
+                'asset_helper' => true,
+            ])
+            ->add('gpxTrackFile', VichFileType::class, [
+                'required' => false,
+                'download_label' => false,
+                'attr' => [
+                    'placeholder' => 'Choisir un fichier',
+                ],
+                'help' => 'Vous pouvez ajouter une trace au format gpx, qui sera téléchargeable par les participants',
                 'allow_delete'  => true, // not mandatory, default is true
                 'download_uri' => true, // not mandatory, default is true
                 'asset_helper' => true,
@@ -106,6 +118,14 @@ class ChallengeType extends AbstractType
                     'placeholder' => 'Informations pratiques.',
                     'rows' => 3],
             ])
+            ->add('recommendation', TextareaType::class, [
+                'required' => false,
+                'help' => 'Partagez des bons plans en lien avec cette aventure ! 
+                (restaurants, lieux touristiques et autres sites d\'intérêt)',
+                'attr' => [
+                    'placeholder' => 'Bons plans',
+                    'rows' => 3],
+            ])
             ->add('clans', EntityType::class, [
                 'required' => false,
                 'label' => 'Partager avec mes clans',
@@ -125,8 +145,9 @@ class ChallengeType extends AbstractType
                 ],
             ])
             ->add('isPublic', CheckboxType::class, [
-                'help' => 'possibilité de rejoindre votre aventure',
-                'label' => 'ouvert à tous',
+                'help' => 'si vous sélectionnez « ouverte » n’importe quel membre de KYOSC pourra vous 
+                faire une demande par mail de participation pour cette aventure (par défaut elle restera privée)',
+                'label' => 'ouverte',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
             ]);

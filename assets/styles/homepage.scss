@@ -108,21 +108,31 @@
 
 .home-logo {
     height: auto;
-    margin-right: 40px;
     max-height: 100%;
-    max-width: 100px;
+    max-width: 80px;
 
     @include sm {
-        max-width: 140px;
+        max-width: 120px;
     }
 
     @include md {
-        max-width: 180px;
+        max-width: 140px;
     }
+}
 
-    @include xl {
-        margin-left: 30px;
+.navbar-toggler-icon {
+    @include md {
+        width: 2.2em !important;
+        height: 2.2em !important;
     }
+}
+
+.max-width-80 {
+    max-width: 80px;
+}
+
+.max-width-50-percent {
+    max-width: 50%;
 }
 
 .home-banner {

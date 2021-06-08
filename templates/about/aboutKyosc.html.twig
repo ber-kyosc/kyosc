@@ -6,12 +6,102 @@
 {% endblock %}
 
 {% block body %}
+<section class="d-flex flex-column align-items-center">
     <h1 class="arrow-header hide-before-scroll show-on-scroll">A propos de KYOSC</h1>
-    <div class="dark-container hide-before-scroll show-on-scroll">
-        <img src="{{ asset(defaultLogo) }}" alt="Logo KYOSC" class="mb-5 about-logo hide-before-scroll show-on-scroll">
-        <p class="text-light about-text">Afin d'améliorer votre expérience d’utilisation de ce site, nous utilisons des cookies pour conserver les informations de connexion et fournir une connexion sûre, collecter les statistiques en vue d'optimiser les fonctionnalités du site et adapter le contenu à vos centres d'intérêt. Les données collectées peuvent également donner lieu à démarchage commercial, si vous ne vous êtes pas opposé à ces sollicitations.
-            Lors de la consultation de notre site internet, des informations relatives à votre navigation sont susceptibles d'être enregistrées dans des fichiers "Cookies" installés sur votre terminal (ordinateur, tablette, smartphone…), sous réserve de vos choix. Les informations ci-dessous vous permettent de mieux comprendre le fonctionnement des cookies et l'utilisation des outils actuels afin de les paramétrer.
+    <img src="{{ asset('build/images/aboutUs/canoe.png') }}" class="w-25">
+    <div class="my-5 p-4 w-75 transparent-background-dark d-flex flex-column justify-content-center align-items-center hide-before-scroll show-on-scroll">
+        <p class="pre-line">
+            Les sportifs amateurs et néophytes font partie d’un ou de plusieurs clans. Ils sont de plus en plus nombreux notamment avec l’apparition de la crise liée à la pandémie et à ses impacts sur leurs modes de vie.
+            En manque d’information et de préparation, ils veulent être inspirés, encouragés ou accompagnés à vivre des expériences de plein air personnalisées. Ils souhaitent aussi partager des moments conviviaux, comme par exemple traverser une île en vélo ou randonner autour d’un lac avec leurs proches et leurs semblables.
+            Dans le même temps, les marques et les destinations ont besoin de se rapprocher de leurs clientèles en communicant directement de façon privilégiée et de s’engager plus étroitement avec les sportifs amateurs en les accompagnant pendant leurs aventures.
         </p>
-        <hr>
     </div>
+    <img src="{{ asset('build/images/aboutUs/run.png') }}" class="w-25 ml-5">
+    <div class="my-5 p-4 w-75 transparent-background-dark d-flex flex-column justify-content-center align-items-center hide-before-scroll show-on-scroll">
+        <p class="pre-line">
+            KYOSC est une plateforme de partage et de publication d’aventures créés par des sportifs amateurs pour interagir avec leurs « clans » et les rapprocher des marques, des destinations et des prestataires de services partenaires de KYOSC.
+            Centraliser l’intégralité des étapes du parcours de chaque groupe et d’éditer un support unique de communication permettant à chacun de partager, d’échanger et d’interagir au sein de ses clans sur ses activités et ses aventures sportives.
+            Permettre à chaque groupe et à chaque membre de retrouver très facilement toutes les informations et partages concernant ses participations régulières et à venir, en se connectant à son profil.
+            Connaitre, suivre et rejoindre les aventures de ses différents clans en fonction de ses centres d’intérêts et de ses disponibilités.
+            Apporter une assistance à la création et à l’organisation des aventures sportives.
+            Animer ses clans et leurs activités à travers les interactions et la gamification.
+            Accéder pour les marques et les destinations à une relation directe et privilégiée avec les groupes. Impliquées dans les aventures sportives des clans, les marques et les destinations profitent de leur visibilité en situation de pratique sur les réseaux sociaux.
+        </p>
+    </div>
+    <img src="{{ asset('build/images/aboutUs/victory.png') }}" class="w-25">
+    <div class="my-5 p-4 w-75 transparent-background-dark d-flex flex-column justify-content-center align-items-center hide-before-scroll show-on-scroll">
+        <p class="pre-line">
+            Bertrand Ollagnon co-fondateur CEO, dirigeant Digit Thinker, Conseil et Design en stratégies digitales. Il apporte au projet ses compétences commerciales, marketing et communication et son réseau dans les secteurs du digital, du tourisme et de l’outdoor.
+            Membre du Club Euro Alpin et du Cluster Montagne, Ambassadeur Savoie Mont Blanc, Responsable du Club Digital Dirigeants et Partenaires.
+            Jean-Christophe Simon co-fondateur COO, président de Calsoï, Accompagnement de dirigeants. Il apporte au projet ses compétences en stratégie, innovation, recherche et développement et son réseau dans les secteurs start-up, deep tech et fonds d’investissements.
+        </p>
+    </div>
+    <img src="{{ asset('build/images/aboutUs/velo.png') }}" class="w-25">
+    <div class="my-5 p-4 w-75 transparent-background-dark d-flex flex-column justify-content-center align-items-center hide-before-scroll show-on-scroll">
+        <p class="pre-line">
+            KYOSC est une marque inspirante et fédératrice de la communauté Outdoor en accord avec les valeurs d’inclusion et d’éco-responsabilité que nous défendons.
+            Bertrand et Jean-Christophe
+        </p>
+        {% if bertrand and jeanC %}
+        <div class="d-flex justify-content-around align-items-center w-100">
+            <div class="form-kyosc mb-3 mb-md-0">
+                <a class="btn text-uppercase btn-profil"
+                   data-toggle="modal" data-target="#modalContactBertrand"
+                >Contacter Bertrand</a>
+            </div>
+            <div class="form-kyosc mb-3 mb-md-0">
+                <a class="btn text-uppercase btn-profil"
+                   data-toggle="modal" data-target="#modalContactJeanC"
+                >Contacter Jean-Christophe</a>
+            </div>
+        </div>
+            {#        modal for Bertrand contact pop-up#}
+            <div class="modal fade" id="modalContactBertrand" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLongTitle">Contactez {{ bertrand.firstname }}</h2>
+                        </div>
+                        <div class="modal-body d-flex justify-content-center align-items-center bg-dark">
+                            <form class="w-100 d-flex flex-column justify-content-center align-items-center mb-4 form-kyosc" method="post" action="{{ path('profil_contact-user', {id: bertrand.id}) }}">
+                                <input type="hidden" name="token" value="{{ csrf_token('contact-user') }}"/>
+                                <textarea name="contactMessage" class="w-75" placeholder="Entrez votre message pour {{ bertrand.firstname }} ici" required></textarea>
+                                <button
+                                        class="btn text-uppercase btn-login my-4"
+                                >Envoyer</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#       end of modal for Bertrand contact pop-up#}
+            {#        modal for JC contact pop-up#}
+            <div class="modal fade" id="modalContactJeanC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLongTitle">Contactez {{ jeanC.firstname }}</h2>
+                        </div>
+                        <div class="modal-body d-flex justify-content-center align-items-center bg-dark">
+                            <form class="w-100 d-flex flex-column justify-content-center align-items-center mb-4 form-kyosc" method="post" action="{{ path('profil_contact-user', {id: jeanC.id}) }}">
+                                <input type="hidden" name="token" value="{{ csrf_token('contact-user') }}"/>
+                                <textarea name="contactMessage" class="w-75" placeholder="Entrez votre message pour {{ jeanC.firstname }} ici" required></textarea>
+                                <button
+                                        class="btn text-uppercase btn-login my-4"
+                                >Envoyer</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><img src="{{ asset('build/images/picto/close.png') }}" class="close-picto m-2" alt="white closing cross"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#       end of modal for JC contact pop-up#}
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

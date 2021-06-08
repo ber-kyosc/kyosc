@@ -15,7 +15,7 @@
     }
 
     label {
-        color: $light;
+        color: $black;
     }
 
     a:hover {
@@ -26,7 +26,7 @@
     p {
         font-family: $font-text;
         font-weight: $weight-text;
-        color: theme-color-level('kblue-typo');
+        color: $black;
     }
 
     small {
