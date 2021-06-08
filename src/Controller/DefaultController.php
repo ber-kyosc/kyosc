@@ -112,12 +112,24 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/kyosc", name="about_kyosc")
+     * @Route("/a-propos-de-kyosc", name="about_kyosc")
+     * @param UserRepository $userRepository
+     * @return Response
      */
-    public function aboutKyosc(): Response
+    public function aboutKyosc(UserRepository $userRepository): Response
     {
-//        return $this->render('about/aboutKyosc.html.twig');
-        return $this->render('about/workInProgress.html.twig');
+        $bertrand = $userRepository->findOneBy([
+            'email' => 'bertrand@kyosc.com'
+        ]);
+
+        $jeanC = $userRepository->findOneBy([
+            'email' => 'jc@kyosc.com'
+        ]);
+
+        return $this->render('about/aboutKyosc.html.twig', [
+            'bertrand' => $bertrand,
+            'jeanC' => $jeanC,
+        ]);
     }
 
     /**

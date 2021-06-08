@@ -89,7 +89,8 @@ class RegistrationController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Un mail contenant un lien de vérification vous a été envoyé à l'adresse " . $user->getEmail()
+                "Félicitations ! Votre compte a bien été créé. 
+                Un mail contenant un lien de vérification vous a été envoyé à l'adresse " . $user->getEmail()
             );
             $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
             return $this->redirectToRoute('home');
