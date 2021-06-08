@@ -3,22 +3,22 @@
 {% block title %}KYOSC{% endblock %}
 
 {% block body %}
-    <div class="home-menu d-flex justify-content-between align-items-center">
+    <div class="home-menu d-flex">
         {{ include('component/_burger-content.html.twig') }}
-        <button class="navbar-toggler home-logo" type="button">
-            <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo">
+        <button class="navbar-dark navbar-toggler home-logo mr-md-auto" type="button">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        <h1 class="text-uppercase">À vous de créer <br><span class="second-color-title">votre propre aventure sportive</span></h1>
+        <img src="{{ asset( defaultLogo ) }}" alt="kyosc white logo" class="home-logo align-self-center m-auto">
         <div class="d-flex flex-column align-items-center home-button-wrapper">
             {% if app.user %}
                 <div class="d-flex home-profil-button">
-                    <a class="home-button dark-button" href="{{ path("profil_my_profil") }}">Mon Espace</a>
-                    <a class="home-button dark-button d-flex align-items-center justify-content-center" href="{{ path("app_logout") }}">Déconnexion</a>
+                    <a class="home-button dark-button p-1" href="{{ path("profil_my_profil") }}">Mon Espace</a>
+                    <a class="home-button dark-button d-flex align-items-center justify-content-center p-1" href="{{ path("app_logout") }}">Déconnexion</a>
                 </div>
-                <a href="{{ path('get-started') }}" class="home-button light-button text-uppercase">Bien démarrer sur KYOSC</a>
+                <a href="{{ path('get-started') }}" class="home-button light-button text-uppercase p-1">Bien démarrer sur KYOSC</a>
             {% else %}
-                <a href="{{ path('app_login') }}" class="home-button dark-button text-uppercase">Se connecter</a>
-                <a href="{{ path('app_register') }}" class="home-button light-button text-uppercase">Créez votre compte</a>
+                <a href="{{ path('app_login') }}" class="home-button dark-button text-uppercase p-1">Se connecter</a>
+                <a href="{{ path('app_register') }}" class="home-button light-button text-uppercase p-1">Créez votre compte</a>
             {% endif %}
         </div>
     </div>
@@ -28,13 +28,13 @@
 {#    </div>#}
     <section class="row mx-0 mb-2">
         {% for category in imagesCarousel %}
-            <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column justify-content-center align-items-center p-1 hide-before-scroll show-on-scroll"
+            <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll"
                 href="{{ path('challenge_by_category', {name: category.name|lower}) }}"
                 style="background: url('{{ ('uploads/carousel/'~category.carousel)}}') no-repeat center; background-size: cover;"
             >
-                <div class="d-flex flex-column justify-content-center align-items-center transparent-background-dark p-4" style="color: {{ category.color }};">
-                    <img src="/uploads/logo/{{ category.logo }}" class="home-carousel-logo">
-                    <h2>{{ category.name|capitalize }}</h2>
+                <div class="d-flex flex-column justify-content-center align-items-center transparent-background-dark p-1 max-width-50-percent" style="color: {{ category.color }};">
+                    <img src="/uploads/logo/{{ category.logo }}" class="max-width-80">
+                    <h2 class="">{{ category.name|capitalize }}</h2>
                 </div>
             </a>
         {% endfor %}
