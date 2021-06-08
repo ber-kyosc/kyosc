@@ -757,6 +757,57 @@ class ChallengeController extends AbstractController
 
     /**
      * @Route(
+     *     "/{id}/demande-aide-organisation",
+     *     name="help-organise",
+     *     methods={"POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @param Challenge $challenge
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function helpOrganise(
+        Request $request,
+        MailerInterface $mailer,
+        Challenge $challenge
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $challengeId = $request->request->get('challengeId');
+        $submittedToken = $request->request->get('token');
+        if (
+            $this->isCsrfTokenValid('challenge-help-organise', $submittedToken) &&
+            filter_var($challengeId, FILTER_VALIDATE_INT)
+        ) {
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to('bertrand@kyosc.com')
+                ->subject('Demande de co-organisation aventure !')
+                ->html(
+                    $this->renderView(
+                        'email/help-organise.html.twig',
+                        [
+                            'challenge' => $challenge,
+                            'user' => $user,
+                        ]
+                    )
+                );
+            $mailer->send($email);
+            $this->addFlash(
+                'success',
+                'Votre demande à bien été prise en compte et envoyée à un administrateur KYOSC'
+            );
+            return $this->redirectToRoute('challenge_show', [
+                'id' => $challenge->getId(),
+            ]);
+        }
+        return $this->redirectToRoute('challenge_index');
+    }
+
+    /**
+     * @Route(
      *     "/{id}/edition",
      *     name="edit",
      *     methods={"GET", "POST", "PUT"},

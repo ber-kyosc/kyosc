@@ -119,14 +119,20 @@
                 {% endif %}
             {% endif %}
             {% if app.user and app.user == challenge.creator %}
-            <div class="form-kyosc mb-4">
+            <div class="form-kyosc my-2">
                 <a class="btn btn-participation text-uppercase text-white"
                    data-toggle="modal" data-target="#modalInvitation"
                    style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
                 >J'invite des amis</a>
             </div>
-            <div class="form-kyosc">
+            <div class="form-kyosc my-2">
                 <a class="btn btn-register" href="{{ path('challenge_edit', {id: challenge.id})}}">Modifier</a>
+            </div>
+            <div class="form-kyosc my-2">
+                <a class="btn btn-participation text-uppercase text-white"
+                   data-toggle="modal" data-target="#modalHelpOrganise"
+                   style="color:{{ color }}; border-color: {{ color }}; background-color: {{ color }}"
+                ><span class="h6">Demande de co-organisation par KYOSC</span></a>
             </div>
             {% endif %}
         </div>
@@ -156,6 +162,30 @@
             </div>
         </div>
     {#       end of modal for challenge invitation pop-up#}
+
+    {#        modal for help organise pop-up#}
+    <div class="modal fade" id="modalHelpOrganise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex flex-column">
+                    <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">Demande de co-organisation de l'aventure par KYOSC</h2>
+                    <p class="pre-line">En séléctionnant cette option vous serez mis en contact avec un collaborateur KYOSC pour vous aider à organiser votre aventure
+                        (% sur le PU de chaque participant)</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <form method="post" class="form-kyosc" action="{{ path('challenge_help-organise', {id: challenge.id}) }}">
+                        <input type="hidden" name="challengeId" value="{{ challenge.id }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('challenge-help-organise') }}"/>
+                        <button class="btn btn-profil" style="background-color: {{color}};">Demander</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for help organise pop-up#}
 
     {#        modal for participation resquest pop-up#}
     <div class="modal fade" id="modalParticipationRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
