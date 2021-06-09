@@ -8,12 +8,12 @@
 }
 
 .home-menu {
-    align-items: center;
     background-color: $drawer-menu;
-    display: flex;
-    justify-content: center;
-    padding: 10px 20px;
-    width: 100%;
+    padding: 10px 5px;
+
+    @include md {
+        padding: 10px 20px;
+    }
 
     @include xl {
         font-size: larger;

@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-center mb-4">Un membre KYOSC souhaite une co-organisation !</h1>
-    <p>Hello, {{ user.firstName }} {{ user.lastName }} souhaite que son aventure "{{ challenge.title }}" soit co-organisée avec KYOSC.</p>
-    <p>Voici le mail du membre en question : {{ user.email }}</p>
+    <h1 style="text-align: center; margin-bottom: 40px;">Un membre KYOSC souhaite une co-organisation !</h1>
+    <p>Hello, {{ user.firstName }} {{ user.lastName }} souhaite que son aventure <strong>"{{ challenge.title }}"</strong> soit co-organisée avec KYOSC.</p>
+    <p>Voici le mail du membre en question : <strong>{{ user.email }}</strong></p>
     <p>Pour voir les détails de l'aventure:</p>
     <div class="m-3">
-        <a href="{{url('challenge_show', {id: challenge.id}) }}" class="btn btn-info">Voir l'aventure</a>
+        <a href="{{url('challenge_show', {id: challenge.id}) }}" style="background-color: black; color: white; padding: 10px; border-radius: 10px; text-decoration: none; margin: 30px;">Voir l'aventure</a>
     </div>
 {% endblock %}
