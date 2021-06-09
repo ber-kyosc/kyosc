@@ -55,3 +55,12 @@
         margin-top: 20px;
     }
 }
+
+.about-image {
+    width: 280px;
+    height: auto;
+
+    @include md {
+        width: 380px;
+    }
+}

@@ -48,6 +48,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->execute();
     }
 
+    /**
+     * @param string $name
+     * @param int $limit
+     * @return array<string>
+     */
+    public function findLikeNameOrEmailOrPseudo(string $name, int $limit = 5): array
+    {
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->where('u.firstName LIKE :name')
+            ->orWhere('u.lastName LIKE :name')
+            ->orWhere('u.email LIKE :name')
+            ->orWhere('u.pseudo LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('u.firstName', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

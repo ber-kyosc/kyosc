@@ -3,7 +3,7 @@
 {% block title %}KYOSC{% endblock %}
 
 {% block body %}
-    <div class="home-menu d-flex">
+    <div class="home-menu d-flex justify-content-between align-items-center w-100">
         {{ include('component/_burger-content.html.twig') }}
         <button class="navbar-dark navbar-toggler home-logo mr-md-auto" type="button">
             <span class="navbar-toggler-icon"></span>
@@ -26,7 +26,7 @@
 {#    <div class="main-carousel-home-page">#}
 {#        {{ include('component/_home_main_carousel.html.twig') }}#}
 {#    </div>#}
-    <section class="row mx-0 mb-2">
+    <section class="row mx-0">
         {% for category in imagesCarousel %}
             <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll"
                 href="{{ path('challenge_by_category', {name: category.name|lower}) }}"
@@ -39,16 +39,69 @@
             </a>
         {% endfor %}
     </section>
-    <h2 class="hide-before-scroll show-on-scroll text-kred p-4">
-        KYOSC est la plateforme pour organiser et partager des moments forts dans une ambiance conviviale.<br>
-    </h2>
-    <section class="home-choice-container">
-        <a class="home-choice hide-before-scroll show-on-scroll d-flex align-baseline" href="#challenge-section">
+    <div id="carouselExampleControls" class="carousel slide bg-dark hide-before-scroll show-on-scroll min-height-200" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item p-4 active">
+                <h1 class="text-kred p-4 w-75 mx-auto">
+                    KYOSC est la plateforme pour organiser et partager tes aventures sportives dans une ambiance conviviale.<br>
+                </h1>
+            </div>
+            <div class="carousel-item p-4">
+                <h2 class="h1 text-kred p-4 w-75 mx-auto">
+                    Si participer à un évènement sportif conditionné à une jauge de participants réduite t’ennuie profondément, crée-toi ta propre aventure avec tes amis sur KYOSC.
+                </h2>
+            </div>
+            <div class="carousel-item p-4">
+                <h2 class="h1 text-kred p-4 w-75 mx-auto">
+                    Chez KYOSC pas de green baching, on te fait confiance pour imaginer les plus belles activités sportives respectueuses de l’environnement.
+                </h2>
+            </div>
+            <div class="carousel-item p-4">
+                <h2 class="h1 text-kred p-4 w-75 mx-auto">
+                    Si tu ne cherches pas d’agrégation de traces mais que tu veux faire ta propre trace avec ton clan, KYOSC est la bonne solution.
+                </h2>
+            </div>
+            <div class="carousel-item p-4">
+                <h2 class="h1 text-kred p-4 w-75 mx-auto">
+                    Si tu ne veux pas pratiquer la randonnée ou la voile seul, KYOSC est la bonne voie pour t’intégrer à des clans qui te ressemble, disposés à t’accueillir.
+                </h2>
+            </div>
+            <div class="carousel-item p-4">
+                <h2 class="h1 text-kred p-4 w-75 mx-auto">
+                    Si tu veux prendre en main ton aventure sportive, KYOSC est la vitrine idéale pour informer, rapprocher et fédérer tes proches autour de toi.
+                </h2>
+            </div>
+            <div class="carousel-item p-4">
+                <h2 class="h1 text-kred p-4 w-75 mx-auto">
+                    Bref, tu préfères être inspirant ou inspiré ?
+                </h2>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Précédent</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Suivant</span>
+        </a>
+    </div>
+    <section class="home-choice-container mt-3">
+        <a class="home-choice hide-before-scroll show-on-scroll d-flex align-baseline text-decoration-none" href="#challenge-section">
             <img src="{{ asset('build/images/picto/komplice.png') }}" class="home-choice-picto mb-3">
             <h2 class="text-kblue">Découvrez les aventures !</h2>
             <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">
         </a>
-        <a class="home-choice hide-before-scroll show-on-scroll" href="#clan-section">
+        <a class="home-choice hide-before-scroll show-on-scroll text-decoration-none" href="#clan-section">
             <img src="{{ asset('build/images/picto/kequipe.png') }}" class="home-choice-picto mb-3">
             <h2 class="text-kgreen">Découvrez les clans !</h2>
             <img src="{{ asset('build/images/fleche/fhnoir.png') }}" class="up-arrow-choice">

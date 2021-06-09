@@ -9,6 +9,12 @@
         <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
         <h1 class="challenge-index-title text-white">Tous les membres KYOSC !</h1>
     </header>
+    <section class="my-4">
+        <div class="frmSearch w-100 d-flex flex-column align-items-center justify-content-center my-4">
+            <input class="w-50" type="text" id="search-box" placeholder="Rechercher un membre KYOSC" />
+            <div id="suggestion-box"></div>
+        </div>
+    </section>
     <main class="container-fluid">
         <div class="row justify-content-center w-75 m-auto">
             {% for user in users %}
@@ -61,4 +67,45 @@
             {% endfor %}
         </div>
     </main>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        const suggestionBox = $("#suggestion-box");
+        const searchBox = $('#search-box');
+        $(document).ready(function() {
+            searchBox.keyup(function(){
+                suggestionBox.html("");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('profil_handle_search') }}",
+                    data:'_query='+$(this).val(),
+                    success: function(data){
+                        suggestionBox.html("");
+                        data.forEach(function(user){
+                            let pseudoUser = "";
+                            if (user.pseudo !== null) {
+                                pseudoUser = '"' + user.pseudo + '"';
+                            }
+                            let avatar = "<img src='/uploads/profils/default-profil-picture.png' alt='default profil picture' class='avatar-testimony'>";
+                            if (user.profilPhoto !== null) {
+                                avatar = `<img src='http://127.0.0.1:8000/media/cache/avatar_thumb/uploads/profils/${
+                                    user.profilPhoto
+                                }' class='avatar-testimony'>`;
+                            }
+                            let html = `${"<div class='d-flex bg-white'>"
+                                + `<a href='/profil/`}${user.id}' class='w-100 p-2 d-flex justify-content-between align-items-center text-dark text-center border border-dark rounded'><span>${user.firstName}</span><span>${
+                                pseudoUser
+                            }</span>${
+                                avatar
+                            }</a>`
+                                + '</div>';
+                            suggestionBox.prepend(html);
+                        })
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

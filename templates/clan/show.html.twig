@@ -144,7 +144,7 @@
                 {% for message in clan.messages|reverse %}
                     {% if message.isPublic %}
                         <div class="{% if app.user == message.author %}align-self-end text-right{% endif %} position-relative">
-                            <div class="m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
+                            <div class="text-break m-3 bubble {% if app.user == message.author %}bubble-bottom-right{% else %}bubble-bottom-left{% endif %}">
                                 <p class="pre-line">{{ message.content|auto_link|raw }}</p>
                                 {% if app.user %}
                                     {% if is_granted("ROLE_ADMIN") or app.user == message.author or app.user == clan.creator %}

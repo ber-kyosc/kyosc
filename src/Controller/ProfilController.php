@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,9 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route ("/profil", name="profil_")
@@ -230,6 +234,24 @@ class ProfilController extends AbstractController
             ]);
         }
         return $this->redirectToRoute('profil_index');
+    }
+
+    /**
+     * @Route("/handleSearch/{_query?}", name="handle_search", methods={"POST", "GET"})
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function handleSearchRequest(UserRepository $userRepository)
+    {
+        if ($_POST['_query']) {
+            $data = $userRepository->findLikeNameOrEmailOrPseudo($_POST['_query']);
+        } else {
+            $data = [];
+        }
+
+        return $this->json($data, Response::HTTP_OK, [], [
+            'groups' => 'message_author'
+        ]);
     }
 
     /**
