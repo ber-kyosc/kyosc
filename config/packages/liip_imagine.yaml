@@ -64,3 +64,13 @@ liip_imagine:
                     # set the fixed size to "400x400" pixels
                     width: 400
                     height: 400
+
+        compress:
+            quality: 75
+            filters:
+
+                # use and setup the "relative_resize" filter
+                relative_resize:
+
+                    # given 50x40px, output 32x26px using "widen" option (with widen 32)
+                    widen: 400
