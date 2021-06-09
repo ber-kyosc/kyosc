@@ -395,3 +395,11 @@ body {
 .min-height-200 {
     min-height: 200px;
 }
+
+#suggestion-box {
+    min-width: 300px;
+
+    @include md {
+        min-width: 400px;
+    }
+}
