@@ -194,10 +194,7 @@ body {
 }
 
 .text-muted {
-    color: theme-color-level('kblue-typo');
-    font-family: $title;
-    font-size: 16px;
-    font-weight: 100;
+    font-weight: bold;
 }
 
 .col-form-label {
