@@ -17,9 +17,9 @@ commentForm.submit((e) => {
             if (data.author.pseudo !== null) {
                 pseudoAuthor = data.author.pseudo;
             }
-            let avatar = "<img src='/uploads/profils/default-profil-picture.png' alt='default profil picture' class='avatar-testimony'>";
+            let avatar = "<img src='https://kyosc.com/uploads/profils/default-profil-picture.png' alt='default profil picture' class='avatar-testimony'>";
             if (data.author.profilPhoto !== null) {
-                avatar = `<img src='http://127.0.0.1:8000/media/cache/avatar_thumb/uploads/profils/${
+                avatar = `<img src='https://kyosc.com/media/cache/avatar_thumb/uploads/profils/${
                     data.author.profilPhoto
                 }' class='avatar-testimony'>`;
             }
