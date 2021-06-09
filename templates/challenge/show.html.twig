@@ -5,14 +5,14 @@
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="{{ challenge.title }}" />
     <meta property="og:description"   content="{{ challenge.description }}" />
-    <meta property="og:image"
-          content="{% if challenge.challengePhoto is not null %}kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}" />
+    <meta property="og:image:secure_url"
+          content="{% if challenge.challengePhoto is not null %}https://kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}https://kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}" />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="{{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
     <meta name="twitter:site" content="{{ app.request.uri }}">
     <meta name="twitter:title" content="{{ challenge.title }} par {{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
     <meta name="twitter:description" content="{{ challenge.description }}">
-    <meta name="twitter:image" content="{% if challenge.challengePhoto is not null %}kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}">
+    <meta name="twitter:image" content="{% if challenge.challengePhoto is not null %}https://kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}https://kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}">
 {% endblock %}
 
 {% block title %}Aventure #{{ challenge.id }}{% endblock %}
