@@ -7,8 +7,15 @@
     {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
             {% endif %}>
         <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
-        <h1 class="challenge-index-title text-white">Tous les clans</h1>
+        <h1 class="ml-1 challenge-index-title text-white">Tous les clans</h1>
     </header>
+    <section class="my-4">
+        <div class="position-relative frmSearch w-100 d-flex flex-column align-items-center justify-content-center">
+            <input class="search-bar w-75 form-control border-0 bg-light rounded rounded-pill shadow-sm" type="text" id="search-box"/>
+            <span class="floating-label">Rechercher un clan</span>
+        </div>
+        <div id="suggestion-box" class="w-50 m-auto"></div>
+    </section>
     <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
         <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
     </div>
@@ -70,4 +77,39 @@
     <div class="form-kyosc d-flex align-items-center justify-content-center mt-4">
         <a href="{{ path('clan_new') }}" class="btn-login btn btn-lg">Créer un clan</a>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        const suggestionBox = $("#suggestion-box");
+        const searchBox = $('#search-box');
+        $(document).ready(function() {
+            searchBox.keyup(function(){
+                suggestionBox.html("");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('clan_handle_search') }}",
+                    data:'_query='+$(this).val(),
+                    success: function(data){
+                        suggestionBox.html("");
+                        data.forEach(function(clan){
+                            let BGStyle = `background: url('{{ asset('uploads/challenge/challenge-default.jpeg') }}') no-repeat center; background-size: cover;`;
+                            if (clan.banner !== null) {
+                                BGStyle = `background: url('https://kyosc.com/uploads/clan/${
+                                    clan.banner
+                                }') no-repeat center; background-size: cover;`;
+                            }
+                            let html = `${"<div class='d-flex'>"
+                                + `<a href='/clan/`}${clan.id}' style="${BGStyle}" class='w-100 py-2 px-5 d-flex justify-content-center align-items-center text-dark text-center border border-dark rounded text-decoration-none'><span class="transparent-background-dark p-3">${
+                                    clan.name
+                                }</span></a>`
+                                + '</div>';
+                            suggestionBox.prepend(html);
+                        })
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

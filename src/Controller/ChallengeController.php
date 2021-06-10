@@ -9,11 +9,13 @@ use App\Entity\Clan;
 use App\Entity\Invitation;
 use App\Entity\JoinRequest;
 use App\Entity\Message;
+use App\Entity\Picture;
 use App\Entity\Sport;
 use App\Entity\Video;
 use App\Form\ChallengeSearchType;
 use App\Form\ChallengeType;
 use App\Form\MessageType;
+use App\Form\PictureType;
 use App\Form\VideoType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
@@ -30,6 +32,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use mysql_xdevapi\Exception;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -703,6 +706,10 @@ class ChallengeController extends AbstractController
         $formVideo = $this->createForm(VideoType::class, $video);
         $formVideo->handleRequest($request);
 
+        $picture = new Picture();
+        $formPicture = $this->createForm(PictureType::class, $picture);
+        $formPicture->handleRequest($request);
+
         /* @phpstan-ignore-next-line */
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -748,10 +755,24 @@ class ChallengeController extends AbstractController
             }
         }
 
+        /* @phpstan-ignore-next-line */
+        if ($formPicture->isSubmitted() && $formPicture->isValid() && $formPicture->get('save-picture')->isClicked()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $picture->setChallenge($challenge);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $picture->setCreatedAt(new DateTime());
+            $picture->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $picture->setAuthor($this->getUser());
+            $entityManager->persist($picture);
+            $entityManager->flush();
+        }
+
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
             'form' => $form->createView(),
             'formVideo' => $formVideo->createView(),
+            'formPicture' => $formPicture->createView(),
         ]);
     }
 
@@ -804,6 +825,24 @@ class ChallengeController extends AbstractController
             ]);
         }
         return $this->redirectToRoute('challenge_index');
+    }
+
+    /**
+     * @Route("/handleSearch/{_query?}", name="handle_search", methods={"POST", "GET"})
+     * @param ChallengeRepository $challengeRepository
+     * @return JsonResponse
+     */
+    public function handleSearchRequest(ChallengeRepository $challengeRepository)
+    {
+        if ($_POST['_query']) {
+            $data = $challengeRepository->findLikeTitle($_POST['_query']);
+        } else {
+            $data = [];
+        }
+
+        return $this->json($data, Response::HTTP_OK, [], [
+            'groups' => 'challenge_base'
+        ]);
     }
 
     /**

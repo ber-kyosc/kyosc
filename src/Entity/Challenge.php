@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -28,6 +29,7 @@ class Challenge
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"challenge_base"})
      */
     private ?int $id = null;
 
@@ -36,6 +38,7 @@ class Challenge
      * @Assert\NotBlank(message="Veuillez choisir un titre pour votre challenge")
      * @Assert\Length(max="100", min="2", minMessage="Veuillez choisir un titre faisant plus de 2 caractères",
      * maxMessage="Un maximum de 100 caractères est autorisé")
+     * @Groups({"challenge_base"})
      */
     private string $title;
 
@@ -86,6 +89,7 @@ class Challenge
      *     value="today",
      *     message="La date du challenge doit être supérieure ou égale à celle d'aujourd'hui"
      * )
+     * @Groups({"challenge_base"})
      */
     private ?DateTimeInterface $dateStart;
 
@@ -103,6 +107,7 @@ class Challenge
     /**
      * @ORM\Column(type="boolean")
      * @Assert\Type(type="bool")
+     * @Groups({"challenge_base"})
      */
     private bool $isPublic;
 
@@ -137,6 +142,7 @@ class Challenge
 
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
+     * @Groups({"challenge_base"})
      */
     private ?string $challengePhoto = null;
 
@@ -161,12 +167,12 @@ class Challenge
     private Collection $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $invitations;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $requests;
 
@@ -199,6 +205,11 @@ class Challenge
      */
     private ?string $recommendation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="challenge", cascade={"remove"})
+     */
+    private Collection $pictures;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -208,6 +219,12 @@ class Challenge
         $this->videos = new ArrayCollection();
         $this->invitations = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -633,6 +650,36 @@ class Challenge
     public function setRecommendation(?string $recommendation): self
     {
         $this->recommendation = $recommendation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getChallenge() === $this) {
+                $picture->setChallenge(null);
+            }
+        }
 
         return $this;
     }

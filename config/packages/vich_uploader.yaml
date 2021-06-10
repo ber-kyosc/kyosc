@@ -37,3 +37,10 @@ vich_uploader:
             inject_on_load: false
             delete_on_update: true
             delete_on_remove: true
+        picture_path:
+            uri_prefix: /uploads/picture
+            upload_destination: '%kernel.project_dir%/public/uploads/picture'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

@@ -209,24 +209,29 @@ class User implements UserInterface, Serializable
     private Collection $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="creator", cascade={"remove"})
      */
     private Collection $invitationsSent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="invitedUser")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="invitedUser", cascade={"remove"})
      */
     private Collection $invitationsReceived;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="creator", cascade={"remove"})
      */
     private Collection $requestsSent;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="requestedUser")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="requestedUser", cascade={"remove"})
      */
     private Collection $requestsReceived;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="author", cascade={"remove"})
+     */
+    private Collection $pictures;
 
     public function __construct()
     {
@@ -242,6 +247,7 @@ class User implements UserInterface, Serializable
         $this->invitationsReceived = new ArrayCollection();
         $this->requestsSent = new ArrayCollection();
         $this->requestsReceived = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function __toString()
@@ -931,6 +937,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($requestsReceived->getRequestedUser() === $this) {
                 $requestsReceived->setRequestedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getAuthor() === $this) {
+                $picture->setAuthor(null);
             }
         }
 

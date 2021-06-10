@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -24,6 +25,7 @@ class Clan
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"clan_base"})
      */
     private ?int $id;
 
@@ -32,6 +34,7 @@ class Clan
      * @Assert\NotBlank(message="Veuillez choisir un nom pour votre clan")
      * @Assert\Length(max="255", min="2", minMessage="Veuillez choisir un nom faisant plus de 2 caractères",
      * maxMessage="Un maximum de 255 caractères est autorisé")
+     * @Groups({"clan_base"})
      */
     private string $name;
 
@@ -66,6 +69,7 @@ class Clan
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clan_base"})
      */
     private ?string $banner = null;
 
@@ -111,6 +115,7 @@ class Clan
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"clan_base"})
      */
     private ?bool $isPublic;
 
@@ -130,14 +135,19 @@ class Clan
     private Collection $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="clan")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="clan", cascade={"remove"})
      */
     private Collection $invitations;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="clan")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="clan", cascade={"remove"})
      */
     private Collection $requests;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="clan", cascade={"remove"})
+     */
+    private Collection $pictures;
 
     public function __construct()
     {
@@ -147,6 +157,12 @@ class Clan
         $this->videos = new ArrayCollection();
         $this->invitations = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -451,6 +467,36 @@ class Clan
             // set the owning side to null (unless already changed)
             if ($request->getClan() === $this) {
                 $request->setClan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setClan($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getClan() === $this) {
+                $picture->setClan(null);
             }
         }
 

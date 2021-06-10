@@ -56,6 +56,7 @@ class DashboardController extends AbstractDashboardController
             'totalCategories' => $this->categoryRepository->findAll(),
             'totalUsers' => $this->userRepository->findAll(),
             'totalSports' => $this->sportRepository->findAll(),
+            'totalClans' => $this->clanRepository->findAll(),
             'challengeBySports' => $this->challengeRepository->getChallengeBySports(),
         ]);
     }

@@ -96,6 +96,29 @@
     </div>
     {#       end of modal for joining resquest pop-up#}
 
+    {#        modal for pictures upload pop-up#}
+    <div class="modal fade" id="pictureForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex flex-column">
+                        <h2 class="modal-title" id="exampleModalLongTitle">Partagez une photo en lien avec ce clan !</h2>
+                        <h4>Les photos ne sont visibles que par les membres de ce clan</h4>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    {{ form_start(formPicture) }}
+                    {{ form_widget(formPicture) }}
+                    {{ form_end(formPicture) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#       end of modal for pictures upload pop-up#}
+
     <div class="container w-75 mx-auto my-5 challenge-organisator transparent-background-dark p-3">
         <h2 class="mb-3 h5 text-uppercase text-center">Qui a créé ce clan ?</h2>
         <div class="row">
@@ -176,6 +199,31 @@
         {% endif %}
     </div>
     {% endif %}
+    {% if app.user and app.user == clan.creator or app.user in clan.members or is_granted("ROLE_ADMIN") %}
+        <div class="w-100 mx-auto my-5 participants transparent-background-dark p-3">
+            <h2>Photos du clan</h2>
+            <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#pictureForm">
+                <h2 class="mt-5 arrow-header">Ajoutez des photos !<br>
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                </h2>
+            </a>
+            <div class="row mt-3">
+                {% for picture in clan.pictures|reverse %}
+                    <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative"
+                       href="{{ vich_uploader_asset(picture, 'pathFile')}}"
+                       download="{{ picture.path }}"
+                       style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;"
+                    >
+                        {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == challenge.creator %}
+                            {{ include('picture/_delete_form.html.twig') }}
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <p class="mx-auto my-3 text-white">Ce clan n'a pas encore de photo</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
     <div class="w-75 mx-auto my-5 participants transparent-background-dark p-3">
         <h2>Aventures du clan</h2>
         <div class="container form-kyosc mb-4">
@@ -202,6 +250,8 @@
                             </a>
                         </div>
                     {% endif %}
+                {% else %}
+                    <p class="mx-auto my-3 text-white">Ce clan n'a pas encore d'aventure</p>
                 {% endfor %}
             </div>
         </div>
