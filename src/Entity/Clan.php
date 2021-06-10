@@ -130,12 +130,12 @@ class Clan
     private Collection $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="clan")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="clan", cascade={"remove"})
      */
     private Collection $invitations;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="clan")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="clan", cascade={"remove"})
      */
     private Collection $requests;
 

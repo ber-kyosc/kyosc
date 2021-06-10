@@ -737,46 +737,48 @@
 {#            tenth tab pending joinRequests clan #}
             <div class="tab-pane fade" id="nav-pending-requests-clan-sent" role="tabpanel" aria-labelledby="nav-pending-requests-clan-sent-tab">
                 <div class="d-flex flex-column flex-md-row flex-wrap justify-content-center align-items-center scroll-comment p-4">
-                    {% if isTherePendingRequestsChallengeSent %}
+                    {% if isTherePendingRequestsClanSent %}
                         {% for request in user.requestsSent %}
-                            <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-2 m-3 index-card-max-width">
-                                <div class="text-dark text-center">
-                                    <h3 class="h6 text-center">Le {{ request.createdAt|format_datetime(pattern="dd MMMM Y",locale='fr') }}</h3>
-                                    <span class="pre-line">Demande pour rejoindre <span class="font-weight-bold">{{ request.clan ? 'le clan: ' : 'l\'aventure: ' }}</span>
-                                        "{{ request.clan ? request.clan.name : request.challenge.title }}"
-                                    </span>
-                                    {% if request.clan is not null %}
-                                        <a class="card text-decoration-none text-dark no-bg-border"
-                                           href="{{ path("clan_show", {id: request.clan.id}) }}">
-                                            {% if request.clan.banner is not null %}
-                                                <img src="{{ vich_uploader_asset(request.clan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
-                                                     alt="photo du clan" class="w-100 challenge-photo-container">
-                                            {% else %}
-                                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du clan" class="w-100 challenge-photo-container">
-                                            {% endif %}
-                                        </a>
-                                    {% else %}
-                                        <a class=" text-decoration-none text-dark h-100"
-                                           href="{{ path("challenge_show", {id: request.challenge.id}) }}">
-                                            {% if request.challenge.challengePhoto is not null %}
-                                                <img src="{{ vich_uploader_asset(request.challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
-                                                     alt="photo du challenge" class="w-100 challenge-photo-container">
-                                            {% else %}
-                                                <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
-                                                     alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
-                                            {% endif %}
-                                        </a>
-                                    {% endif %}
-                                    {% if request.isAccepted %}
-                                        <div class="bg-kgreen p-2 m-2 rounded">Acceptée</div>
-                                    {% elseif request.isRejected %}
-                                        <div class="bg-kred p-2 m-2 rounded">Refusée</div>
-                                    {% else %}
-                                        <div class="bg-korange p-2 m-2 rounded">En attente</div>
-                                    {% endif %}
+                            {% if request.isAccepted == false and request.isRejected == false %}
+                                <div class="card col-12 col-sm-6 col-md-4 col-xl-3 p-2 m-3 index-card-max-width">
+                                    <div class="text-dark text-center">
+                                        <h3 class="h6 text-center">Le {{ request.createdAt|format_datetime(pattern="dd MMMM Y",locale='fr') }}</h3>
+                                        <span class="pre-line">Demande pour rejoindre <span class="font-weight-bold">{{ request.clan ? 'le clan: ' : 'l\'aventure: ' }}</span>
+                                            "{{ request.clan ? request.clan.name : request.challenge.title }}"
+                                        </span>
+                                        {% if request.clan is not null %}
+                                            <a class="card text-decoration-none text-dark no-bg-border"
+                                               href="{{ path("clan_show", {id: request.clan.id}) }}">
+                                                {% if request.clan.banner is not null %}
+                                                    <img src="{{ vich_uploader_asset(request.clan, 'bannerFile') | imagine_filter('challenge_thumb') }}"
+                                                         alt="photo du clan" class="w-100 challenge-photo-container">
+                                                {% else %}
+                                                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                                         alt="photo par défaut du clan" class="w-100 challenge-photo-container">
+                                                {% endif %}
+                                            </a>
+                                        {% else %}
+                                            <a class=" text-decoration-none text-dark h-100"
+                                               href="{{ path("challenge_show", {id: request.challenge.id}) }}">
+                                                {% if request.challenge.challengePhoto is not null %}
+                                                    <img src="{{ vich_uploader_asset(request.challenge, 'challengePhotoFile') | imagine_filter('challenge_thumb')  }}"
+                                                         alt="photo du challenge" class="w-100 challenge-photo-container">
+                                                {% else %}
+                                                    <img src="{{ asset('uploads/challenge/challenge-default.jpeg') }}"
+                                                         alt="photo par défaut du challenge" class="w-100 challenge-photo-container">
+                                                {% endif %}
+                                            </a>
+                                        {% endif %}
+                                        {% if request.isAccepted %}
+                                            <div class="bg-kgreen p-2 m-2 rounded">Acceptée</div>
+                                        {% elseif request.isRejected %}
+                                            <div class="bg-kred p-2 m-2 rounded">Refusée</div>
+                                        {% else %}
+                                            <div class="bg-korange p-2 m-2 rounded">En attente</div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         {% endfor %}
                     {% else %}
                         <p class="text-center text-white">Pas de demandes envoyées en attente pour des clans</p>
