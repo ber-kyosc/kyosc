@@ -763,11 +763,6 @@ class ChallengeController extends AbstractController
             $picture->setUpdatedAt(new DateTime());
             /* @phpstan-ignore-next-line */
             $picture->setAuthor($this->getUser());
-            /* @phpstan-ignore-next-line */
-            $arrayTitle = explode('-', $picture->getPath());
-            array_pop($arrayTitle);
-            $title = implode('-', $arrayTitle);
-            $picture->setTitle($title);
             $entityManager->persist($picture);
             $entityManager->flush();
         }
