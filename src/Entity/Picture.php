@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
+ * @Vich\Uploadable
  */
 class Picture
 {
@@ -26,10 +27,10 @@ class Picture
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $path;
+    private ?string $path = null;
 
     /**
-     * @Vich\UploadableField(mapping="Picture_path", fileNameProperty="path")
+     * @Vich\UploadableField(mapping="picture_path", fileNameProperty="path")
      * @var File|null
      * @Assert\Image(
      *     uploadErrorMessage="Une erreur est survenue lors du téléchargement.",
