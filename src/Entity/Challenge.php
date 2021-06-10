@@ -161,12 +161,12 @@ class Challenge
     private Collection $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $invitations;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="challenge", cascade={"remove"})
      */
     private Collection $requests;
 

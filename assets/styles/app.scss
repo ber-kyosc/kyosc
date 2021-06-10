@@ -111,7 +111,8 @@ body {
 
 .logo-challenge {
     background-color: white;
-    min-width: 200px;
+    border-radius: 0 20% 20% 0;
+    min-width: 160px;
     padding: 5px 10px;
     width: 15%;
 
@@ -267,7 +268,7 @@ body {
 
 .avatar-testimony {
     max-width: 60px;
-    max-height: 100px;
+    max-height: 60px;
     border-radius: 50%;
 }
 
@@ -402,4 +403,42 @@ body {
     @include md {
         min-width: 400px;
     }
+
+    a {
+        background-color: $light;
+    }
+
+    a:hover {
+        background-color: theme-color-level('grey');
+    }
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.form-control-underlined {
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-radius: 0;
+    padding-left: 0;
+}
+
+.search-bar:focus ~ .floating-label {
+    top: -16px;
+    bottom: 10px;
+    left: 16vw;
+    font-size: 11px;
+    opacity: 1;
+    border-radius: 10px;
+    z-index: -50;
+}
+
+.search-bar:empty ~ .floating-label {
+    background-color: $light;
+    position: absolute;
+    pointer-events: none;
+    left: 16vw;
+    transition: 0.2s ease all;
+    padding: 2px 6px;
 }

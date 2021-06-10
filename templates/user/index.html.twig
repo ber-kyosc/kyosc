@@ -2,6 +2,10 @@
 
 {% block title %}Membres KYOSC{% endblock %}
 
+{% block background %}
+    class="background-profile" style="background: url('{{ asset('build/images/background/bgimg' ~ random(1, 11) ~ '.jpeg') }}') no-repeat fixed center; background-size: cover;"
+{% endblock %}
+
 {% block body %}
     <header {% if sportColor %} class="index-header d-flex align-items-center text-uppercase mt-5 mb-5" style="background: {{ sportColor }};"
     {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
@@ -10,10 +14,11 @@
         <h1 class="challenge-index-title text-white">Tous les membres KYOSC !</h1>
     </header>
     <section class="my-4">
-        <div class="frmSearch w-100 d-flex flex-column align-items-center justify-content-center my-4">
-            <input class="w-50" type="text" id="search-box" placeholder="Rechercher un membre KYOSC" />
-            <div id="suggestion-box"></div>
+        <div class="position-relative frmSearch w-100 d-flex flex-column align-items-center justify-content-center">
+            <input class="search-bar w-75 form-control border-0 bg-light rounded rounded-pill shadow-sm" type="text" id="search-box" placeholder="" />
+            <span class="floating-label">Rechercher un membre KYOSC</span>
         </div>
+        <div id="suggestion-box" class="w-50 m-auto"></div>
     </section>
     <main class="container-fluid">
         <div class="row justify-content-center w-75 m-auto">
@@ -94,8 +99,8 @@
                                     user.profilPhoto
                                 }' class='avatar-testimony'>`;
                             }
-                            let html = `${"<div class='d-flex bg-white'>"
-                                + `<a href='/profil/`}${user.id}' class='w-100 p-2 d-flex justify-content-between align-items-center text-dark text-center border border-dark rounded'><span>${user.firstName}</span><span>${
+                            let html = `${"<div class='d-flex'>"
+                                + `<a href='/profil/`}${user.id}' class='w-100 py-2 px-5 d-flex justify-content-between align-items-center text-dark text-center border border-dark rounded text-decoration-none'><span>${user.firstName}</span><span>${
                                 pseudoUser
                             }</span>${
                                 avatar
