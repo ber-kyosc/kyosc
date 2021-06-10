@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -28,6 +29,7 @@ class Challenge
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"challenge_base"})
      */
     private ?int $id = null;
 
@@ -36,6 +38,7 @@ class Challenge
      * @Assert\NotBlank(message="Veuillez choisir un titre pour votre challenge")
      * @Assert\Length(max="100", min="2", minMessage="Veuillez choisir un titre faisant plus de 2 caractères",
      * maxMessage="Un maximum de 100 caractères est autorisé")
+     * @Groups({"challenge_base"})
      */
     private string $title;
 
@@ -86,6 +89,7 @@ class Challenge
      *     value="today",
      *     message="La date du challenge doit être supérieure ou égale à celle d'aujourd'hui"
      * )
+     * @Groups({"challenge_base"})
      */
     private ?DateTimeInterface $dateStart;
 
@@ -103,6 +107,7 @@ class Challenge
     /**
      * @ORM\Column(type="boolean")
      * @Assert\Type(type="bool")
+     * @Groups({"challenge_base"})
      */
     private bool $isPublic;
 
@@ -137,6 +142,7 @@ class Challenge
 
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
+     * @Groups({"challenge_base"})
      */
     private ?string $challengePhoto = null;
 

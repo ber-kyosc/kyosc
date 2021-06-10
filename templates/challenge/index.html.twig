@@ -38,7 +38,13 @@
             </h1>
         </header>
     {% endif %}
-
+    <section class="my-4">
+        <div class="position-relative frmSearch w-100 d-flex flex-column align-items-center justify-content-center">
+            <input class="search-bar w-75 form-control border-0 bg-light rounded rounded-pill shadow-sm" type="text" id="search-box" placeholder="" />
+            <span class="floating-label">Rechercher une aventure</span>
+        </div>
+        <div id="suggestion-box" class="w-50 m-auto"></div>
+    </section>
     <main class="container-fluid">
         <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
             <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
@@ -98,4 +104,36 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     {{ encore_entry_script_tags('filter') }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        const suggestionBox = $("#suggestion-box");
+        const searchBox = $('#search-box');
+        $(document).ready(function() {
+            searchBox.keyup(function(){
+                suggestionBox.html("");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('challenge_handle_search') }}",
+                    data:'_query='+$(this).val(),
+                    success: function(data){
+                        suggestionBox.html("");
+                        data.forEach(function(challenge){
+                            let BGStyle = `background: url('{{ asset('uploads/challenge/challenge-default.jpeg') }}') no-repeat center; background-size: cover;`;
+                            if (challenge.challengePhoto !== null) {
+                                BGStyle = `background: url('https://kyosc.com/uploads/challenge/${
+                                    challenge.challengePhoto
+                                }') no-repeat center; background-size: cover;`;
+                            }
+                            let html = `${"<div class='d-flex'>"
+                                + `<a href='/profil/`}${challenge.id}' style="${BGStyle}" class='w-100 py-2 px-5 d-flex justify-content-center align-items-center text-dark text-center border border-dark rounded text-decoration-none'><span class="transparent-background-dark p-3">${
+                                    challenge.title
+                                }</span></a>`
+                                + '</div>';
+                            suggestionBox.prepend(html);
+                        })
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

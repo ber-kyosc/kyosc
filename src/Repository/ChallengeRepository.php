@@ -201,4 +201,21 @@ class ChallengeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param string $title
+     * @param int $limit
+     * @return array<string>
+     */
+    public function findLikeTitle(string $title, int $limit = 5): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->where('c.title LIKE :title')
+            ->setParameter('title', '%' . $title . '%')
+            ->orderBy('c.title', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
 }
