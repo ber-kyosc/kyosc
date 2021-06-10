@@ -57,15 +57,9 @@ class MessageController extends AbstractController
         }
 
         if ($clanId) {
-            if ($message->getIsPublic()) {
-                return $this->redirectToRoute('clan_show', [
-                    'id' => $clanId
-                ]);
-            } else {
-                return $this->redirectToRoute('clan_my-clan', [
-                    'id' => $clanId
-                ]);
-            }
+            return $this->redirectToRoute('clan_show', [
+                'id' => $clanId
+            ]);
         } else {
             return $this->redirectToRoute('challenge_show', [
                 'id' => $challengeId
