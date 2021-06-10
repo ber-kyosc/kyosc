@@ -21,7 +21,7 @@
     {% if sportColor and sport %}
         <header class="index-header d-flex align-items-center text-center text-uppercase mt-5 mb-5" style="background: {{ sportColor }};">
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
-            <h1 class="challenge-index-title">
+            <h1 class="ml-1 challenge-index-title">
                 les aventures
                 <span class="text-white">"{{ sport.name }}"</span>
             </h1>
@@ -31,14 +31,20 @@
                 {% else %} class="d-flex align-items-center text-uppercase mt-3 mb-5 bg-dark text-white"
                 {% endif %}>
             <img src="{{ sportLogo }}" alt="Logo KYOSC" class="logo-challenge">
-            <h1 class="challenge-index-title text-white">Toutes les aventures
+            <h1 class="ml-1 challenge-index-title text-white">Toutes les aventures
                 {% if category %}
                     "{{ category.name }}"
                 {% endif %}
             </h1>
         </header>
     {% endif %}
-
+    <section class="my-4">
+        <div class="position-relative frmSearch w-100 d-flex flex-column align-items-center justify-content-center">
+            <input class="search-bar w-75 form-control border-0 bg-light rounded rounded-pill shadow-sm" type="text" id="search-box"/>
+            <span class="floating-label">Rechercher une aventure</span>
+        </div>
+        <div id="suggestion-box" class="w-50 m-auto"></div>
+    </section>
     <main class="container-fluid">
         <div class="form-kyosc d-flex align-items-center justify-content-center mb-5">
             <a href="{{ path('challenge_new') }}" class="btn-login btn btn-lg">Créer une aventure</a>
@@ -98,4 +104,36 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     {{ encore_entry_script_tags('filter') }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        const suggestionBox = $("#suggestion-box");
+        const searchBox = $('#search-box');
+        $(document).ready(function() {
+            searchBox.keyup(function(){
+                suggestionBox.html("");
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('challenge_handle_search') }}",
+                    data:'_query='+$(this).val(),
+                    success: function(data){
+                        suggestionBox.html("");
+                        data.forEach(function(challenge){
+                            let BGStyle = `background: url('{{ asset('uploads/challenge/challenge-default.jpeg') }}') no-repeat center; background-size: cover;`;
+                            if (challenge.challengePhoto !== null) {
+                                BGStyle = `background: url('https://kyosc.com/uploads/challenge/${
+                                    challenge.challengePhoto
+                                }') no-repeat center; background-size: cover;`;
+                            }
+                            let html = `${"<div class='d-flex'>"
+                                + `<a href='/aventure/`}${challenge.id}' style="${BGStyle}" class='w-100 py-2 px-5 d-flex justify-content-center align-items-center text-dark text-center border border-dark rounded text-decoration-none'><span class="transparent-background-dark p-3">${
+                                    challenge.title
+                                }</span></a>`
+                                + '</div>';
+                            suggestionBox.prepend(html);
+                        })
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

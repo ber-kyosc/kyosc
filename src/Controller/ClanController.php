@@ -6,9 +6,11 @@ use App\Entity\Clan;
 use App\Entity\Invitation;
 use App\Entity\JoinRequest;
 use App\Entity\Message;
+use App\Entity\Picture;
 use App\Entity\User;
 use App\Form\ClanType;
 use App\Form\MessageType;
+use App\Form\PictureType;
 use App\Repository\ChallengeRepository;
 use App\Repository\ClanRepository;
 use App\Repository\InvitationRepository;
@@ -18,6 +20,7 @@ use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -82,7 +85,7 @@ class ClanController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET","POST"})
+     * @Route("/{id}", name="show", methods={"GET","POST"}, requirements={"id"="^\d+$"})
      * @param Clan $clan
      * @param MessageRepository $messageRepository
      * @param Request $request
@@ -93,6 +96,10 @@ class ClanController extends AbstractController
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
+
+        $picture = new Picture();
+        $formPicture = $this->createForm(PictureType::class, $picture);
+        $formPicture->handleRequest($request);
 
         /* @phpstan-ignore-next-line */
         if ($form->isSubmitted() && $form->isValid()) {
@@ -112,9 +119,23 @@ class ClanController extends AbstractController
             ]);
         }
 
+        /* @phpstan-ignore-next-line */
+        if ($formPicture->isSubmitted() && $formPicture->isValid() && $formPicture->get('save-picture')->isClicked()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $picture->setClan($clan);
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $picture->setCreatedAt(new DateTime());
+            $picture->setUpdatedAt(new DateTime());
+            /* @phpstan-ignore-next-line */
+            $picture->setAuthor($this->getUser());
+            $entityManager->persist($picture);
+            $entityManager->flush();
+        }
+
         return $this->render('clan/show.html.twig', [
             'clan' => $clan,
             'form' => $form->createView(),
+            'formPicture' => $formPicture->createView(),
         ]);
     }
 
@@ -558,6 +579,24 @@ class ClanController extends AbstractController
 
         return $this->redirectToRoute('clan_show', [
             'id' => $clan->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/handleSearch/{_query?}", name="handle_search", methods={"POST", "GET"})
+     * @param ClanRepository $clanRepository
+     * @return JsonResponse
+     */
+    public function handleSearchRequest(ClanRepository $clanRepository)
+    {
+        if ($_POST['_query']) {
+            $data = $clanRepository->findLikeName($_POST['_query']);
+        } else {
+            $data = [];
+        }
+
+        return $this->json($data, Response::HTTP_OK, [], [
+            'groups' => 'clan_base'
         ]);
     }
 }

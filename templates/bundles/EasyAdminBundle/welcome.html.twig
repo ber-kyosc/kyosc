@@ -25,15 +25,15 @@
             </p>
         </div>
         <div class="one bg-light p-3 border border-dark" style="border-radius: 20px; width: 20%; min-width: 200px">
-            <p class="stat-title text-dark font-weight-bold text-center">Nombre de catégories</p>
+            <p class="stat-title text-dark font-weight-bold text-center">Nombre de clans</p>
             <p class="stat-result text-center text-dark font-weight-bolder" style="font-size: 3.8em">
-                {{ totalCategories|length }}
+                {{ totalClans|length }}
             </p>
         </div>
 
         {% for sports in challengeBySports %}
         <div class="one p-3" style="border-radius: 20px; width: 20%; background-color: {{ sports.color }}; min-width: 200px">
-            <p class="stat-title text-light font-weight-bold text-center">Nombre de challenges <br/> {{ sports.name }}</p>
+            <p class="stat-title text-light font-weight-bold text-center">Nombre de challenges à venir <br/> {{ sports.name }}</p>
             <p class="stat-result text-center text-light font-weight-bolder" style="font-size: 3.8em">
                 {{ sports.challengeCount }}
             </p>

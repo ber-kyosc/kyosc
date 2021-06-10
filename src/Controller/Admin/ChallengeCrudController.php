@@ -34,14 +34,9 @@ class ChallengeCrudController extends AbstractCrudController
             TextEditorField::new('description'),
             TextField::new('location')
                 ->setLabel('Départ'),
-            TextField::new('locationEnd')
-                ->setLabel('Arrivée')
-                ->hideOnIndex(),
             DateField::new('dateStart')
                 ->setLabel('Date de début')
                 ->setFormat('dd/MM/yyyy'),
-            TextEditorField::new('journey')
-                ->hideOnIndex(),
             IntegerField::new('distance')
                 ->hideOnIndex(),
             TextEditorField::new('information')
@@ -56,6 +51,10 @@ class ChallengeCrudController extends AbstractCrudController
             AssociationField::new('creator')
                 ->setLabel('Créateur')
                 ->autocomplete(),
+            AssociationField::new('clans')
+                ->autocomplete(),
+            TextEditorField::new('recommendation')
+                ->hideOnIndex(),
         ];
     }
 }
