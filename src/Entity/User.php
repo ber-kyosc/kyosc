@@ -228,6 +228,11 @@ class User implements UserInterface, Serializable
      */
     private Collection $requestsReceived;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="author", cascade={"remove"})
+     */
+    private Collection $pictures;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -242,6 +247,7 @@ class User implements UserInterface, Serializable
         $this->invitationsReceived = new ArrayCollection();
         $this->requestsSent = new ArrayCollection();
         $this->requestsReceived = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function __toString()
@@ -931,6 +937,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($requestsReceived->getRequestedUser() === $this) {
                 $requestsReceived->setRequestedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getAuthor() === $this) {
+                $picture->setAuthor(null);
             }
         }
 

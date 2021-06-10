@@ -199,6 +199,11 @@ class Challenge
      */
     private ?string $recommendation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="challenge", cascade={"remove"})
+     */
+    private Collection $pictures;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -208,6 +213,7 @@ class Challenge
         $this->videos = new ArrayCollection();
         $this->invitations = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function __toString()
@@ -638,6 +644,36 @@ class Challenge
     public function setRecommendation(?string $recommendation): self
     {
         $this->recommendation = $recommendation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setChallenge($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getChallenge() === $this) {
+                $picture->setChallenge(null);
+            }
+        }
 
         return $this;
     }
