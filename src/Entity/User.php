@@ -209,22 +209,22 @@ class User implements UserInterface, Serializable
     private Collection $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="creator", cascade={"remove"})
      */
     private Collection $invitationsSent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="invitedUser")
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="invitedUser", cascade={"remove"})
      */
     private Collection $invitationsReceived;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="creator")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="creator", cascade={"remove"})
      */
     private Collection $requestsSent;
 
     /**
-     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="requestedUser")
+     * @ORM\OneToMany(targetEntity=JoinRequest::class, mappedBy="requestedUser", cascade={"remove"})
      */
     private Collection $requestsReceived;
 
