@@ -212,7 +212,7 @@ class ChallengeRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('c')
             ->where('c.title LIKE :title')
             ->setParameter('title', '%' . $title . '%')
-            ->orderBy('c.title', 'ASC')
+            ->orderBy('c.title', 'DESC')
             ->setMaxResults($limit)
             ->getQuery();
 

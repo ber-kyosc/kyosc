@@ -40,7 +40,7 @@
     {% endif %}
     <section class="my-4">
         <div class="position-relative frmSearch w-100 d-flex flex-column align-items-center justify-content-center">
-            <input class="search-bar w-75 form-control border-0 bg-light rounded rounded-pill shadow-sm" type="text" id="search-box" placeholder="" />
+            <input class="search-bar w-75 form-control border-0 bg-light rounded rounded-pill shadow-sm" type="text" id="search-box"/>
             <span class="floating-label">Rechercher une aventure</span>
         </div>
         <div id="suggestion-box" class="w-50 m-auto"></div>
@@ -125,7 +125,7 @@
                                 }') no-repeat center; background-size: cover;`;
                             }
                             let html = `${"<div class='d-flex'>"
-                                + `<a href='/profil/`}${challenge.id}' style="${BGStyle}" class='w-100 py-2 px-5 d-flex justify-content-center align-items-center text-dark text-center border border-dark rounded text-decoration-none'><span class="transparent-background-dark p-3">${
+                                + `<a href='/aventure/`}${challenge.id}' style="${BGStyle}" class='w-100 py-2 px-5 d-flex justify-content-center align-items-center text-dark text-center border border-dark rounded text-decoration-none'><span class="transparent-background-dark p-3">${
                                     challenge.title
                                 }</span></a>`
                                 + '</div>';

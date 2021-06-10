@@ -20,6 +20,7 @@ use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -84,7 +85,7 @@ class ClanController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET","POST"})
+     * @Route("/{id}", name="show", methods={"GET","POST"}, requirements={"id"="^\d+$"})
      * @param Clan $clan
      * @param MessageRepository $messageRepository
      * @param Request $request
@@ -578,6 +579,24 @@ class ClanController extends AbstractController
 
         return $this->redirectToRoute('clan_show', [
             'id' => $clan->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/handleSearch/{_query?}", name="handle_search", methods={"POST", "GET"})
+     * @param ClanRepository $clanRepository
+     * @return JsonResponse
+     */
+    public function handleSearchRequest(ClanRepository $clanRepository)
+    {
+        if ($_POST['_query']) {
+            $data = $clanRepository->findLikeName($_POST['_query']);
+        } else {
+            $data = [];
+        }
+
+        return $this->json($data, Response::HTTP_OK, [], [
+            'groups' => 'clan_base'
         ]);
     }
 }

@@ -19,6 +19,23 @@ class ClanRepository extends ServiceEntityRepository
         parent::__construct($registry, Clan::class);
     }
 
+    /**
+     * @param string $name
+     * @param int $limit
+     * @return array<string>
+     */
+    public function findLikeName(string $name, int $limit = 5): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->where('c.name LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('c.name', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
     // /**
     //  * @return Clan[] Returns an array of Clan objects
     //  */

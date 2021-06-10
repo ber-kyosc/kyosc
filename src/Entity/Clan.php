@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -24,6 +25,7 @@ class Clan
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"clan_base"})
      */
     private ?int $id;
 
@@ -32,6 +34,7 @@ class Clan
      * @Assert\NotBlank(message="Veuillez choisir un nom pour votre clan")
      * @Assert\Length(max="255", min="2", minMessage="Veuillez choisir un nom faisant plus de 2 caractères",
      * maxMessage="Un maximum de 255 caractères est autorisé")
+     * @Groups({"clan_base"})
      */
     private string $name;
 
@@ -66,6 +69,7 @@ class Clan
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"clan_base"})
      */
     private ?string $banner = null;
 
@@ -111,6 +115,7 @@ class Clan
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"clan_base"})
      */
     private ?bool $isPublic;
 
