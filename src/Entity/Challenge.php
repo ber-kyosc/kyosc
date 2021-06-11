@@ -210,6 +210,11 @@ class Challenge
      */
     private Collection $pictures;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Level::class, inversedBy="challenges")
+     */
+    private ?Level $level;
+
     public function __construct()
     {
         $this->sports = new ArrayCollection();
@@ -680,6 +685,18 @@ class Challenge
                 $picture->setChallenge(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLevel(): ?Level
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?Level $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }

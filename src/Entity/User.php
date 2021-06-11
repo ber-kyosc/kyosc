@@ -233,6 +233,11 @@ class User implements UserInterface, Serializable
      */
     private Collection $pictures;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Level::class, inversedBy="users")
+     */
+    private ?Level $level;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -981,6 +986,18 @@ class User implements UserInterface, Serializable
                 $picture->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLevel(): ?Level
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?Level $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }
