@@ -100,7 +100,7 @@
                     <button
                             class="btn btn-register text-uppercase"
                             style="background-color: {{ color }}"
-                    >JE NE PARTICIPE PLUS</button>
+                    >Je ne participe plus</button>
                 </form>
             {% elseif app.user and app.user != challenge.creator %}
                 {% set isClanMember = false %}
@@ -150,7 +150,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">INVITER VOS AMIS A PARTICIPER A CETTE AVENTURE</h2>
+                        <h2 style="color: {{color}}" class="modal-title text-uppercase" id="exampleModalLongTitle">Inviter vos amis à participer à cette aventure</h2>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
