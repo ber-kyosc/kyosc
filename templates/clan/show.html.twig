@@ -207,7 +207,7 @@
             <h2>Photos du clan</h2>
             <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#pictureForm">
                 <h2 class="mt-5 arrow-header">Ajoutez des photos !<br>
-                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
                 </h2>
             </a>
             <div class="row mt-3">
@@ -223,7 +223,7 @@
                                 <div class="modal-header">
                                     <a class="journey-link-dark mb-3" href="{{ vich_uploader_asset(picture, 'pathFile')}}" download="{{ picture.path }}">
                                         <h2 class="m-auto arrow-header">Télécharger<br>
-                                            <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                                            <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
                                         </h2>
                                     </a>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -231,7 +231,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body d-flex justify-content-center">
-                                    <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100">
+                                    <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100" alt="photo du clan {{ clan.name }}">
                                     {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == clan.creator %}
                                         {{ include('picture/_delete_form.html.twig') }}
                                     {% endif %}
