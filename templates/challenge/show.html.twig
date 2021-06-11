@@ -334,7 +334,7 @@
         {% if app.user and app.user == challenge.creator or app.user in challenge.participants or is_granted("ROLE_ADMIN") %}
             <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#pictureForm">
                 <h2 class="mt-5 arrow-header">Ajoutez des photos !<br>
-                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
                 </h2>
             </a>
         {% endif %}
@@ -342,11 +342,7 @@
             {% for picture in challenge.pictures|reverse %}
             <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative cursor-pointer"
                data-toggle="modal" data-target="#picture{{ picture.id }}"
-               style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;"
-            >
-                {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == challenge.creator %}
-                    {{ include('picture/_delete_form.html.twig') }}
-                {% endif %}
+               style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;">
             </a>
             {#        modal for pictures upload pop-up#}
             <div class="modal fade" id="picture{{ picture.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -355,15 +351,18 @@
                         <div class="modal-header">
                             <a class="journey-link-dark mb-3" href="{{ vich_uploader_asset(picture, 'pathFile')}}" download="{{ picture.path }}">
                                 <h2 class="m-auto arrow-header">Télécharger<br>
-                                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
                                 </h2>
                             </a>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">fermer</span>
                             </button>
                         </div>
                         <div class="modal-body d-flex justify-content-center">
-                            <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100">
+                            <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100" alt="photo de l'aventure {{ challenge.title }}">
+                            {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == challenge.creator %}
+                                {{ include('picture/_delete_form.html.twig') }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -379,7 +378,7 @@
         {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
         <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#youtubeLinkForm">
             <h2 class="mt-5 arrow-header">Ajoutez des vidéos !<br>
-                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
             </h2>
         </a>
         {% endif %}

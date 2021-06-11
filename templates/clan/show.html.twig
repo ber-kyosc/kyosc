@@ -214,11 +214,7 @@
                 {% for picture in clan.pictures|reverse %}
                     <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative cursor-pointer"
                        data-toggle="modal" data-target="#picture{{ picture.id }}"
-                       style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;"
-                    >
-                        {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == clan.creator %}
-                            {{ include('picture/_delete_form.html.twig') }}
-                        {% endif %}
+                       style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;">
                     </a>
                     {#        modal for pictures upload pop-up#}
                     <div class="modal fade" id="picture{{ picture.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -231,11 +227,14 @@
                                         </h2>
                                     </a>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                        <span aria-hidden="true">fermer</span>
                                     </button>
                                 </div>
                                 <div class="modal-body d-flex justify-content-center">
                                     <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100">
+                                    {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == clan.creator %}
+                                        {{ include('picture/_delete_form.html.twig') }}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
