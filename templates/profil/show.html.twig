@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="d-flex flex-column flex-md-row justify-content-center">
-        <div>
+        <div class="position-relative">
             <label for="edit_profil_profilPhotoFile_file" class="form-group img-display">
                 {% if app.user.profilPhoto is not null%}
                     <img id="output" src="{{ vich_uploader_asset(user, 'profilPhotoFile') | imagine_filter('avatar_thumb') }}" alt="{{ app.user.profilPhoto }}" class="profil-photo cursor-pointer w-75">
@@ -53,10 +53,16 @@
                     <img id="output" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture" class="profil-photo cursor-pointer">
                 {% endif %}
             </label>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-login delete-container-inside"><img src="{{ asset('build/images/picto/save.png') }}" alt="icone de sauvegarde" class="delete-icon"></button>
+            </div>
         </div>
         <div class="transparent-background-dark text-white p-4 m-3 max-width-800">
             <h3>Nom : {{ app.user.firstName }} {{ app.user.lastName }}</h3>
             <h4>Pseudo : {{ (app.user.pseudo) ? app.user.pseudo : 'non renseigné' }}</h4>
+            {% if app.user.level %}
+                <h4>Niveau sportif : {{ app.user.level.name }}</h4>
+            {% endif %}
             <p class="text-white">Biographie : {{ (app.user.biography) ? app.user.biography : 'non renseignée' }}</p>
             <div class="d-flex flex-column">
                 <h4>Sports préférés :</h4>
@@ -145,6 +151,11 @@
                             <h3 class="text-white h6">Témoignage</h3>
                             {{ form_widget(form.testimony) }}
                             {{ form_errors(form.testimony) }}
+                        </div>
+                        <div class="form-group">
+                            <h3 class="text-white h6">Mon niveau sportif</h3>
+                            {{ form_widget(form.level) }}
+                            {{ form_errors(form.level) }}
                         </div>
                         <div class="fileUpload">
                             <h3 class="text-white h6">Photo de profil</h3>
@@ -528,6 +539,9 @@
                             <div class="d-flex justify-content-around">
                                 <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
                                 {{ include('clan/_delete_form.html.twig') }}
+                            </div>
+                            <div class="form-kyosc mb-3 mb-md-0 mx-auto">
+                                <a class="btn btn-delete m-1" href="{{ path('clan_transfer-ownership', {id: clan.id})}}">Transférer la propriété de ce clan</a>
                             </div>
                         </div>
                     {% else %}

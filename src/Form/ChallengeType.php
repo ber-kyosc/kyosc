@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Clan;
+use App\Entity\Level;
 use App\Entity\Sport;
 use App\Entity\Challenge;
 use App\Repository\ClanRepository;
+use App\Repository\LevelRepository;
 use App\Repository\SportRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -124,7 +126,7 @@ class ChallengeType extends AbstractType
                 (restaurants, lieux touristiques et autres sites d\'intérêt)',
                 'attr' => [
                     'placeholder' => 'Bons plans',
-                    'rows' => 3],
+                    'rows' => 2],
             ])
             ->add('clans', EntityType::class, [
                 'required' => false,
@@ -150,6 +152,16 @@ class ChallengeType extends AbstractType
                 'label' => 'ouverte',
                 'required' => false,
                 'label_attr' => ['class' => 'switch-custom']
+            ])
+            ->add('level', EntityType::class, [
+                'required' => false,
+                'label' => 'Mon niveau sportif',
+                'class' => Level::class,
+                'choice_label' => 'name',
+                'query_builder' => function (LevelRepository $levelRepository) {
+                    return $levelRepository->createQueryBuilder('l')
+                        ->where('l.isUserLevel = false');
+                },
             ]);
     }
 

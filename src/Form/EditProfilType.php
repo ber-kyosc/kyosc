@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Brand;
+use App\Entity\Level;
 use App\Entity\Sport;
 use App\Entity\User;
 use App\Repository\BrandRepository;
+use App\Repository\LevelRepository;
 use App\Repository\SportRepository;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -133,7 +135,17 @@ class EditProfilType extends AbstractType
                     'placeholder' => 'Destinations sportives préférées',
                     'rows' => '5',
                     'cols' => '5',
-                ]]);
+                ]])
+            ->add('level', EntityType::class, [
+                'required' => false,
+                'label' => 'Mon niveau sportif',
+                'class' => Level::class,
+                'choice_label' => 'name',
+                'query_builder' => function (LevelRepository $levelRepository) {
+                    return $levelRepository->createQueryBuilder('l')
+                        ->where('l.isUserLevel = true');
+                },
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

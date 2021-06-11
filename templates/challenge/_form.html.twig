@@ -142,13 +142,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-6">
-                <p class="mb-0">Vos bons plans:</p>
-                {{ form_errors(form.recommendation) }}
-                {{ form_widget(form.recommendation) }}
-                {{ form_help(form.recommendation) }}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <p class="mb-0">Vos bons plans:</p>
+                    {{ form_errors(form.recommendation) }}
+                    {{ form_widget(form.recommendation) }}
+                    {{ form_help(form.recommendation) }}
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">Niveau de difficulté:</p>
+                    {{ form_errors(form.level) }}
+                    {{ form_widget(form.level) }}
+                    {{ form_help(form.level) }}
+                </div>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-md-6">
                 <div class="form-group">
                     <p class="mb-0">Ajout d'une trace gpx:</p>
                     {{ form_errors(form.gpxTrackFile) }}
