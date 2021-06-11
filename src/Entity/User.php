@@ -233,6 +233,11 @@ class User implements UserInterface, Serializable
      */
     private Collection $pictures;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Level::class, inversedBy="users")
+     */
+    private ?Level $level;
+
     public function __construct()
     {
         $this->challenges = new ArrayCollection();
@@ -253,6 +258,18 @@ class User implements UserInterface, Serializable
     public function __toString()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        $firstName = $this->firstName;
+        $lastName = $this->lastName;
+        $pseudo = $this->pseudo;
+
+        return $firstName . ' ' . $lastName . ' - " ' . ($pseudo ?: 'pas de pseudo') . ' "';
     }
 
     /**
@@ -969,6 +986,18 @@ class User implements UserInterface, Serializable
                 $picture->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLevel(): ?Level
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?Level $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }

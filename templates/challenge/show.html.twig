@@ -5,14 +5,13 @@
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="{{ challenge.title }}" />
     <meta property="og:description"   content="{{ challenge.description }}" />
-    <meta property="og:image:secure_url"
-          content="{% if challenge.challengePhoto is not null %}https://kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}https://kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}" />
+    <meta property="og:image"
+          content="{% if challenge.challengePhoto is not null %}https://kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}https://kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}"/>
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="{{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
     <meta name="twitter:site" content="{{ app.request.uri }}">
     <meta name="twitter:title" content="{{ challenge.title }} par {{ challenge.creator.pseudo? : challenge.creator.firstname ~ challenge.creator.lastname }}">
     <meta name="twitter:description" content="{{ challenge.description }}">
-    <meta name="twitter:image" content="{% if challenge.challengePhoto is not null %}https://kyosc.com{{ vich_uploader_asset(challenge, 'challengePhotoFile') }}{% else %}https://kyosc.com/uploads/challenge/challenge-default.jpeg{% endif %}">
 {% endblock %}
 
 {% block title %}Aventure #{{ challenge.id }}{% endblock %}
@@ -30,8 +29,10 @@
     {% set color = challenge.sports[0].color %}
 
     <header class="arrow-header my-3 text-uppercase" style="background-color: {{color}};">
-        <h1>{{ challenge.title }} #{{ challenge.id }}</h1>
-        <p class="m-0 text-white">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
+        <h1>{{ challenge.title }}</h1>
+        <p class="m-0 text-white pre-line">{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}
+            aventure n°{{ challenge.id }}
+        </p>
         <div class="d-flex align-items-center mt-2">
             <div class="fb-share-button mr-2" data-href="{{ app.request.uri }}" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Faventure%2F411&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Partager</a></div>
             <a class="twitter-share-button"
@@ -58,19 +59,27 @@
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="key-info-row">
-                            <span class="key-info">DATE:</span>
+                            <span class="key-info text-uppercase">Date:</span>
                             <p>{{ challenge.dateStart |format_datetime(pattern="dd MMMM Y",locale='fr') }}</p>
                         </div>
                         <div class="key-info-row">
-                            <span class="key-info">LIEU:</span>
+                            <span class="key-info text-uppercase">Lieu:</span>
                             <p>{{ challenge.location | capitalize }}</p>
                         </div>
                         <div class="key-info-row">
-                            <span class="key-info">DISTANCE:</span>
+                            <span class="key-info text-uppercase">Distance:</span>
                             {% if challenge.distance %}
-                            <p>{{challenge.distance}} km</p>
+                            <p>{{ challenge.distance }} km</p>
                             {% else %}
                             <p>Non spécifiée</p>
+                            {% endif %}
+                        </div>
+                        <div class="key-info-row">
+                            <span class="key-info text-uppercase">Niveau de difficulté:</span>
+                            {% if challenge.level %}
+                                <p>{{ challenge.level.name }}</p>
+                            {% else %}
+                                <p>Non spécifié</p>
                             {% endif %}
                         </div>
                         {% if challenge.gpxTrack %}
@@ -82,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-column justify-content-center">
+        <div class="d-flex flex-column justify-content-center mt-3">
             {% if app.user in challenge.participants and app.user != challenge.creator %}
                 <form class="align-middle align-self-center mb-4 form-kyosc" method="post" action="{{ path('challenge_leave', {id: challenge.id}) }}">
                     <input type="hidden" name="challengeId" value="{{ challenge.id }}">
@@ -90,7 +99,7 @@
                     <button
                             class="btn btn-register text-uppercase"
                             style="background-color: {{ color }}"
-                    >JE NE PARTICIPE PLUS</button>
+                    >Je ne participe plus</button>
                 </form>
             {% elseif app.user and app.user != challenge.creator %}
                 {% set isClanMember = false %}
@@ -140,7 +149,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 style="color: {{color}}" class="modal-title" id="exampleModalLongTitle">INVITER VOS AMIS A PARTICIPER A CETTE AVENTURE</h2>
+                        <h2 style="color: {{color}}" class="modal-title text-uppercase" id="exampleModalLongTitle">Inviter vos amis à participer à cette aventure</h2>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -324,21 +333,40 @@
         {% if app.user and app.user == challenge.creator or app.user in challenge.participants or is_granted("ROLE_ADMIN") %}
             <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#pictureForm">
                 <h2 class="mt-5 arrow-header">Ajoutez des photos !<br>
-                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
                 </h2>
             </a>
         {% endif %}
         <div class="row mt-3">
             {% for picture in challenge.pictures|reverse %}
-            <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative"
-               href="{{ vich_uploader_asset(picture, 'pathFile')}}"
-               download="{{ picture.path }}"
-               style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;"
-            >
-                {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == challenge.creator %}
-                    {{ include('picture/_delete_form.html.twig') }}
-                {% endif %}
+            <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative cursor-pointer"
+               data-toggle="modal" data-target="#picture{{ picture.id }}"
+               style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;">
             </a>
+            {#        modal for pictures upload pop-up#}
+            <div class="modal fade" id="picture{{ picture.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a class="journey-link-dark mb-3" href="{{ vich_uploader_asset(picture, 'pathFile')}}" download="{{ picture.path }}">
+                                <h2 class="m-auto arrow-header">Télécharger<br>
+                                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
+                                </h2>
+                            </a>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">fermer</span>
+                            </button>
+                        </div>
+                        <div class="modal-body d-flex justify-content-center">
+                            <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100" alt="photo de l'aventure {{ challenge.title }}">
+                            {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == challenge.creator %}
+                                {{ include('picture/_delete_form.html.twig') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#       end of modal for pictures upload pop-up#}
             {% else %}
                 <p class="mx-auto my-3">Cette aventure n'a pas encore de photo</p>
             {% endfor %}
@@ -349,7 +377,7 @@
         {% if app.user and app.user == challenge.creator or app.user in challenge.participants %}
         <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#youtubeLinkForm">
             <h2 class="mt-5 arrow-header">Ajoutez des vidéos !<br>
-                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
             </h2>
         </a>
         {% endif %}

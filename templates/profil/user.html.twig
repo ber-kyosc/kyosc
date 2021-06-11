@@ -29,6 +29,9 @@
         <div class="transparent-background-dark text-white p-4 m-3 max-width-800">
             <h3>Nom : {{ user.firstName }} {{ user.lastName }}</h3>
             <h4>Pseudo : {{ (user.pseudo) ? user.pseudo : 'non renseigné' }}</h4>
+            {% if user.level %}
+                <h4>Niveau sportif : {{ user.level.name }}</h4>
+            {% endif %}
             <p class="text-white">Biographie : {{ (user.biography) ? user.biography : 'non renseignée' }}</p>
             <div class="d-flex flex-column">
                 <h4>Sports préférés :</h4>

@@ -50,6 +50,9 @@
             <div class="form-kyosc mb-3 mb-md-0">
                 <a class="btn btn-register m-1" href="{{ path('clan_edit', {id: clan.id})}}">Modifier</a>
             </div>
+            <div class="form-kyosc mb-3 mb-md-0">
+                <a class="btn btn-delete m-1" href="{{ path('clan_transfer-ownership', {id: clan.id})}}">Transférer la propriété de ce clan</a>
+            </div>
         {% endif %}
     </section>
 
@@ -125,7 +128,7 @@
             <div class="col-lg-6 col-12 d-flex justify-content-center flex-column">
                 <a href="{{ path("profil_show", {id: clan.creator.id}) }}" class="text-center">
                     {% if clan.creator.profilPhoto is not null %}
-                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of challenge creator">
+                        <img class="profil-photo-challenge mb-2" src="{{ vich_uploader_asset(clan.creator, 'profilPhotoFile')| imagine_filter('avatar_thumb') }}" alt="profilPhoto of clan creator">
                     {% else %}
                         <img class="profil-photo-challenge mb-2" src="{{ asset('uploads/profils/default-profil-picture.png') }}" alt="default profil picture">
                     {% endif %}
@@ -204,20 +207,39 @@
             <h2>Photos du clan</h2>
             <a class="journey-link-dark mb-3" data-toggle="modal" data-target="#pictureForm">
                 <h2 class="mt-5 arrow-header">Ajoutez des photos !<br>
-                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25">
+                    <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
                 </h2>
             </a>
             <div class="row mt-3">
                 {% for picture in clan.pictures|reverse %}
-                    <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative"
-                       href="{{ vich_uploader_asset(picture, 'pathFile')}}"
-                       download="{{ picture.path }}"
-                       style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;"
-                    >
-                        {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == challenge.creator %}
-                            {{ include('picture/_delete_form.html.twig') }}
-                        {% endif %}
+                    <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative cursor-pointer"
+                       data-toggle="modal" data-target="#picture{{ picture.id }}"
+                       style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;">
                     </a>
+                    {#        modal for pictures upload pop-up#}
+                    <div class="modal fade" id="picture{{ picture.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <a class="journey-link-dark mb-3" href="{{ vich_uploader_asset(picture, 'pathFile')}}" download="{{ picture.path }}">
+                                        <h2 class="m-auto arrow-header">Télécharger<br>
+                                            <img src="{{ asset('build/images/fleche/fbnoir.png') }}" class="w-25" alt="fleche noire">
+                                        </h2>
+                                    </a>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">fermer</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body d-flex justify-content-center">
+                                    <img src="{{ vich_uploader_asset(picture, 'pathFile')}}" class="mw-100 mh-100" alt="photo du clan {{ clan.name }}">
+                                    {% if app.user and is_granted("ROLE_ADMIN") or app.user == picture.author or app.user == clan.creator %}
+                                        {{ include('picture/_delete_form.html.twig') }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {#       end of modal for pictures upload pop-up#}
                 {% else %}
                     <p class="mx-auto my-3 text-white">Ce clan n'a pas encore de photo</p>
                 {% endfor %}

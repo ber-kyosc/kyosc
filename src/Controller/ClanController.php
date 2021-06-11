@@ -8,6 +8,7 @@ use App\Entity\JoinRequest;
 use App\Entity\Message;
 use App\Entity\Picture;
 use App\Entity\User;
+use App\Form\ClanTransferType;
 use App\Form\ClanType;
 use App\Form\MessageType;
 use App\Form\PictureType;
@@ -171,6 +172,50 @@ class ClanController extends AbstractController
         }
 
         return $this->render('clan/edit.html.twig', [
+            'clan' => $clan,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/{id}/transfert",
+     *     name="transfer-ownership",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="^\d+$"},
+     * )
+     * @param Request $request
+     * @param Clan $clan
+     * @return Response
+     */
+    public function transfer(Request $request, EntityManagerInterface $entityManager, Clan $clan): Response
+    {
+        if (!($this->getUser() == $clan->getCreator())) {
+            throw new AccessDeniedException('Seul le créateur.la créatrice d\'un clan peut en transferer 
+            la propriété.');
+        }
+
+        $form = $this->createForm(ClanTransferType::class, $clan);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $clan->addMember($clan->getCreator())
+                ->setUpdatedAt(new DateTime());
+            $entityManager->persist($clan);
+            $entityManager->flush();
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre clan a bien été transféré !"
+            );
+
+            return $this->redirectToRoute('clan_show', [
+                'id' => $clan->getId(),
+            ]);
+        }
+
+        return $this->render('clan/transfer.html.twig', [
             'clan' => $clan,
             'form' => $form->createView(),
         ]);

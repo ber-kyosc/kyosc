@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use App\Entity\Challenge;
 use App\Entity\Clan;
+use App\Entity\Level;
 use App\Entity\Sport;
 use App\Entity\User;
 use App\Entity\Brand;
@@ -12,6 +13,7 @@ use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\ClanRepository;
+use App\Repository\LevelRepository;
 use App\Repository\SportRepository;
 use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -29,6 +31,7 @@ class DashboardController extends AbstractDashboardController
     private UserRepository $userRepository;
     private BrandRepository $brandRepository;
     private ClanRepository $clanRepository;
+    private LevelRepository $levelRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -36,7 +39,8 @@ class DashboardController extends AbstractDashboardController
         SportRepository $sportRepository,
         UserRepository $userRepository,
         BrandRepository $brandRepository,
-        ClanRepository $clanRepository
+        ClanRepository $clanRepository,
+        LevelRepository $levelRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->challengeRepository = $challengeRepository;
@@ -44,6 +48,7 @@ class DashboardController extends AbstractDashboardController
         $this->userRepository = $userRepository;
         $this->brandRepository = $brandRepository;
         $this->clanRepository = $clanRepository;
+        $this->levelRepository = $levelRepository;
     }
 
     /**
@@ -77,7 +82,8 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Clans', 'fas fa-mug-hot', Clan::class),
             MenuItem::linkToCrud('Sports', 'fas fa-quidditch', Sport::class),
             MenuItem::linkToCrud('Catégories', 'fas fa-book', Category::class),
-            MenuItem::linkToCrud('Marques', 'fas fa-copyright', Brand::class)
+            MenuItem::linkToCrud('Marques', 'fas fa-copyright', Brand::class),
+            MenuItem::linkToCrud('Niveaux', 'fas fa-tachometer-alt', Level::class),
         ];
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
