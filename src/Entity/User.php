@@ -256,6 +256,18 @@ class User implements UserInterface, Serializable
     }
 
     /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        $firstName = $this->firstName;
+        $lastName = $this->lastName;
+        $pseudo = $this->pseudo;
+
+        return $firstName . ' ' . $lastName . ' - " ' . ($pseudo ?: 'pas de pseudo') . ' "';
+    }
+
+    /**
      * @return int|null
      */
     public function getId()
