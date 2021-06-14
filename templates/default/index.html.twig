@@ -43,15 +43,23 @@
         <ol class="carousel-indicators">
             {% for catchPhrase in catchPhrases %}
                 <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}"{% if loop.index0 is same as (0) %} class="active"{% endif %}></li>
+            {% else %}
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             {% endfor %}
         </ol>
         <div class="carousel-inner">
             {% for catchPhrase in catchPhrases %}
             <div class="carousel-item p-4{% if loop.index0 is same as (0) %} active{% endif %}">
-                <h{% if loop.index0 is same as (0) %}1{% else %}2{% endif %} class="text-kred p-4 w-75 mx-auto pre-line">
-                    {{ catchPhrase.content }}
+                <h{% if loop.index0 is same as (0) %}1{% else %}2{% endif %} class="text-kred p-4 w-75 mx-auto {% if loop.index0 is same as (0) %}{% else %} h1{% endif %}">
+                    {{ catchPhrase.content|raw }}
                 </h{% if loop.index0 is same as (0) %}1{% else %}2{% endif %}>
             </div>
+            {% else %}
+                <div class="carousel-item p-4 active">
+                    <h1 class="text-kred p-4 w-75 mx-auto ">
+                        KYOSC est la plateforme pour organiser et partager tes aventures sportives dans une ambiance conviviale.
+                    </h1>
+                </div>
             {% endfor %}
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
