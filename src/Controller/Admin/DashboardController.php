@@ -9,6 +9,7 @@ use App\Entity\Level;
 use App\Entity\Sport;
 use App\Entity\User;
 use App\Entity\Brand;
+use App\Entity\CatchPhrase;
 use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
@@ -16,6 +17,7 @@ use App\Repository\ClanRepository;
 use App\Repository\LevelRepository;
 use App\Repository\SportRepository;
 use App\Repository\UserRepository;
+use App\Repository\CatchPhraseRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -32,6 +34,7 @@ class DashboardController extends AbstractDashboardController
     private BrandRepository $brandRepository;
     private ClanRepository $clanRepository;
     private LevelRepository $levelRepository;
+    private CatchPhraseRepository $catchPhraseRepository;
 
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -40,7 +43,8 @@ class DashboardController extends AbstractDashboardController
         UserRepository $userRepository,
         BrandRepository $brandRepository,
         ClanRepository $clanRepository,
-        LevelRepository $levelRepository
+        LevelRepository $levelRepository,
+        CatchPhraseRepository $catchPhraseRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->challengeRepository = $challengeRepository;
@@ -49,6 +53,7 @@ class DashboardController extends AbstractDashboardController
         $this->brandRepository = $brandRepository;
         $this->clanRepository = $clanRepository;
         $this->levelRepository = $levelRepository;
+        $this->catchPhraseRepository = $catchPhraseRepository;
     }
 
     /**
@@ -84,6 +89,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Catégories', 'fas fa-book', Category::class),
             MenuItem::linkToCrud('Marques', 'fas fa-copyright', Brand::class),
             MenuItem::linkToCrud('Niveaux', 'fas fa-tachometer-alt', Level::class),
+            MenuItem::linkToCrud('Catch-Phrases', 'fas fa-quote-right', CatchPhrase::class),
         ];
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
