@@ -212,9 +212,10 @@
             </a>
             <div class="row mt-3">
                 {% for picture in clan.pictures|reverse %}
-                    <a class="col-6 col-md-3 text-decoration-none home-square-box d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative cursor-pointer"
-                       data-toggle="modal" data-target="#picture{{ picture.id }}"
-                       style="background: url('{{ vich_uploader_asset(picture, 'pathFile')}}') no-repeat center; background-size: cover;">
+                    <a class="col-6 col-md-3 text-decoration-none d-flex flex-column p-1 hide-before-scroll show-on-scroll position-relative cursor-pointer"
+                       data-toggle="modal" data-target="#picture{{ picture.id }}">
+                        <img src="{{ vich_uploader_asset(picture, 'pathFile') | imagine_filter('challenge_thumb') }}"
+                             alt="photo du clan" class="w-100 challenge-photo-container">
                     </a>
                     {#        modal for pictures upload pop-up#}
                     <div class="modal fade" id="picture{{ picture.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
