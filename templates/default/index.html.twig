@@ -41,50 +41,26 @@
     </section>
     <div id="carouselExampleControls" class="carousel slide bg-dark hide-before-scroll show-on-scroll min-height-200" data-ride="carousel" data-interval="7000">
         <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+            {% for catchPhrase in catchPhrases %}
+                <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}"{% if loop.index0 is same as (0) %} class="active"{% endif %}></li>
+            {% else %}
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            {% endfor %}
         </ol>
         <div class="carousel-inner">
-            <div class="carousel-item p-4 active">
-                <h1 class="text-kred p-4 w-75 mx-auto">
-                    KYOSC est la plateforme pour organiser et partager tes aventures sportives dans une ambiance conviviale.<br>
-                </h1>
+            {% for catchPhrase in catchPhrases %}
+            <div class="carousel-item p-4{% if loop.index0 is same as (0) %} active{% endif %}">
+                <h{% if loop.index0 is same as (0) %}1{% else %}2{% endif %} class="text-kred p-4 w-75 mx-auto {% if loop.index0 is same as (0) %}{% else %} h1{% endif %}">
+                    {{ catchPhrase.content|raw }}
+                </h{% if loop.index0 is same as (0) %}1{% else %}2{% endif %}>
             </div>
-            <div class="carousel-item p-4">
-                <h2 class="h1 text-kred p-4 w-75 mx-auto">
-                    Si participer à un évènement sportif conditionné à une jauge de participants réduite t’ennuie profondément, crée-toi ta propre aventure avec tes amis sur KYOSC.
-                </h2>
-            </div>
-            <div class="carousel-item p-4">
-                <h2 class="h1 text-kred p-4 w-75 mx-auto">
-                    Chez KYOSC pas de green baching, on te fait confiance pour imaginer les plus belles activités sportives respectueuses de l’environnement.
-                </h2>
-            </div>
-            <div class="carousel-item p-4">
-                <h2 class="h1 text-kred p-4 w-75 mx-auto">
-                    Si tu ne cherches pas d’agrégation de traces mais que tu veux faire ta propre trace avec ton clan, KYOSC est la bonne solution.
-                </h2>
-            </div>
-            <div class="carousel-item p-4">
-                <h2 class="h1 text-kred p-4 w-75 mx-auto">
-                    Si tu ne veux pas pratiquer la randonnée ou la voile seul, KYOSC est la bonne voie pour t’intégrer à des clans qui te ressemble, disposés à t’accueillir.
-                </h2>
-            </div>
-            <div class="carousel-item p-4">
-                <h2 class="h1 text-kred p-4 w-75 mx-auto">
-                    Si tu veux prendre en main ton aventure sportive, KYOSC est la vitrine idéale pour informer, rapprocher et fédérer tes proches autour de toi.
-                </h2>
-            </div>
-            <div class="carousel-item p-4">
-                <h2 class="h1 text-kred p-4 w-75 mx-auto">
-                    Bref, tu préfères être inspirant ou inspiré ?
-                </h2>
-            </div>
+            {% else %}
+                <div class="carousel-item p-4 active">
+                    <h1 class="text-kred p-4 w-75 mx-auto ">
+                        KYOSC est la plateforme pour organiser et partager tes aventures sportives dans une ambiance conviviale.
+                    </h1>
+                </div>
+            {% endfor %}
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CatchPhraseRepository;
 use App\Repository\ChallengeRepository;
 use App\Repository\ClanRepository;
 use App\Repository\UserRepository;
@@ -17,10 +18,15 @@ class DefaultController extends AbstractController
      * @param ChallengeRepository $challRepo
      * @param UserRepository $userRepo
      * @param ClanRepository $clanRepo
+     * @param CatchPhraseRepository $catchRepo
      * @return Response
      */
-    public function index(ChallengeRepository $challRepo, UserRepository $userRepo, ClanRepository $clanRepo): Response
-    {
+    public function index(
+        ChallengeRepository $challRepo,
+        UserRepository $userRepo,
+        ClanRepository $clanRepo,
+        CatchPhraseRepository $catchRepo
+    ): Response {
         $totalChallengesWanted = 6;
         $featuredChallenges = $challRepo->findBy(['isFeatured' => true]);
         shuffle($featuredChallenges);
@@ -94,11 +100,13 @@ class DefaultController extends AbstractController
             $usersTestimonials = array_slice($usersTestimonials, 0, 3);
         }
         $imagesCarousel = $this->getDoctrine()->getRepository(Category::class)->findAll();
+        $catchPhrases = $catchRepo->findAll();
         return $this->render('default/index.html.twig', [
             'featuredChallenges' => $featuredChallenges,
             'usersTestimonials' => $usersTestimonials,
             'imagesCarousel' => $imagesCarousel,
             'clans' => $clans,
+            'catchPhrases' => $catchPhrases,
         ]);
     }
 
