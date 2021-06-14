@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('clan_delete', {'id': clan.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form method="post" action="{{ path('clan_delete', {'id': clan.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce clan?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ clan.id) }}">
     <button class="btn btn-delete m-1">Supprimer ce clan</button>
